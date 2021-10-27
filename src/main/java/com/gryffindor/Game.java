@@ -1,5 +1,6 @@
 package com.gryffindor;
 
+import com.gryffindor.graphic.sprite.Sprite;
 import com.gryffindor.object.Bomber;
 import com.gryffindor.object.GameObject;
 import com.gryffindor.services.Input;
@@ -44,6 +45,7 @@ public class Game extends Application {
       }
     }.start();
 
+    // add Object
     gameObjects.add(new Bomber());
 
     handleEvent();
@@ -64,6 +66,8 @@ public class Game extends Application {
   }
 
   public static void main(String[] args) {
+    // load sprite
+    Sprite.loadSprite();
     launch(args);
   }
 }

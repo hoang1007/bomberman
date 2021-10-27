@@ -6,6 +6,9 @@ import javafx.scene.image.Image;
  * Class này lưu trữ ảnh gốc, load các thứ cần trong Sprite.java
  */
 public class SpriteSheet {
+
+    public static SpriteSheet player = new SpriteSheet("/img/player.png");
+
     private String path;
     private Image img;
 
@@ -16,7 +19,6 @@ public class SpriteSheet {
     }
 
     public Image getImage() {
-
         return img;
     }
 
@@ -27,7 +29,5 @@ public class SpriteSheet {
     public double getHeight() {
         return img.getHeight();
     }
-
-    public static SpriteSheet player = new SpriteSheet("/img/player.png");
 
 }
