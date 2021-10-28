@@ -4,10 +4,10 @@ package com.gryffindor.base;
  * Lớp vector hỗ trợ các phép toán trên vector
  */
 public class Vector2D {
-  public float x;
-  public float y;
+  public double x;
+  public double y;
 
-  public Vector2D(float x, float y) {
+  public Vector2D(double x, double y) {
     this.x = x;
     this.y = y;
   }
@@ -18,6 +18,11 @@ public class Vector2D {
 
   public static Vector2D one() {
     return new Vector2D(1, 1);
+  }
+
+  public void setValue(double x, double y) {
+    this.x = x;
+    this.y = y;
   }
 
   public Vector2D add(Vector2D that) {
@@ -40,7 +45,16 @@ public class Vector2D {
     return new Vector2D(this.x / that.x, this.y / that.y);
   }
 
-  public Vector2D multiply(float factor) {
+  public Vector2D multiply(double factor) {
     return new Vector2D(this.x * factor, this.y * factor);
+  }
+
+  public Vector2D clone() {
+    return new Vector2D(this.x, this.y);
+  }
+
+  @Override
+  public String toString() {
+    return "(" + x + ", " + y + ")";
   }
 }
