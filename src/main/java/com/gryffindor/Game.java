@@ -1,7 +1,10 @@
 package com.gryffindor;
 
 import com.gryffindor.object.Bomber;
+import com.gryffindor.object.Enemy;
 import com.gryffindor.object.GameObject;
+import com.gryffindor.services.Collider;
+import com.gryffindor.services.FpsTracker;
 import com.gryffindor.services.Input;
 
 import java.util.ArrayList;
@@ -15,7 +18,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
-
 
 /**
  * JavaFX App.
@@ -34,20 +36,25 @@ public class Game extends Application {
     canvas = new Canvas(WIDTH, HEIGHT);
     context = canvas.getGraphicsContext2D();
 
+    handleEvent();
+
     stage.setScene(new Scene(new Group(canvas)));
     stage.show();
 
     new AnimationTimer() {
       @Override
       public void handle(long now) {
-        update();
-        render();
+        if (FpsTracker.isNextFrame(now)) {
+          update();
+          Collider.checkCollision();
+          render();
+        }
       }
     }.start();
 
+    // add Object
     gameObjects.add(new Bomber());
-
-    handleEvent();
+    gameObjects.add(new Enemy());
   }
 
   private void handleEvent() {
