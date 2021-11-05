@@ -2,13 +2,13 @@ package uet.gryffindor.engine;
 
 public class FpsTracker {
   private static int fps = 100;
-  private static double nanoTimePerFrame = 1e9 / fps;
+  private static long nanoTimePerFrame = 1_000_000_000 / fps;
   private static long lastFrameStamp = 0;
 
   public static void setFps(int fps) {
     FpsTracker.fps = fps;
 
-    nanoTimePerFrame = 1e9 / fps;
+    nanoTimePerFrame = 1_000_000_000 / fps;
   }
 
   /**
@@ -30,7 +30,7 @@ public class FpsTracker {
    * Thời gian của một frame.
    * @return Thời gian của một frame bằng nanoseconds.
    */
-  public static double getFrameTime() {
+  public static long getFrameTime() {
     return nanoTimePerFrame;
   }
 

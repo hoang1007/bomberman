@@ -7,11 +7,9 @@ import uet.gryffindor.base.GameObject;
 import uet.gryffindor.util.ExecuteFunction;
 
 public class TimeCounter extends GameObject {
-  private long time = 0;
+  private long frameCount = 0;
   private ExecuteFunction function;
   private TaskType taskType;
-
-  private static final TimeCounter INSTANCE = new TimeCounter();
 
   @Override
   public void start() {
@@ -23,12 +21,12 @@ public class TimeCounter extends GameObject {
 
   @Override
   public void update() {
-    if (time > 0) {
-      time -= FpsTracker.getFrameTime();
+    if (frameCount > 0) {
+      frameCount--;
 
       switch (taskType) {
       case AFTER:
-        if (time <= 0) {
+        if (frameCount == 0) {
           function.invoke();
         }
         break;
@@ -39,6 +37,8 @@ public class TimeCounter extends GameObject {
       default:
         break;
       }
+    } else {
+      this.destroy();
     }
   }
 
@@ -54,10 +54,21 @@ public class TimeCounter extends GameObject {
    * @param timeUnit đơn vị thời gian
    */
   public static void callAfter(ExecuteFunction function, long time, TimeUnit timeUnit) {
-    INSTANCE.function = function;
-    // convert time to nanoseconds
-    INSTANCE.time = timeUnit.toNanos(time);
-    INSTANCE.taskType = TaskType.AFTER;
+    callAfter(function, timeUnit.toNanos(time) / FpsTracker.getFrameTime());
+  }
+
+  /**
+   * Thực thi hàm sau số frame cho trước.
+   * @param function hàm muốn thực thi
+   * @param frame số frame
+   */
+  public static void callAfter(ExecuteFunction function, long frame) {
+    System.out.println("oi ban oi");
+    TimeCounter instance = new TimeCounter();
+
+    instance.function = function;
+    instance.frameCount = frame;
+    instance.taskType = TaskType.AFTER;
   }
 
   /**
@@ -67,9 +78,20 @@ public class TimeCounter extends GameObject {
    * @param timeUnit đơn vị thời gian
    */
   public static void callDuring(ExecuteFunction function, long time, TimeUnit timeUnit) {
-    INSTANCE.function = function;
-    INSTANCE.time = timeUnit.toNanos(time);
-    INSTANCE.taskType = TaskType.DURING;
+    callDuring(function, timeUnit.toNanos(time) / FpsTracker.getFrameTime());
+  }
+
+  /**
+   * Thực thi hàm trong số frame cho trước.
+   * @param function hàm muốn thực thi
+   * @param frame số frame
+   */
+  public static void callDuring(ExecuteFunction function, long frame) {
+    TimeCounter instance = new TimeCounter();
+
+    instance.function = function;
+    instance.frameCount = frame;
+    instance.taskType = TaskType.DURING;
   }
 
   enum TaskType {

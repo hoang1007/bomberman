@@ -2,9 +2,13 @@ package uet.gryffindor.object;
 
 import uet.gryffindor.base.GameObject;
 import uet.gryffindor.base.OrderedLayer;
+import uet.gryffindor.engine.Collider;
 import uet.gryffindor.engine.Input;
+import uet.gryffindor.engine.TimeCounter;
 import uet.gryffindor.graphic.Animator;
 import uet.gryffindor.graphic.sprite.Sprite;
+
+import java.util.concurrent.TimeUnit;
 
 import javafx.scene.canvas.GraphicsContext;
 
@@ -18,6 +22,8 @@ public class Bomber extends GameObject {
 
   private double speed = 5f;
 
+  private boolean isBlocked = false;
+
   @Override
   public void start() {
     leftMove = new Animator(4, Sprite.player_left);
@@ -25,12 +31,14 @@ public class Bomber extends GameObject {
     upMove = new Animator(4, Sprite.player_up);
     downMove = new Animator(4, Sprite.player_down);
 
-    orderedLayer = OrderedLayer.FOREGROUND;
+    orderedLayer = OrderedLayer.MIDGROUND;
   }
 
   @Override
   public void update() {
-    move();
+    if (!isBlocked) {
+      move();
+    }
   }
 
   private void move() {
@@ -62,5 +70,20 @@ public class Bomber extends GameObject {
     context.drawImage(bomber_sprite.getSpriteSheet().getImage(), 
             bomber_sprite.getX(), bomber_sprite.getY(), bomber_sprite.getWidth(), bomber_sprite.getHeight(), 
             this.position.x, this.position.y, this.dimension.x, this.dimension.y);
+  }
+
+  @Override
+  public void onCollisionStay(Collider that) {
+    double area = collider.getDimension().x * collider.getDimension().y;
+    if (that.gameObject instanceof Portal && collider.getOverlapArea(that) / area > 0.85) {
+      bomber_sprite = Sprite.player_stand;
+      isBlocked = true;
+
+      TimeCounter.callAfter(this::newLevel, 1, TimeUnit.SECONDS);
+    }
+  }
+
+  private void newLevel() {
+    System.out.println("new level");
   }
 }

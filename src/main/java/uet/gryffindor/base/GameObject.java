@@ -23,7 +23,7 @@ public abstract class GameObject implements Comparable<GameObject> {
   public GameObject() {
     position = Vector2D.zero();
     dimension = new Vector2D(50, 50);
-    orderedLayer = OrderedLayer.MIDGROUND; 
+    orderedLayer = OrderedLayer.BACKGROUND; 
     collider = new Collider(this);
     
     start();

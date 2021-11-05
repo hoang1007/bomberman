@@ -1,15 +1,13 @@
 package uet.gryffindor.object;
 
 import uet.gryffindor.base.GameObject;
-import uet.gryffindor.base.OrderedLayer;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 public class Grass extends GameObject {
   @Override
   public void start() {
-    this.position.setValue(300, 300);
-    this.orderedLayer = OrderedLayer.BACKGROUND;
+    this.position.setValue(400, 300);
     this.collider.setEnable(false);
   }
 

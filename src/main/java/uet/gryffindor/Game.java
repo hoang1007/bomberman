@@ -72,7 +72,18 @@ public class Game extends Application {
   }
 
   private void update() {
-    GameObject.objects.forEach(GameObject::update);
+    int currentSize = GameObject.objects.size();
+    for (int i = 0; i < GameObject.objects.size(); i++) {
+      GameObject.objects.get(i).update();
+
+      // cập nhật cho trường hợp update có hủy object
+      int updateSize = GameObject.objects.size();
+
+      if (currentSize > updateSize) {
+        i = i - (currentSize - updateSize);
+        currentSize = updateSize;
+      }
+    }
   }
 
   public static void main(String[] args) {
