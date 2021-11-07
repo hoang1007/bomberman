@@ -1,89 +1,32 @@
 package uet.gryffindor;
 
-import uet.gryffindor.base.GameObject;
-import uet.gryffindor.engine.Collider;
-import uet.gryffindor.engine.FpsTracker;
-import uet.gryffindor.engine.Input;
-import uet.gryffindor.graphic.sprite.Sprite;
-import uet.gryffindor.object.Bomber;
-import uet.gryffindor.object.Grass;
-import uet.gryffindor.object.Portal;
+import java.io.IOException;
 
-import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.scene.Group;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 /**
  * JavaFX App.
  */
 public class Game extends Application {
-  private static final int WIDTH = 800;
-  private static final int HEIGHT = 600;
-
-  private Canvas canvas;
-  private GraphicsContext context;
+  private static Scene scene;
 
   @Override
-  public void start(Stage stage) {
-    canvas = new Canvas(WIDTH, HEIGHT);
-    context = canvas.getGraphicsContext2D();
-
-    stage.setScene(new Scene(new Group(canvas)));
+  public void start(Stage stage) throws IOException {
+    scene = new Scene(loadFXML("start"));
+    stage.setScene(scene);
     stage.show();
-
-    new AnimationTimer() {
-      @Override
-      public void handle(long now) {
-        if (FpsTracker.isNextFrame(now)) {
-          update();
-          Collider.checkCollision();
-          render();
-        }
-      }
-    }.start();
-
-    initialize();
   }
 
-  private void initialize() {
-    Sprite.loadSprite();
-
-    handleEvent();
-    
-    // add Object
-    GameObject.objects.add(new Bomber());
-    GameObject.objects.add(new Portal());
-    GameObject.objects.add(new Grass());
+  public static void setRoot(String fxml) throws IOException {
+    scene.setRoot(loadFXML(fxml));
   }
 
-  private void handleEvent() {
-    canvas.setFocusTraversable(true);
-    canvas.addEventHandler(KeyEvent.ANY, Input.INSTANCE);
-  }
-
-  private void render() {
-    context.clearRect(0, 0, WIDTH, HEIGHT);
-    GameObject.objects.forEach(obj -> obj.render(context));
-  }
-
-  private void update() {
-    int currentSize = GameObject.objects.size();
-    for (int i = 0; i < GameObject.objects.size(); i++) {
-      GameObject.objects.get(i).update();
-
-      // cập nhật cho trường hợp update có hủy object
-      int updateSize = GameObject.objects.size();
-
-      if (currentSize > updateSize) {
-        i = i - (currentSize - updateSize);
-        currentSize = updateSize;
-      }
-    }
+  private static Parent loadFXML(String fxml) throws IOException {
+    return FXMLLoader.load(Game.class.getResource(fxml + ".fxml"));
   }
 
   public static void main(String[] args) {

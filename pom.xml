@@ -12,10 +12,22 @@
 
     <dependency>
       <groupId>org.openjfx</groupId>
+      <artifactId>javafx-media</artifactId>
+      <version>18-ea+5</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-fxml</artifactId>
+      <version>18-ea+5</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.openjfx</groupId>
       <artifactId>javafx-graphics</artifactId>
       <version>18-ea+4</version>
     </dependency>
-
+    
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-controls</artifactId>

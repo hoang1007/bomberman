@@ -63,7 +63,6 @@ public class TimeCounter extends GameObject {
    * @param frame số frame
    */
   public static void callAfter(ExecuteFunction function, long frame) {
-    System.out.println("oi ban oi");
     TimeCounter instance = new TimeCounter();
 
     instance.function = function;

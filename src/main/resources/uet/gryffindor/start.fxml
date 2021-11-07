@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-image: url(&quot;https://2.bp.blogspot.com/-4gRPJIgoYz0/WyHEQlnQTvI/AAAAAAAAMBw/uYe_HFwDoxcWxOp-RPl5ElOlc8kEFdiLgCLcBGAs/s1600/H2x1_NSwitch_SuperBombermanR.jpg&quot;); -fx-background-position: center; -fx-background-size: cover;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uet.gryffindor.scenes.StartSceneController">
+   <children>
+      <Button fx:id="startButton" layoutX="42.0" layoutY="129.0" mnemonicParsing="false" onAction="#startGame" prefHeight="51.0" prefWidth="138.0" style="-fx-background-color: green;" text="Start" />
+      <Button fx:id="settingsButton" layoutX="42.0" layoutY="218.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="138.0" style="-fx-background-color: green;" text="Settings" />
+   </children>
+</AnchorPane>
