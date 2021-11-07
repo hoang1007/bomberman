@@ -1,6 +1,7 @@
 package uet.gryffindor.util;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class SortedList<T extends Comparable<T>> extends ArrayList<T> {
   /**
@@ -33,6 +34,13 @@ public class SortedList<T extends Comparable<T>> extends ArrayList<T> {
         }
       }
     }
+
+    return true;
+  }
+
+  @Override
+  public boolean addAll(Collection<? extends T> c) {
+    c.forEach(item -> this.add(item));
 
     return true;
   }

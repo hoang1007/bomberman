@@ -1,11 +1,13 @@
 package uet.gryffindor.game.base;
 
+import java.util.List;
+import javafx.scene.canvas.GraphicsContext;
+
 import uet.gryffindor.game.engine.Collider;
+import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.util.SortedList;
 
-import java.util.List;
 
-import javafx.scene.canvas.GraphicsContext;
 
 /**
  * Lớp cơ bản của game.
@@ -20,9 +22,10 @@ public abstract class GameObject implements Comparable<GameObject> {
   protected Collider collider; // phát hiện va chạm
   protected OrderedLayer orderedLayer; // thứ tự render
 
+  /** Khởi tạo mặc định của object. */
   public GameObject() {
     position = Vector2D.zero();
-    dimension = new Vector2D(50, 50);
+    dimension = new Vector2D(Sprite.DEFAULT_SIZE, Sprite.DEFAULT_SIZE);
     orderedLayer = OrderedLayer.BACKGROUND; 
     collider = new Collider(this);
     
@@ -79,5 +82,12 @@ public abstract class GameObject implements Comparable<GameObject> {
   @Override
   public int compareTo(GameObject that) {
     return this.orderedLayer.compareTo(that.orderedLayer);
+  }
+
+  public static void clear() {
+    for (int i = GameObject.objects.size() - 1; !GameObject.objects.isEmpty(); i--) {
+      GameObject.objects.get(i).collider.setEnable(false);
+      GameObject.objects.remove(i);
+    }
   }
 }

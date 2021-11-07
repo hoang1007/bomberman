@@ -58,6 +58,23 @@ public class Vector2D {
     return new Vector2D(this.x, this.y);
   }
 
+  /**
+   * Làm tròn x, y với factor cho trước.
+   * @param factor giá trị làm tròn
+   * @return vector mới được làm tròn
+   */
+  public Vector2D smooth(double factor) {
+    double x = Math.round(this.x / factor) * factor;
+    double y = Math.round(this.y / factor) * factor;
+
+    double delta = factor * 0.3;
+    if (Math.abs(x - this.x) <= delta && Math.abs(y - this.y) <= delta) {
+      this.setValue(x, y);
+    }
+
+    return this;
+  }
+
   @Override
   public String toString() {
     return "(" + x + ", " + y + ")";
