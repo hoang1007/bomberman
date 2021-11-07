@@ -1,4 +1,4 @@
-package uet.gryffindor.engine;
+package uet.gryffindor.game.engine;
 
 public class FpsTracker {
   private static int fps = 100;

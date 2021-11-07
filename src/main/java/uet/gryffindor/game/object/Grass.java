@@ -1,8 +1,8 @@
-package uet.gryffindor.object;
+package uet.gryffindor.game.object;
 
-import uet.gryffindor.base.GameObject;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import uet.gryffindor.game.base.GameObject;
 
 public class Grass extends GameObject {
   @Override

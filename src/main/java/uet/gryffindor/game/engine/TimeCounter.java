@@ -1,9 +1,9 @@
-package uet.gryffindor.engine;
+package uet.gryffindor.game.engine;
 
 import java.util.concurrent.TimeUnit;
 
 import javafx.scene.canvas.GraphicsContext;
-import uet.gryffindor.base.GameObject;
+import uet.gryffindor.game.base.GameObject;
 import uet.gryffindor.util.ExecuteFunction;
 
 public class TimeCounter extends GameObject {

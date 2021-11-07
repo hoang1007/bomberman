@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 /**
  * JavaFX App.
  */
-public class Game extends Application {
+public class GameApplication extends Application {
   private static Scene scene;
 
   @Override
@@ -21,12 +21,16 @@ public class Game extends Application {
     stage.show();
   }
 
-  public static void setRoot(String fxml) throws IOException {
-    scene.setRoot(loadFXML(fxml));
+  public static void setRoot(String fxml) {
+    try {
+      scene.setRoot(loadFXML(fxml));
+    } catch (IOException e) {
+      System.out.println("Can not load resource from fxml: " + e.getMessage());
+    }
   }
 
   private static Parent loadFXML(String fxml) throws IOException {
-    return FXMLLoader.load(Game.class.getResource(fxml + ".fxml"));
+    return FXMLLoader.load(GameApplication.class.getResource(fxml + ".fxml"));
   }
 
   public static void main(String[] args) {

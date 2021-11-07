@@ -1,6 +1,6 @@
-package uet.gryffindor.base;
+package uet.gryffindor.game.base;
 
-import uet.gryffindor.engine.Collider;
+import uet.gryffindor.game.engine.Collider;
 import uet.gryffindor.util.SortedList;
 
 import java.util.List;

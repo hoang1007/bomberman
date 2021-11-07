@@ -1,4 +1,4 @@
-package uet.gryffindor.base;
+package uet.gryffindor.game.base;
 
 /**
  * Lớp vector hỗ trợ các phép toán trên vector

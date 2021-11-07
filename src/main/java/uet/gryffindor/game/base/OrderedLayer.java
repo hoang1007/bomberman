@@ -1,4 +1,4 @@
-package uet.gryffindor.base;
+package uet.gryffindor.game.base;
 
 /**
  * Giúp sắp xếp các game object theo một trật tự render.

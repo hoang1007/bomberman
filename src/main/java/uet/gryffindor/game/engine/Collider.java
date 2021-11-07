@@ -1,11 +1,11 @@
-package uet.gryffindor.engine;
+package uet.gryffindor.game.engine;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import uet.gryffindor.base.GameObject;
-import uet.gryffindor.base.Vector2D;
+import uet.gryffindor.game.base.GameObject;
+import uet.gryffindor.game.base.Vector2D;
 
 /**
  * Lớp máy va chạm giúp phát hiện va chạm.

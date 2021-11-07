@@ -1,10 +1,10 @@
-package uet.gryffindor.object;
+package uet.gryffindor.game.object;
 
-import uet.gryffindor.base.GameObject;
-import uet.gryffindor.base.OrderedLayer;
-import uet.gryffindor.engine.Collider;
-import uet.gryffindor.engine.Input;
-import uet.gryffindor.engine.TimeCounter;
+import uet.gryffindor.game.base.GameObject;
+import uet.gryffindor.game.base.OrderedLayer;
+import uet.gryffindor.game.engine.Collider;
+import uet.gryffindor.game.engine.Input;
+import uet.gryffindor.game.engine.TimeCounter;
 import uet.gryffindor.graphic.Animator;
 import uet.gryffindor.graphic.sprite.Sprite;
 
