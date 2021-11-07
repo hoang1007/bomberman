@@ -5,16 +5,15 @@ import javafx.scene.canvas.GraphicsContext;
 import uet.gryffindor.game.base.GameObject;
 import uet.gryffindor.game.engine.Collider;
 import uet.gryffindor.game.engine.FpsTracker;
-import uet.gryffindor.game.object.Bomber;
-import uet.gryffindor.game.object.Grass;
-import uet.gryffindor.game.object.Portal;
 
 public class Game {
   private AnimationTimer timer;
   private GraphicsContext context;
+  private Map playingMap;
   
   public Game(GraphicsContext context) {
     this.context = context;
+    FpsTracker.setFps(60);
     
     timer = new AnimationTimer() {
       @Override
@@ -29,10 +28,7 @@ public class Game {
   }
 
   public void start() {
-    // add Object
-    GameObject.objects.add(new Bomber());
-    GameObject.objects.add(new Portal());
-    GameObject.objects.add(new Grass());
+    this.setMap(Map.getByLevel(1));
 
     timer.start();
   }
@@ -58,7 +54,24 @@ public class Game {
   }
 
   public void clear() {
-    GameObject.objects.clear();
+    GameObject.clear();
     timer.stop();
+  }
+
+  public void setMap(Map map) {
+    playingMap = map;
+    GameObject.clear();
+    GameObject.objects.addAll(map.getObjects());
+
+    System.out.println("New map");
+  }
+
+  public Map getPlayingMap() {
+    return this.playingMap;
+  }
+
+  public void nextLevel() {
+    int level = playingMap != null ? playingMap.getLevel() : 1;
+    setMap(Map.getByLevel(level));
   }
 }
