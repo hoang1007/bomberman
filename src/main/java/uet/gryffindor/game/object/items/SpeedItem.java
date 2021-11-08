@@ -1,15 +1,16 @@
 package uet.gryffindor.game.object.items;
 
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import uet.gryffindor.game.base.GameObject;
+import uet.gryffindor.graphic.texture.RectTexture;
+import uet.gryffindor.graphic.texture.Texture;
 
 public class SpeedItem extends GameObject {
-
+  private RectTexture texture;
+  
   @Override
   public void start() {
-    // TODO Auto-generated method stub
-    
+    texture = new RectTexture(Color.BISQUE, this);
   }
 
   @Override
@@ -19,9 +20,8 @@ public class SpeedItem extends GameObject {
   }
 
   @Override
-  public void render(GraphicsContext context) {
-    context.setFill(Color.BISQUE);
-    context.fillRect(position.x, position.y, dimension.x, dimension.y);
+  public Texture getTexture() {
+    return this.texture;
   }
   
 }

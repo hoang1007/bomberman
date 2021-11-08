@@ -1,16 +1,17 @@
 package uet.gryffindor.game.object;
 
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import uet.gryffindor.game.base.GameObject;
 import uet.gryffindor.game.behavior.Unmovable;
+import uet.gryffindor.graphic.texture.RectTexture;
+import uet.gryffindor.graphic.texture.Texture;
 
 public class Wall extends GameObject implements Unmovable {
-
+  private RectTexture texture;
+  
   @Override
   public void start() {
-    // TODO Auto-generated method stub
-    
+    texture = new RectTexture(Color.GRAY, this);
   }
 
   @Override
@@ -20,9 +21,8 @@ public class Wall extends GameObject implements Unmovable {
   }
 
   @Override
-  public void render(GraphicsContext context) {
-    context.setFill(Color.GRAY);
-    context.fillRect(position.x, position.y, dimension.x, dimension.y);
+  public Texture getTexture() {
+    return this.texture;
   }
   
 }

@@ -1,20 +1,26 @@
 package uet.gryffindor.game;
 
 import javafx.animation.AnimationTimer;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import uet.gryffindor.game.base.GameObject;
+import uet.gryffindor.game.base.Vector2D;
+import uet.gryffindor.game.engine.Camera;
 import uet.gryffindor.game.engine.Collider;
 import uet.gryffindor.game.engine.FpsTracker;
+import uet.gryffindor.graphic.texture.Texture;
 
 public class Game {
   private AnimationTimer timer;
-  private GraphicsContext context;
   private Map playingMap;
+  private Camera camera;
+  private GraphicsContext context;
   
-  public Game(GraphicsContext context) {
-    this.context = context;
+  public Game(Canvas canvas) {
     FpsTracker.setFps(60);
-    
+    camera = new Camera(new Vector2D(canvas.getWidth(), canvas.getHeight()));
+    context = canvas.getGraphicsContext2D();
+
     timer = new AnimationTimer() {
       @Override
       public void handle(long now) {
@@ -50,7 +56,14 @@ public class Game {
 
   private void render() {
     context.clearRect(0, 0, context.getCanvas().getWidth(), context.getCanvas().getHeight());
-    GameObject.objects.forEach(obj -> obj.render(context));
+
+    GameObject.objects.forEach(obj -> {
+      Texture t = obj.getTexture();
+
+      if (t != null) {
+        t.render(context, camera);
+      }
+    });
   }
 
   public void clear() {
@@ -64,6 +77,10 @@ public class Game {
     GameObject.objects.addAll(map.getObjects());
 
     System.out.println("New map");
+  }
+
+  public Camera getCamera() {
+    return this.camera;
   }
 
   public Map getPlayingMap() {

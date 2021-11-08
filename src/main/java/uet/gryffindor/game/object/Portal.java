@@ -1,15 +1,16 @@
 package uet.gryffindor.game.object;
 
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import uet.gryffindor.game.base.GameObject;
+import uet.gryffindor.graphic.texture.RectTexture;
+import uet.gryffindor.graphic.texture.Texture;
 
 public class Portal extends GameObject {
-  Color fill = Color.RED;
+  private RectTexture texture;
 
   @Override
   public void start() {
-    position.setValue(300, 200);
+    texture = new RectTexture(Color.RED, this);
   }
 
   @Override
@@ -18,8 +19,7 @@ public class Portal extends GameObject {
   }
 
   @Override
-  public void render(GraphicsContext context) {
-    context.setFill(fill);
-    context.fillRect(position.x, position.y, dimension.x, dimension.y);
+  public Texture getTexture() {
+    return this.texture;
   }
 }

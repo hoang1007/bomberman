@@ -2,8 +2,8 @@ package uet.gryffindor.game.engine;
 
 import java.util.concurrent.TimeUnit;
 
-import javafx.scene.canvas.GraphicsContext;
 import uet.gryffindor.game.base.GameObject;
+import uet.gryffindor.graphic.texture.Texture;
 import uet.gryffindor.util.ExecuteFunction;
 
 public class TimeCounter extends GameObject {
@@ -40,11 +40,6 @@ public class TimeCounter extends GameObject {
     } else {
       this.destroy();
     }
-  }
-
-  @Override
-  public void render(GraphicsContext context) {
-
   }
 
   /**
@@ -95,5 +90,10 @@ public class TimeCounter extends GameObject {
 
   enum TaskType {
     AFTER, DURING
+  }
+
+  @Override
+  public Texture getTexture() {
+    return null;
   }
 }

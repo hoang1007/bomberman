@@ -19,7 +19,7 @@ public class MainSceneController {
     canvas.addEventHandler(KeyEvent.ANY, Input.INSTANCE);
     Sprite.loadSprite();
 
-    game = new Game(canvas.getGraphicsContext2D());
+    game = new Game(canvas);
     Manager.INSTANCE.setGame(game);
     game.start();
   }

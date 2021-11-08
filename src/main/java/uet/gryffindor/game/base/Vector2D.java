@@ -61,7 +61,7 @@ public class Vector2D {
   /**
    * Làm tròn x, y với factor cho trước.
    * @param factor giá trị làm tròn
-   * @return vector mới được làm tròn
+   * @return vector sau khi làm tròn
    */
   public Vector2D smooth(double factor) {
     double x = Math.round(this.x / factor) * factor;

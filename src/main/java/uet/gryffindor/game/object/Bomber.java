@@ -2,7 +2,6 @@ package uet.gryffindor.game.object;
 
 import java.util.concurrent.TimeUnit;
 
-import javafx.scene.canvas.GraphicsContext;
 import uet.gryffindor.game.Manager;
 import uet.gryffindor.game.base.GameObject;
 import uet.gryffindor.game.base.OrderedLayer;
@@ -13,9 +12,11 @@ import uet.gryffindor.game.engine.Input;
 import uet.gryffindor.game.engine.TimeCounter;
 import uet.gryffindor.graphic.Animator;
 import uet.gryffindor.graphic.sprite.Sprite;
+import uet.gryffindor.graphic.texture.SpriteTexture;
+import uet.gryffindor.graphic.texture.Texture;
 
 public class Bomber extends GameObject {
-  Sprite bomber_sprite = Sprite.player_stand; // ban đầu đứng yên
+  SpriteTexture texture;
 
   private Animator leftMove;
   private Animator rightMove;
@@ -29,6 +30,9 @@ public class Bomber extends GameObject {
 
   @Override
   public void start() {
+    Manager.INSTANCE.getGame().getCamera().setFocusOn(this);
+    texture = new SpriteTexture(Sprite.player_stand, this);
+
     leftMove = new Animator(3, Sprite.player_left);
     rightMove = new Animator(3, Sprite.player_right);
     upMove = new Animator(3, Sprite.player_up);
@@ -50,32 +54,24 @@ public class Bomber extends GameObject {
     switch (Input.INSTANCE.getCode()) {
       case UP:
         this.position.y -= speed;
-        bomber_sprite = upMove.getSprite();
+        texture.setSprite(upMove.getSprite()); 
         break;
       case DOWN:
         this.position.y += speed;
-        bomber_sprite = downMove.getSprite();
+        texture.setSprite(downMove.getSprite());
         break;
       case RIGHT:
         this.position.x += speed;
-        bomber_sprite = rightMove.getSprite();
+        texture.setSprite(rightMove.getSprite());
         break;
       case LEFT:
         this.position.x -= speed;
-        bomber_sprite = leftMove.getSprite();
+        texture.setSprite(leftMove.getSprite());
         break;
       default:
-        bomber_sprite = Sprite.player_stand;
+        texture.setSprite(Sprite.player_stand);
         break;
     }
-  }
-
-  @Override
-  public void render(GraphicsContext context) {
-    context.drawImage(bomber_sprite.getSpriteSheet().getImage(), 
-            bomber_sprite.getX(), bomber_sprite.getY(), 
-            bomber_sprite.getWidth(), bomber_sprite.getHeight(), 
-            this.position.x, this.position.y, this.dimension.x, this.dimension.y);
   }
 
   @Override
@@ -95,7 +91,7 @@ public class Bomber extends GameObject {
     // nếu bomber đi vào trung tâm portal (overlap area > 0.85)
     // chuyển sang map tiếp theo
     if (that.gameObject instanceof Portal && collider.getOverlapArea(that) / area > 0.85) {
-      bomber_sprite = Sprite.player_stand;
+      texture.setSprite(Sprite.player_stand);
       isBlocked = true;
 
       TimeCounter.callAfter(Manager.INSTANCE.getGame()::nextLevel, 1, TimeUnit.SECONDS);
@@ -107,5 +103,10 @@ public class Bomber extends GameObject {
     if (that.gameObject instanceof Unmovable) {
       isBlocked = false;
     }
+  }
+
+  @Override
+  public Texture getTexture() {
+    return this.texture;
   }
 }

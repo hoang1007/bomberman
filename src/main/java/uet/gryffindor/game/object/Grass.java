@@ -1,14 +1,18 @@
 package uet.gryffindor.game.object;
 
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import uet.gryffindor.game.base.GameObject;
+import uet.gryffindor.graphic.texture.RectTexture;
+import uet.gryffindor.graphic.texture.Texture;
 
 public class Grass extends GameObject {
+  private RectTexture texture;
+
   @Override
   public void start() {
-    this.position.setValue(400, 300);
     this.collider.setEnable(false);
+
+    texture = new RectTexture(Color.GREEN, this);
   }
 
   @Override
@@ -18,8 +22,7 @@ public class Grass extends GameObject {
   }
 
   @Override
-  public void render(GraphicsContext context) {
-    context.setFill(Color.GREEN);
-    context.fillRect(position.x, position.y, dimension.x, dimension.y);
+  public Texture getTexture() {
+    return this.texture;
   }
 }

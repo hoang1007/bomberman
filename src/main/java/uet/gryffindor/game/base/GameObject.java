@@ -1,10 +1,10 @@
 package uet.gryffindor.game.base;
 
 import java.util.List;
-import javafx.scene.canvas.GraphicsContext;
 
 import uet.gryffindor.game.engine.Collider;
 import uet.gryffindor.graphic.sprite.Sprite;
+import uet.gryffindor.graphic.texture.Texture;
 import uet.gryffindor.util.SortedList;
 
 
@@ -43,9 +43,9 @@ public abstract class GameObject implements Comparable<GameObject> {
   public abstract void update();
 
   /**
-   * Render mỗi frame.
+   * Texture để render mỗi frame.
    */
-  public abstract void render(GraphicsContext context);
+  public abstract Texture getTexture();
 
   /**
    * Hàm được gọi khi hai {@link Collider} bắt đầu va chạm.

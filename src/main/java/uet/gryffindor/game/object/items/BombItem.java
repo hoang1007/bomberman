@@ -1,14 +1,15 @@
 package uet.gryffindor.game.object.items;
 
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import uet.gryffindor.graphic.texture.RectTexture;
+import uet.gryffindor.graphic.texture.Texture;
 
 public class BombItem extends Item {
-
+  private RectTexture texture;
+  
   @Override
   public void start() {
-    // TODO Auto-generated method stub
-    
+    texture = new RectTexture(Color.AZURE, this);
   }
 
   @Override
@@ -18,9 +19,8 @@ public class BombItem extends Item {
   }
 
   @Override
-  public void render(GraphicsContext context) {
-    context.setFill(Color.AZURE);
-    context.fillRect(position.x, position.y, dimension.x, dimension.y);
+  public Texture getTexture() {
+    return this.texture;
   }
-  
+
 }
