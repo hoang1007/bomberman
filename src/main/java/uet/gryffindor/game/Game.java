@@ -17,7 +17,7 @@ public class Game {
   private GraphicsContext context;
   
   public Game(Canvas canvas) {
-    FpsTracker.setFps(60);
+    FpsTracker.setFps(30);
     camera = new Camera(new Vector2D(canvas.getWidth(), canvas.getHeight()));
     context = canvas.getGraphicsContext2D();
 

@@ -11,6 +11,10 @@ public class FpsTracker {
     nanoTimePerFrame = 1_000_000_000 / fps;
   }
 
+  public static int getFps() {
+    return fps;
+  }
+
   /**
    * Xét xem mốc thời gian này có vượt qua thời gian của frame hiện tại hay không.
    * 

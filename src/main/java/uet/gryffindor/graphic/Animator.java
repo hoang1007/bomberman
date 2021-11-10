@@ -1,5 +1,6 @@
 package uet.gryffindor.graphic;
 
+import javafx.beans.value.ObservableValue;
 import uet.gryffindor.graphic.sprite.Sprite;
 
 public class Animator {
@@ -7,7 +8,7 @@ public class Animator {
   private int current = 0;
 
   // Frame per global frame.
-  private int rate = 3;
+  private double rate;
 
   public Animator(Sprite... sprites) {
     this.sprites = sprites;
@@ -19,19 +20,19 @@ public class Animator {
    * thì một frame của animation sẽ được gọi.
    * @param sprites các frame của một animation.
    */
-  public Animator(int rate, Sprite... sprites) {
+  public Animator(double rate, Sprite... sprites) {
     this.rate = rate;
     this.sprites = sprites;
   }
 
   public Sprite getSprite() {
-    Sprite currentSprite = this.sprites[current++ / rate];
-    
-    if (current / rate >= this.sprites.length) {
+    int id = (int) (current++ / rate);
+    if (id >= this.sprites.length) {
       current = 0;
+      id = 0;
     }
 
-    return currentSprite;
+    return this.sprites[id];
   }
 
   /**
@@ -39,12 +40,29 @@ public class Animator {
    * @param rate thuộc tính xác định xem cứ bao nhiêu frame gốc của chương trình
    * thì một frame của animation sẽ được gọi.
    */
-  public void setRate(int rate) {
+  public void setRate(double rate) {
     this.rate = rate;
   }
 
-  public int getRate() {
+  public double getRate() {
     return this.rate;
+  }
+
+  /**
+   * Thay đổi rate dựa vào giá trị cho trước.
+   * @param value giá trị bind
+   */
+  public Animator bindRate(ObservableValue<? extends Number> value) {
+    value.addListener((observable, oldVal, newVal) -> {
+      this.rate -= (newVal.doubleValue() - oldVal.doubleValue()) / rate;
+
+      if (this.rate < 1) {
+        this.rate = 1;
+      }
+
+    });
+
+    return this;
   }
 
   public int getTotalFrames() {

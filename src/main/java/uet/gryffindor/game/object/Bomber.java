@@ -2,6 +2,8 @@ package uet.gryffindor.game.object;
 
 import java.util.concurrent.TimeUnit;
 
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import uet.gryffindor.game.Manager;
 import uet.gryffindor.game.base.GameObject;
 import uet.gryffindor.game.base.OrderedLayer;
@@ -23,7 +25,7 @@ public class Bomber extends GameObject {
   private Animator upMove;
   private Animator downMove;
 
-  private double speed = 4f;
+  private DoubleProperty speed;
 
   private boolean isBlocked = false;
   private Vector2D oldPosition;
@@ -31,12 +33,13 @@ public class Bomber extends GameObject {
   @Override
   public void start() {
     Manager.INSTANCE.getGame().getCamera().setFocusOn(this);
+    speed = new SimpleDoubleProperty(3f);
     texture = new SpriteTexture(Sprite.player_stand, this);
 
-    leftMove = new Animator(3, Sprite.player_left);
-    rightMove = new Animator(3, Sprite.player_right);
-    upMove = new Animator(3, Sprite.player_up);
-    downMove = new Animator(3, Sprite.player_down);
+    leftMove = new Animator(4, Sprite.player_left).bindRate(speed);
+    rightMove = new Animator(4, Sprite.player_right).bindRate(speed);
+    upMove = new Animator(4, Sprite.player_up).bindRate(speed);
+    downMove = new Animator(4, Sprite.player_down).bindRate(speed);
 
     orderedLayer = OrderedLayer.MIDGROUND;
     oldPosition = position.clone();
@@ -53,19 +56,19 @@ public class Bomber extends GameObject {
   private void move() {
     switch (Input.INSTANCE.getCode()) {
       case UP:
-        this.position.y -= speed;
+        this.position.y -= speed.get();
         texture.setSprite(upMove.getSprite()); 
         break;
       case DOWN:
-        this.position.y += speed;
+        this.position.y += speed.get();
         texture.setSprite(downMove.getSprite());
         break;
       case RIGHT:
-        this.position.x += speed;
+        this.position.x += speed.get();
         texture.setSprite(rightMove.getSprite());
         break;
       case LEFT:
-        this.position.x -= speed;
+        this.position.x -= speed.get();
         texture.setSprite(leftMove.getSprite());
         break;
       default:
