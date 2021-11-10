@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.gryffindor</groupId>
+  <groupId>uet.gryffindor</groupId>
   <artifactId>bomberman</artifactId>
   <version>1.0-SNAPSHOT</version>
   <properties>
@@ -12,10 +12,22 @@
 
     <dependency>
       <groupId>org.openjfx</groupId>
+      <artifactId>javafx-media</artifactId>
+      <version>18-ea+5</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-fxml</artifactId>
+      <version>18-ea+5</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.openjfx</groupId>
       <artifactId>javafx-graphics</artifactId>
       <version>18-ea+4</version>
     </dependency>
-
+    
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-controls</artifactId>
@@ -42,7 +54,7 @@
             <!-- Usage: mvn clean javafx:run -->
             <id>default-cli</id>
             <configuration>
-              <mainClass>com.gryffindor.App</mainClass>
+              <mainClass>uet.gryffindor.GameApplication</mainClass>
             </configuration>
           </execution>
         </executions>

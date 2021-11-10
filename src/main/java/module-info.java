@@ -1,6 +1,9 @@
-module com.gryffindor {
+module uet.gryffindor {
   requires javafx.controls;
+  requires javafx.fxml;
   requires transitive javafx.graphics;
 
-  exports com.gryffindor;
+  opens uet.gryffindor.scenes to javafx.fxml;
+  
+  exports uet.gryffindor;
 }

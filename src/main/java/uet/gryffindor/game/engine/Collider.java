@@ -1,10 +1,11 @@
-package com.gryffindor.services;
+package uet.gryffindor.game.engine;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-import com.gryffindor.base.Vector2D;
-import com.gryffindor.object.GameObject;
+import uet.gryffindor.game.base.GameObject;
+import uet.gryffindor.game.base.Vector2D;
 
 /**
  * Lớp máy va chạm giúp phát hiện va chạm.
@@ -17,12 +18,12 @@ public class Collider {
   private Vector2D dimension;
   public Vector2D position;
 
-  private List<Collider> collidedList;
+  private HashMap<Collider, Double> collidedList = new HashMap<>();
+  private boolean isEnabled = true;
   private boolean isChangeByGameObject;
 
   public Collider(GameObject gameObject) {
     this.gameObject = gameObject;
-    this.collidedList = new ArrayList<>();
     this.isChangeByGameObject = true;
 
     colliders.add(this);
@@ -35,9 +36,7 @@ public class Collider {
   public Collider(GameObject gameObject, Vector2D dimension) {
     this.gameObject = gameObject;
     this.dimension = dimension;
-    this.isChangeByGameObject = true;
-
-    this.collidedList = new ArrayList<>();
+    this.isChangeByGameObject = false;
 
     colliders.add(this);
   }
@@ -55,10 +54,37 @@ public class Collider {
     this.isChangeByGameObject = false;
   }
 
+  public void setEnable(boolean value) {
+    // tránh bị set lặp nhiều lần
+    if (this.isEnabled != value) {
+      this.isEnabled = value;
+
+      if (this.isEnabled) {
+        Collider.colliders.add(this);
+      } else {
+        Collider.colliders.remove(this);
+
+        for (Collider collider : Collider.colliders) {
+          collider.collidedList.remove(this);
+        }
+      }
+    }
+  }
 
   /**
-   * Hàm cân đối collider với game object
-   * (Vì tâm của collider phải trùng với tâm của game object).
+   * Lấy diện tích giao nhau giữa hai collider.
+   * 
+   * @param that collider muốn tìm diện tích giao nhau với collider hiện tại
+   * @return diện tích giao nhau của hai collider
+   */
+  public double getOverlapArea(Collider that) {
+    return this.collidedList.get(that);
+  }
+
+  /**
+   * Hàm cân đối collider với game object (Vì tâm của collider phải trùng với tâm
+   * của game object).
+   * 
    * @return tọa độ trung tâm sau khi cân bằng
    */
   private Vector2D fitObject() {
@@ -73,11 +99,12 @@ public class Collider {
   }
 
   /**
-   * Kiểm tra xem hai collider có va chạm với nhau hay không.
+   * Tính diện tích giao nhau của hai collider.
+   * 
    * @param that collider muốn kiểm tra
-   * @return true nếu va chạm
+   * @return diện tích của vùng giao nhau
    */
-  public boolean isCollision(Collider that) {
+  public double computeOverlapArea(Collider that) {
     this.fitObject();
     that.fitObject();
 
@@ -93,18 +120,18 @@ public class Collider {
     double yTop = Math.max(topLeft1.y, topLeft2.y);
     double yBottom = Math.min(botRight1.y, botRight2.y);
 
-    if (xLeft <= xRight && yTop <= yBottom) {
-      return true;
+    if (xLeft < xRight && yTop < yBottom) {
+      return (xRight - xLeft) * (yBottom - yTop);
     }
 
-    return false;
+    return 0;
   }
 
-  /** 
-   * Kiểm tra va chạm của tất cả các collider được khai báo.
-   * Nếu có hai collider va chạm với nhau, các hàm {@link GameObject#onCollision(Collider)}
-   * của game object chứa colldier sẽ được gọi.
-  */
+  /**
+   * Kiểm tra va chạm của tất cả các collider được khai báo. Nếu có hai collider
+   * va chạm với nhau, các hàm {@link GameObject#onCollision(Collider)} của game
+   * object chứa colldier sẽ được gọi.
+   */
   public static void checkCollision() {
     for (int i = 0; i < colliders.size() - 1; i++) {
       Collider a = colliders.get(i);
@@ -112,35 +139,33 @@ public class Collider {
       for (int j = i + 1; j < colliders.size(); j++) {
         Collider b = colliders.get(j);
 
+        double overlapArea = a.computeOverlapArea(b);
         // Nếu a va chạm với b
-        if (a.isCollision(b)) {
-          // Nếu danh sách va chạm của a chưa có b
-          // thì gọi onCollsionEnter
-          if (a.collidedList.contains(b)) {
+        if (overlapArea != 0) {
+
+          if (!a.collidedList.containsKey(b) || a.collidedList.get(b) == 0) {
+            // Nếu danh sách va chạm của a chưa có b
+            // hoặc vùng giao nhau của a và b bằng không
+            // thì gọi onCollsionEnter
+            a.gameObject.onCollisionEnter(b);
+            b.gameObject.onCollisionEnter(a);
+          } else {
             // Nếu đã va chạm
-            // thì gọi hàm onCollsionStay
+            // thì gọi hàm onCollisionStay
             a.gameObject.onCollisionStay(b);
             b.gameObject.onCollisionStay(a);
-          } else {
-            a.gameObject.onCollisionEnter(b);
-            a.collidedList.add(b);
-
-            b.gameObject.onCollisionEnter(a);
-            b.collidedList.add(a);
           }
         } else {
-          // Nếu danh sách va chạm của a vẫn chứa b
-          // a và b mới bắt đầu rời va chạm
-          int indexOfb = a.collidedList.indexOf(b);
-          
-          if (indexOfb != -1) {
+          // Nếu vùng giao nhau trước đó khác 0
+          // thì a và b mới bắt đầu rời va chạm
+          if (a.collidedList.containsKey(b) && a.collidedList.get(b) != 0) {
             a.gameObject.onCollisionExit(b);
-            a.collidedList.remove(indexOfb);
-
             b.gameObject.onCollisionExit(a);
-            b.collidedList.remove(a);
           }
         }
+
+        a.collidedList.put(b, overlapArea);
+        b.collidedList.put(a, overlapArea);
       }
     }
   }
