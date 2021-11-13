@@ -26,6 +26,7 @@ public class MapParser {
 
   /**
    * Tạo map từ file config.
+   * 
    * @param file file config
    * @return map
    */
@@ -41,7 +42,7 @@ public class MapParser {
 
       for (int i = 0; i < height; i++) {
         rawMap[i] = reader.readLine().toCharArray();
-        
+
         for (int j = 0; j < width; j++) {
           Vector2D position = new Vector2D(j, i);
 
@@ -61,31 +62,32 @@ public class MapParser {
 
   /**
    * Giải mã game object.
+   * 
    * @param symbol kí tự mã hóa
    * @return game object bị mã hóa
    */
   public static GameObject decodeSymbol(Character symbol) {
     switch (symbol) {
-      case '#':
-        return new Wall();
-      case '*':
-        return new Brick();
-      case 'x':
-        return new Portal();
-      case 'p':
-        return new Bomber();
-      case '1':
-        return new Balloom();
-      case '2':
-        return new Oneal();
-      case 'b':
-        return new BombItem();
-      case 'f':
-        return new FlameItem();
-      case 's':
-        return new SpeedItem();
-      default:
-        return new Grass();
+    case '#':
+      return new Wall();
+    case '*':
+      return new Brick();
+    case 'x':
+      return new Portal();
+    case 'p':
+      return new Bomber();
+    case '1':
+      return new Balloom();
+    case '2':
+      return new Oneal();
+    case 'b':
+      return new BombItem();
+    case 'f':
+      return new FlameItem();
+    case 's':
+      return new SpeedItem();
+    default:
+      return new Grass();
     }
   }
 }

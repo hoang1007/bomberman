@@ -1,21 +1,29 @@
 package uet.gryffindor.game.object.items;
 
 import javafx.scene.paint.Color;
+import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.graphic.texture.RectTexture;
+import uet.gryffindor.graphic.texture.SpriteTexture;
 import uet.gryffindor.graphic.texture.Texture;
 
 public class BombItem extends Item {
-  private RectTexture texture;
-  
+  private SpriteTexture texture;
+
+  public BombItem() {
+    start();
+
+    long effectDuration = 100;
+    super.setEffectDuration(effectDuration);
+  }
+
   @Override
   public void start() {
-    texture = new RectTexture(Color.AZURE, this);
+    // texture = new RectTexture(Color.AZURE, this);
   }
 
   @Override
   public void update() {
-    // TODO Auto-generated method stub
-    
+
   }
 
   @Override
