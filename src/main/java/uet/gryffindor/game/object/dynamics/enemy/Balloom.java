@@ -1,20 +1,20 @@
-package uet.gryffindor.game.object;
+package uet.gryffindor.game.object.dynamics.enemy;
 
 import javafx.scene.paint.Color;
-import uet.gryffindor.game.base.GameObject;
 import uet.gryffindor.graphic.texture.RectTexture;
 import uet.gryffindor.graphic.texture.Texture;
 
-public class Portal extends GameObject {
+public class Balloom extends Enemy {
   private RectTexture texture;
 
   @Override
   public void start() {
-    texture = new RectTexture(Color.RED, this);
+    texture = new RectTexture(Color.YELLOW, this);
   }
 
   @Override
   public void update() {
+    // TODO Auto-generated method stub
 
   }
 
@@ -22,4 +22,5 @@ public class Portal extends GameObject {
   public Texture getTexture() {
     return this.texture;
   }
+
 }

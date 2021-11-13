@@ -14,9 +14,10 @@ public class Map {
 
   /**
    * Màn chơi của game.
-   * @param rawMap bản đồ thô sơ
+   * 
+   * @param rawMap  bản đồ thô sơ
    * @param objects các game object có trong map
-   * @param level level của map
+   * @param level   level của map
    */
   public Map(char[][] rawMap, List<GameObject> objects, int level) {
     this.rawMap = rawMap;
@@ -31,6 +32,10 @@ public class Map {
 
   public char[][] getRawMap() {
     return this.rawMap;
+  }
+
+  public char getRawMapAt(int x, int y) {
+    return rawMap[x][y];
   }
 
   public int getLevel() {

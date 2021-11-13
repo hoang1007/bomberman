@@ -1,4 +1,4 @@
-package uet.gryffindor.game.object;
+package uet.gryffindor.game.object.dynamics;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +15,7 @@ import uet.gryffindor.game.behavior.Unmovable;
 import uet.gryffindor.game.engine.Collider;
 import uet.gryffindor.game.engine.Input;
 import uet.gryffindor.game.engine.TimeCounter;
+import uet.gryffindor.game.object.statics.Portal;
 import uet.gryffindor.graphic.Animator;
 import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.graphic.texture.SpriteTexture;
@@ -37,6 +38,7 @@ public class Bomber extends GameObject {
 
   private int numberOfBombs; // tổng số bom có thể thả cùng lúc
   private int bombsDropped; // số bomb đã thả
+  private long allowToDrop;// tạo độ trễ để tránh ấn liệt trong khoảng thời gian ngắn khi thả bomb
 
   @Override
   public void start() {
@@ -54,8 +56,8 @@ public class Bomber extends GameObject {
     orderedLayer = OrderedLayer.MIDGROUND;
     oldPosition = position.clone();
 
-    numberOfBombs = 1;
-    bombsDropped = 0;
+    numberOfBombs = 3; // Số bomb tối đa được thả cùng lúc = 1
+    bombsDropped = 0; // ban đầu số bomb đã thả = 0
 
     listBombs = new ArrayList<>();
   }
@@ -77,24 +79,33 @@ public class Bomber extends GameObject {
       texture.setSprite(upMove.getSprite());
       currentStatus = Status.UP;
       break;
+
     case DOWN:
       this.position.y += speed.get();
       texture.setSprite(downMove.getSprite());
       currentStatus = Status.DOWN;
       break;
+
     case RIGHT:
       this.position.x += speed.get();
       texture.setSprite(rightMove.getSprite());
       currentStatus = Status.RIGHT;
       break;
+
     case LEFT:
       this.position.x -= speed.get();
       texture.setSprite(leftMove.getSprite());
       currentStatus = Status.LEFT;
       break;
+
     case SPACE:
-      addBomb();
+      if (System.currentTimeMillis() - allowToDrop >= 130) {
+        bombsDropped++;
+        addBomb();
+        System.out.println("list bombs: " + listBombs.size());
+      }
       break;
+
     default:
       switch (currentStatus) {
       case UP:
@@ -148,21 +159,31 @@ public class Bomber extends GameObject {
     }
   }
 
+  // nếu số bomb đã thả nhỏ hơn tổng số bomb
+  // thì thả được
   public void addBomb() {
-    // nếu số bomb đã thả nhỏ hơn tổng số bomb
-    if (bombsDropped < numberOfBombs) {
+    if (bombsDropped <= numberOfBombs) {
+      allowToDrop = System.currentTimeMillis();
       Bomb newBomb = new Bomb();
-      newBomb.setPosition(this.position);
+      newBomb.position.setValue(
+          (int) ((this.position.x + Sprite.DEFAULT_SIZE / 2) / Sprite.DEFAULT_SIZE) * Sprite.DEFAULT_SIZE,
+          (int) ((this.position.y + Sprite.DEFAULT_SIZE / 2) / Sprite.DEFAULT_SIZE) * Sprite.DEFAULT_SIZE);
+
+      System.out.println("bomb-X: " + newBomb.position.x);
+      System.out.println("bomb-Y: " + newBomb.position.y);
+
       listBombs.add(newBomb);
-      objects.add(newBomb);
-      bombsDropped++;
+      GameObject.objects.add(newBomb);
     }
   }
 
+  // Xóa bomb khỏi list bomb và objects.
+  // Khởi tạo lại số bomb đã thả bombsDropped = 0.
   public void removeBombs() {
     for (int i = 0; i < listBombs.size(); i++) {
       if (listBombs.get(i).isExplored()) {
         listBombs.remove(listBombs.get(i));
+        i--;
       }
     }
     if (listBombs.size() == 0) {

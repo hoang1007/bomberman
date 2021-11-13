@@ -10,7 +10,8 @@ public class Sprite {
     public static Sprite[] player_left;
     public static Sprite[] player_up;
     public static Sprite[] player_down;
-    public static Sprite[] bombExplosion;
+    public static Sprite[] bomb;
+    public static Sprite[] explosion;
 
     public static int DEFAULT_SIZE = 35; // width = height của 1 sprite
     private double x; // tọa độ x so với ảnh cha
@@ -62,10 +63,24 @@ public class Sprite {
         player_down[4] = new Sprite(25, 4, 18, 28, SpriteSheet.player);
         player_down[5] = new Sprite(4, 4, 18, 28, SpriteSheet.player);
 
-        bombExplosion = new Sprite[3];
-        bombExplosion[0] = new Sprite(212, 10, 18, 22, SpriteSheet.bombExplosion);
-        bombExplosion[1] = new Sprite(196, 10, 18, 22, SpriteSheet.bombExplosion);
-        bombExplosion[2] = new Sprite(177, 10, 18, 22, SpriteSheet.bombExplosion);
+        bomb = new Sprite[3];
+        bomb[0] = new Sprite(212, 10, 18, 22, SpriteSheet.bomb);
+        bomb[1] = new Sprite(196, 10, 18, 22, SpriteSheet.bomb);
+        bomb[2] = new Sprite(177, 10, 18, 22, SpriteSheet.bomb);
+
+        explosion = new Sprite[12];
+        explosion[0] = new Sprite(0, 0, 320, 350, SpriteSheet.explosion);
+        explosion[1] = new Sprite(330, 0, 320, 350, SpriteSheet.explosion);
+        explosion[2] = new Sprite(660, 0, 320, 350, SpriteSheet.explosion);
+        explosion[3] = new Sprite(990, 0, 320, 350, SpriteSheet.explosion);
+        explosion[4] = new Sprite(1320, 0, 320, 350, SpriteSheet.explosion);
+        explosion[5] = new Sprite(1650, 0, 320, 350, SpriteSheet.explosion);
+        explosion[6] = new Sprite(0, 350, 320, 350, SpriteSheet.explosion);
+        explosion[7] = new Sprite(330, 350, 320, 350, SpriteSheet.explosion);
+        explosion[8] = new Sprite(660, 350, 320, 350, SpriteSheet.explosion);
+        explosion[9] = new Sprite(990, 350, 320, 350, SpriteSheet.explosion);
+        explosion[10] = new Sprite(1290, 350, 320, 350, SpriteSheet.explosion);
+        explosion[11] = new Sprite(1620, 350, 320, 350, SpriteSheet.explosion);
 
     }
 

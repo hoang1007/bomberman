@@ -1,4 +1,4 @@
-package uet.gryffindor.game.object.items;
+package uet.gryffindor.game.object.statics.items;
 
 import javafx.scene.paint.Color;
 import uet.gryffindor.graphic.sprite.Sprite;

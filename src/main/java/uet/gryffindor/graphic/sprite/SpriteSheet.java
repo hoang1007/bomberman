@@ -8,8 +8,9 @@ import uet.gryffindor.GameApplication;
  */
 public class SpriteSheet {
 
-    public static SpriteSheet player = new SpriteSheet("playerAndBomb");
-    public static SpriteSheet bombExplosion = new SpriteSheet("playerAndBomb");
+    public static SpriteSheet player = new SpriteSheet("player/playerAndBomb");
+    public static SpriteSheet bomb = new SpriteSheet("player/playerAndBomb");
+    public static SpriteSheet explosion = new SpriteSheet("explosion/explosion01");
 
     private Image img;
 

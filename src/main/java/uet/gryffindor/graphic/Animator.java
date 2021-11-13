@@ -83,4 +83,5 @@ public class Animator {
   public int getTotalFrames() {
     return this.sprites.length;
   }
+
 }

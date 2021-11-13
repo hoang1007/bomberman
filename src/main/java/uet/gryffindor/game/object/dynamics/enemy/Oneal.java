@@ -1,18 +1,16 @@
-package uet.gryffindor.game.object;
+package uet.gryffindor.game.object.dynamics.enemy;
 
 import javafx.scene.paint.Color;
 import uet.gryffindor.game.base.GameObject;
 import uet.gryffindor.graphic.texture.RectTexture;
 import uet.gryffindor.graphic.texture.Texture;
 
-public class Grass extends GameObject {
+public class Oneal extends GameObject {
   private RectTexture texture;
 
   @Override
   public void start() {
-    this.collider.setEnable(false);
-
-    texture = new RectTexture(Color.GREEN, this);
+    texture = new RectTexture(Color.AQUA, this);
   }
 
   @Override
@@ -25,4 +23,5 @@ public class Grass extends GameObject {
   public Texture getTexture() {
     return this.texture;
   }
+
 }

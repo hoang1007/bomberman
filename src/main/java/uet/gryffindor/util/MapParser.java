@@ -10,16 +10,16 @@ import java.util.List;
 import uet.gryffindor.game.Map;
 import uet.gryffindor.game.base.GameObject;
 import uet.gryffindor.game.base.Vector2D;
-import uet.gryffindor.game.object.Bomber;
-import uet.gryffindor.game.object.Brick;
-import uet.gryffindor.game.object.Grass;
-import uet.gryffindor.game.object.Portal;
-import uet.gryffindor.game.object.Wall;
-import uet.gryffindor.game.object.enemy.Balloom;
-import uet.gryffindor.game.object.enemy.Oneal;
-import uet.gryffindor.game.object.items.BombItem;
-import uet.gryffindor.game.object.items.FlameItem;
-import uet.gryffindor.game.object.items.SpeedItem;
+import uet.gryffindor.game.object.dynamics.Bomber;
+import uet.gryffindor.game.object.dynamics.enemy.Balloom;
+import uet.gryffindor.game.object.dynamics.enemy.Oneal;
+import uet.gryffindor.game.object.statics.Brick;
+import uet.gryffindor.game.object.statics.Grass;
+import uet.gryffindor.game.object.statics.Portal;
+import uet.gryffindor.game.object.statics.Wall;
+import uet.gryffindor.game.object.statics.items.BombItem;
+import uet.gryffindor.game.object.statics.items.FlameItem;
+import uet.gryffindor.game.object.statics.items.SpeedItem;
 import uet.gryffindor.graphic.sprite.Sprite;
 
 public class MapParser {
