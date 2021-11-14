@@ -4,7 +4,7 @@ package uet.gryffindor.graphic.sprite;
  * Class này lưu trữ thông tin pixel của 1 sprite
  */
 public class Sprite {
-
+    // dynamics
     public static Sprite player_stand;
     public static Sprite[] player_right;
     public static Sprite[] player_left;
@@ -12,6 +12,16 @@ public class Sprite {
     public static Sprite[] player_down;
     public static Sprite[] bomb;
     public static Sprite[] explosion;
+    public static Sprite[] explosionPotion;
+    public static Sprite[] heart;
+    public static Sprite[] speedPotion;
+
+    // statics
+    public static Sprite[] brick;
+    public static Sprite rock;
+    public static Sprite wall2D;
+    public static Sprite[] tiles;
+    public static Sprite tilesFloor;
 
     public static int DEFAULT_SIZE = 35; // width = height của 1 sprite
     private double x; // tọa độ x so với ảnh cha
@@ -29,6 +39,7 @@ public class Sprite {
     }
 
     public static void loadSprite() {
+        // dynamics
         player_stand = new Sprite(113, 4, 18, 28, SpriteSheet.player);
 
         player_right = new Sprite[6];
@@ -69,18 +80,50 @@ public class Sprite {
         bomb[2] = new Sprite(177, 10, 18, 22, SpriteSheet.bomb);
 
         explosion = new Sprite[12];
-        explosion[0] = new Sprite(0, 0, 320, 350, SpriteSheet.explosion);
-        explosion[1] = new Sprite(330, 0, 320, 350, SpriteSheet.explosion);
-        explosion[2] = new Sprite(660, 0, 320, 350, SpriteSheet.explosion);
-        explosion[3] = new Sprite(990, 0, 320, 350, SpriteSheet.explosion);
-        explosion[4] = new Sprite(1320, 0, 320, 350, SpriteSheet.explosion);
-        explosion[5] = new Sprite(1650, 0, 320, 350, SpriteSheet.explosion);
-        explosion[6] = new Sprite(0, 350, 320, 350, SpriteSheet.explosion);
-        explosion[7] = new Sprite(330, 350, 320, 350, SpriteSheet.explosion);
-        explosion[8] = new Sprite(660, 350, 320, 350, SpriteSheet.explosion);
-        explosion[9] = new Sprite(990, 350, 320, 350, SpriteSheet.explosion);
-        explosion[10] = new Sprite(1290, 350, 320, 350, SpriteSheet.explosion);
-        explosion[11] = new Sprite(1620, 350, 320, 350, SpriteSheet.explosion);
+        for (int i = 0; i <= 5; i++) {
+            explosion[i] = new Sprite(i * 330, 0, 320, 350, SpriteSheet.explosion);
+            explosion[i + 6] = new Sprite(i * 330, 350, 320, 350, SpriteSheet.explosion);
+        }
+
+        explosionPotion = new Sprite[8];
+        for (int i = 0; i <= 7; i++) {
+            explosionPotion[i] = new Sprite(i * 132, 0, 132, 174, SpriteSheet.explosionPotion);
+        }
+
+        heart = new Sprite[22];
+        for (int i = 0; i <= 21; i++) {
+            heart[i] = new Sprite(i * 80, 0, 80, 83, SpriteSheet.heart);
+        }
+
+        speedPotion = new Sprite[8];
+        for (int i = 0; i <= 7; i++) {
+            speedPotion[i] = new Sprite(i * 135, 0, 135, 174, SpriteSheet.speedPotion);
+        }
+
+        // statics
+        brick = new Sprite[3];
+        brick[0] = new Sprite(17, 28, 112, 146, SpriteSheet.brick);
+        brick[1] = new Sprite(145, 28, 112, 146, SpriteSheet.brick);
+        brick[2] = new Sprite(271, 28, 112, 146, SpriteSheet.brick);
+
+        rock = new Sprite(0, 0, 256, 256, SpriteSheet.rock);
+        wall2D = new Sprite(0, 0, SpriteSheet.wall2D.getWidth(), SpriteSheet.wall2D.getHeight(), SpriteSheet.wall2D);
+
+        tiles = new Sprite[12];
+        tiles[0] = new Sprite(962, 194, 140, 137, SpriteSheet.tiles);
+        tiles[1] = new Sprite(21, 353, 140, 137, SpriteSheet.tiles);
+        tiles[2] = new Sprite(178, 353, 140, 137, SpriteSheet.tiles);
+        tiles[3] = new Sprite(338, 353, 140, 137, SpriteSheet.tiles);
+        tiles[4] = new Sprite(500, 353, 132, 137, SpriteSheet.tiles);
+        tiles[5] = new Sprite(652, 353, 140, 137, SpriteSheet.tiles);
+        tiles[6] = new Sprite(806, 353, 140, 137, SpriteSheet.tiles);
+        tiles[7] = new Sprite(965, 353, 140, 137, SpriteSheet.tiles);
+        tiles[8] = new Sprite(24, 508, 140, 137, SpriteSheet.tiles);
+        tiles[9] = new Sprite(180, 508, 140, 137, SpriteSheet.tiles);
+        tiles[10] = new Sprite(334, 44, 140, 137, SpriteSheet.tiles);
+        tiles[11] = new Sprite(962, 194, 140, 137, SpriteSheet.tiles);
+
+        tilesFloor = new Sprite(333, 196, 140, 141, SpriteSheet.tiles);
 
     }
 

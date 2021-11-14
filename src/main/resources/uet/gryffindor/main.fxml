@@ -5,8 +5,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
-<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uet.gryffindor.scenes.MainSceneController">
+<VBox style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uet.gryffindor.scenes.MainSceneController">
    <children>
       <HBox prefHeight="100.0" prefWidth="200.0">
          <children>

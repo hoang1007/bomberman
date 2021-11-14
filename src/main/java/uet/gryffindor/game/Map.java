@@ -7,10 +7,12 @@ import uet.gryffindor.game.base.GameObject;
 import uet.gryffindor.util.MapParser;
 
 public class Map {
-  private char[][] rawMap;
+  private int[][] rawMap;
   private List<GameObject> objects;
   private int level;
   private int score;
+  private int height;
+  private int width;
 
   /**
    * Màn chơi của game.
@@ -19,22 +21,25 @@ public class Map {
    * @param objects các game object có trong map
    * @param level   level của map
    */
-  public Map(char[][] rawMap, List<GameObject> objects, int level) {
+  public Map(int[][] rawMap, List<GameObject> objects, int level) {
     this.rawMap = rawMap;
     this.objects = objects;
     this.level = level;
     this.score = 0;
+    height = rawMap.length;
+    width = rawMap[0].length;
+
   }
 
   public List<GameObject> getObjects() {
     return this.objects;
   }
 
-  public char[][] getRawMap() {
+  public int[][] getRawMap() {
     return this.rawMap;
   }
 
-  public char getRawMapAt(int x, int y) {
+  public int getRawMapAt(int x, int y) {
     return rawMap[x][y];
   }
 
@@ -44,6 +49,14 @@ public class Map {
 
   public int getScore() {
     return this.score;
+  }
+
+  public int getWidth() {
+    return this.width;
+  }
+
+  public int getHeight() {
+    return this.height;
   }
 
   public static Map getByLevel(int level) {

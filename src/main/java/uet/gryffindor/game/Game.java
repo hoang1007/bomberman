@@ -3,6 +3,7 @@ package uet.gryffindor.game;
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 import uet.gryffindor.game.base.GameObject;
 import uet.gryffindor.game.base.Vector2D;
 import uet.gryffindor.game.engine.Camera;
@@ -22,9 +23,11 @@ public class Game {
     context = canvas.getGraphicsContext2D();
 
     timer = new AnimationTimer() {
+
       @Override
       public void handle(long now) {
         if (FpsTracker.isNextFrame(now)) {
+
           update();
           Collider.checkCollision();
           render();
@@ -36,6 +39,9 @@ public class Game {
   public void start() {
     this.setMap(Map.getByLevel(1));
 
+    // for (int i = 0; i < GameObject.objects.size(); i++) {
+    // GameObject.objects.get(i).start();
+    // }
     timer.start();
   }
 

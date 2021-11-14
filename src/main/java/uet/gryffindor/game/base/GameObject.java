@@ -26,7 +26,7 @@ public abstract class GameObject implements Comparable<GameObject> {
     orderedLayer = OrderedLayer.BACKGROUND;
     collider = new Collider(this);
 
-    start();
+    // start();
   }
 
   /**

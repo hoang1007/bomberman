@@ -54,6 +54,7 @@ public class Bomber extends GameObject {
     currentStatus = Status.STAND;
 
     orderedLayer = OrderedLayer.MIDGROUND;
+    this.position.setValue(100, 100);
     oldPosition = position.clone();
 
     numberOfBombs = 3; // Số bomb tối đa được thả cùng lúc = 1
@@ -172,6 +173,7 @@ public class Bomber extends GameObject {
       System.out.println("bomb-X: " + newBomb.position.x);
       System.out.println("bomb-Y: " + newBomb.position.y);
 
+      newBomb.start();
       listBombs.add(newBomb);
       GameObject.objects.add(newBomb);
     }

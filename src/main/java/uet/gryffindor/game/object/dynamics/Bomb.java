@@ -62,6 +62,7 @@ public class Bomb extends GameObject {
         if (explored) {
             // thêm vụ nổ ở trung tâm.
             Explosion centerExplosion = new Explosion();
+            centerExplosion.start();
             centerExplosion.position.setValue(this.position);
             GameObject.objects.add(centerExplosion);
             System.out.println("posX: " + (this.position.x / Sprite.DEFAULT_SIZE));
@@ -109,10 +110,11 @@ public class Bomb extends GameObject {
         int coordinatesX = x / Sprite.DEFAULT_SIZE;
         int coordinatesY = y / Sprite.DEFAULT_SIZE;
         // nếu vướng tường , return false.
-        if (Manager.INSTANCE.getGame().getPlayingMap().getRawMapAt(coordinatesY, coordinatesX) != ' ') {
+        if (Manager.INSTANCE.getGame().getPlayingMap().getRawMapAt(coordinatesY, coordinatesX) != 0) {
             return false;
         } else {
             Explosion e = new Explosion();
+            e.start();
             e.position.setValue(x, y);
             GameObject.objects.add(e);
             return true;
