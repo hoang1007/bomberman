@@ -16,9 +16,9 @@ public class Explosion extends GameObject {
     @Override
     public void start() {
         texture = new SpriteTexture(Sprite.explosion[0], this);
-        double rate = 3;
+        double rate = 1;
         burnOut = new Animator(rate, Sprite.explosion);
-        time = 1200;
+        time = 600;
         startTime = System.currentTimeMillis();
     }
 

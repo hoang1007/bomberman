@@ -77,7 +77,7 @@ public class MapParser {
         for (int i = 0; i < height; i++) {
           for (int j = 0; j < width; j++) {
             rawMap[i][j] = scanner.nextInt();
-            System.out.print(rawMap[i][j] + " ");
+            // System.out.print(rawMap[i][j] + " ");
             Vector2D position = new Vector2D(j, i);
             GameObject object = decodeSymbol(rawMap[i][j]);
 
@@ -88,7 +88,7 @@ public class MapParser {
             }
 
           }
-          System.out.println();
+          // System.out.println();
         }
 
         Bomber player = new Bomber();
@@ -111,33 +111,12 @@ public class MapParser {
    * @return game object bị mã hóa
    */
   public static GameObject decodeSymbol(Integer symbol) {
-    switch (symbol) {
-    case 1: {
-      return new Tiles(1);
+    if (7 <= symbol && symbol <= 9) {
+      return new StoneFloor(symbol);
+    } else if (0 <= symbol && symbol <= 27) {
+      return new Tiles(symbol);
     }
-    case 2: {
-      return new Tiles(2);
-    }
-    case 4: {
-      return new Tiles(4);
-    }
-    case 6: {
-      return new Tiles(6);
-    }
-    case 7: {
-      return new Tiles(7);
-    }
-    case 9: {
-      return new Tiles(9);
-    }
-    case 10: {
-      return new Tiles(10);
-    }
-    case 11: {
-      return new StoneFloor();
-    }
-    default:
-      return null;
-    }
+    return null;
+
   }
 }

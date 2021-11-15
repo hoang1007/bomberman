@@ -25,7 +25,7 @@ public class Bomb extends GameObject {
         texture = new SpriteTexture(Sprite.bomb[2], this);
         explored = false;
 
-        double rate = 4;
+        double rate = 2;
         aboutToExplore = new Animator(rate, Sprite.bomb);
         orderedLayer = OrderedLayer.MIDGROUND;
 
@@ -107,10 +107,10 @@ public class Bomb extends GameObject {
 
     /** Thêm 1 explosion tại (x,y) */
     public boolean addExplosionAt(int x, int y) {
-        int coordinatesX = x / Sprite.DEFAULT_SIZE;
-        int coordinatesY = y / Sprite.DEFAULT_SIZE;
+        int coordinatesX = (x + Sprite.DEFAULT_SIZE / 2) / Sprite.DEFAULT_SIZE;
+        int coordinatesY = (y + Sprite.DEFAULT_SIZE / 2) / Sprite.DEFAULT_SIZE;
         // nếu vướng tường , return false.
-        if (Manager.INSTANCE.getGame().getPlayingMap().getRawMapAt(coordinatesY, coordinatesX) != 0) {
+        if (entangle(coordinatesX, coordinatesY)) {
             return false;
         } else {
             Explosion e = new Explosion();
@@ -119,6 +119,14 @@ public class Bomb extends GameObject {
             GameObject.objects.add(e);
             return true;
         }
+    }
+
+    public boolean entangle(int coordinatesX, int coordinatesY) {
+        int symbol = Manager.INSTANCE.getGame().getPlayingMap().getRawMapAt(coordinatesY, coordinatesX);
+        if (symbol != 07 && symbol != 01 && symbol != 25 && symbol != 04 && symbol != 26) {
+            return true;
+        }
+        return false;
     }
 
     public void setExplored(boolean explored) {

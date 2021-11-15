@@ -109,19 +109,15 @@ public class Sprite {
         rock = new Sprite(0, 0, 256, 256, SpriteSheet.rock);
         wall2D = new Sprite(0, 0, SpriteSheet.wall2D.getWidth(), SpriteSheet.wall2D.getHeight(), SpriteSheet.wall2D);
 
-        tiles = new Sprite[12];
-        tiles[0] = new Sprite(962, 194, 140, 137, SpriteSheet.tiles);
-        tiles[1] = new Sprite(21, 353, 140, 137, SpriteSheet.tiles);
-        tiles[2] = new Sprite(178, 353, 140, 137, SpriteSheet.tiles);
-        tiles[3] = new Sprite(338, 353, 140, 137, SpriteSheet.tiles);
-        tiles[4] = new Sprite(500, 353, 132, 137, SpriteSheet.tiles);
-        tiles[5] = new Sprite(652, 353, 140, 137, SpriteSheet.tiles);
-        tiles[6] = new Sprite(806, 353, 140, 137, SpriteSheet.tiles);
-        tiles[7] = new Sprite(965, 353, 140, 137, SpriteSheet.tiles);
-        tiles[8] = new Sprite(24, 508, 140, 137, SpriteSheet.tiles);
-        tiles[9] = new Sprite(180, 508, 140, 137, SpriteSheet.tiles);
-        tiles[10] = new Sprite(334, 44, 140, 137, SpriteSheet.tiles);
-        tiles[11] = new Sprite(962, 194, 140, 137, SpriteSheet.tiles);
+        tiles = new Sprite[28];
+        // tiles[0] = new Sprite(21, 44, 140, 137, SpriteSheet.tiles);
+        // tiles[1] = new Sprite(178, 353, 140, 137, SpriteSheet.tiles);
+        int x = 0;
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 7; j++) {
+                tiles[(x++)] = new Sprite(157 * j, 157 * i, 140, 135, SpriteSheet.tiles);
+            }
+        }
 
         tilesFloor = new Sprite(333, 196, 140, 141, SpriteSheet.tiles);
 

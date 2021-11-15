@@ -43,7 +43,7 @@ public class Bomber extends GameObject {
   @Override
   public void start() {
     Manager.INSTANCE.getGame().getCamera().setFocusOn(this);
-    speed = new SimpleDoubleProperty(6f);
+    speed = new SimpleDoubleProperty(7f);
     texture = new SpriteTexture(Sprite.player_stand, this);
 
     double rate = 4;
