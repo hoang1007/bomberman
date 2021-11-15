@@ -6,7 +6,9 @@ import javafx.scene.input.KeyEvent;
 import uet.gryffindor.GameApplication;
 import uet.gryffindor.game.Game;
 import uet.gryffindor.game.Manager;
+import uet.gryffindor.game.base.GameObject;
 import uet.gryffindor.game.engine.Input;
+import uet.gryffindor.game.object.statics.children.wall.Tiles;
 import uet.gryffindor.graphic.sprite.Sprite;
 
 public class MainSceneController {
@@ -22,8 +24,8 @@ public class MainSceneController {
     game = new Game(canvas);
     Manager.INSTANCE.setGame(game);
     game.start();
-  }
 
+  }
 
   @FXML
   private void backToMenu() {

@@ -7,13 +7,24 @@ import uet.gryffindor.GameApplication;
  * Class này lưu trữ ảnh gốc, load các thứ cần trong Sprite.java
  */
 public class SpriteSheet {
+    // dynamics
+    public static SpriteSheet player = new SpriteSheet("dynamics/player/playerAndBomb.png");
+    public static SpriteSheet bomb = new SpriteSheet("dynamics/player/playerAndBomb.png");
+    public static SpriteSheet explosion = new SpriteSheet("dynamics/explosion/explosion01.png");
+    public static SpriteSheet explosionPotion = new SpriteSheet("dynamics/items/explosion-potion.png");
+    public static SpriteSheet heart = new SpriteSheet("dynamics/items/heart.png");
+    public static SpriteSheet speedPotion = new SpriteSheet("dynamics/items/speed-potion.png");
 
-    public static SpriteSheet player = new SpriteSheet("player");
+    // statics
+    public static SpriteSheet brick = new SpriteSheet("statics/block.png");
+    public static SpriteSheet rock = new SpriteSheet("statics/rock.png");
+    public static SpriteSheet wall2D = new SpriteSheet("statics/wall.png");
+    public static SpriteSheet tiles = new SpriteSheet("statics/tiles.jpg");
 
     private Image img;
 
     public SpriteSheet(String sheetName) {
-        img = new Image(GameApplication.class.getResourceAsStream("img/" + sheetName + ".png"));
+        img = new Image(GameApplication.class.getResourceAsStream("img/" + sheetName));
     }
 
     public Image getImage() {

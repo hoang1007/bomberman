@@ -32,6 +32,7 @@ public class FpsTracker {
 
   /**
    * Thời gian của một frame.
+   * 
    * @return Thời gian của một frame bằng nanoseconds.
    */
   public static long getFrameTime() {
@@ -40,6 +41,7 @@ public class FpsTracker {
 
   /**
    * Trả về mốc thời gian cập nhật cuối cùng.
+   * 
    * @return mốc thời gian cập nhật cuối cùng
    */
   public static long getLastFrameStamp() {

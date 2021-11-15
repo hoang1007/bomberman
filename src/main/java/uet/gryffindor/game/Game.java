@@ -5,6 +5,7 @@ import java.util.List;
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 import uet.gryffindor.game.base.GameObject;
 import uet.gryffindor.game.base.Vector2D;
 import uet.gryffindor.game.engine.BaseService;
@@ -18,13 +19,14 @@ public class Game {
   private Map playingMap;
   private Camera camera;
   private GraphicsContext context;
-  
+
   public Game(Canvas canvas) {
     FpsTracker.setFps(30);
     camera = new Camera(new Vector2D(canvas.getWidth(), canvas.getHeight()));
     context = canvas.getGraphicsContext2D();
 
     timer = new AnimationTimer() {
+
       @Override
       public void handle(long now) {
         if (FpsTracker.isNextFrame(now)) {
@@ -40,6 +42,9 @@ public class Game {
   public void start() {
     this.setMap(Map.getByLevel(1));
 
+    // for (int i = 0; i < GameObject.objects.size(); i++) {
+    // GameObject.objects.get(i).start();
+    // }
     timer.start();
   }
 
