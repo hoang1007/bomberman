@@ -1,21 +1,36 @@
 package uet.gryffindor.game.engine;
 
+import javafx.scene.canvas.Canvas;
+import uet.gryffindor.game.Map;
 import uet.gryffindor.game.base.GameObject;
 import uet.gryffindor.game.base.Vector2D;
+import uet.gryffindor.graphic.sprite.Sprite;
 
 public class Camera {
   private Vector2D position;
   private Vector2D canvasDims;
   private GameObject focusObject;
+  private Vector2D mapDims;
 
-  public Camera(Vector2D canvasDims) {
+  public Camera(Canvas canvas, Map map) {
     this.position = Vector2D.zero();
-    this.canvasDims = canvasDims;
+    this.canvasDims = new Vector2D(canvas.getWidth(), canvas.getHeight());
+    this.mapDims = new Vector2D(map.getWidth(), map.getHeight()).multiply(Sprite.DEFAULT_SIZE);
   }
 
-  public Camera(Vector2D position, Vector2D canvasDims) {
+  public Camera(Vector2D position, Canvas canvas, Map map) {
     this.position = position;
-    this.canvasDims = canvasDims;
+    this.canvasDims = new Vector2D(canvas.getWidth(), canvas.getHeight());
+    this.mapDims = new Vector2D(map.getWidth(), map.getHeight()).multiply(Sprite.DEFAULT_SIZE);
+  }
+
+  public Camera(Canvas canvas) {
+    this.position = Vector2D.zero();
+    this.canvasDims = new Vector2D(canvas.getWidth(), canvas.getHeight());
+  }
+
+  public void setRange(Vector2D range) {
+    this.mapDims = range;
   }
 
   /**
@@ -36,17 +51,18 @@ public class Camera {
       // nhưng nếu khung render của camera ngoài khung canvas
       // thì chỉnh lại
       position = focusObject.position.subtract(canvasDims.multiply(0.5));
+      Vector2D downRight = position.add(canvasDims);
 
       if (position.x < 0) {
         position.x = 0;
-      } else if (position.x > canvasDims.x) {
-        position.x = canvasDims.x;
+      } else if (downRight.x > mapDims.x) {
+        position.x = mapDims.x - canvasDims.x;
       }
 
       if (position.y < 0) {
         position.y = 0;
-      } else if (position.y > canvasDims.y) {
-        position.y = canvasDims.y;
+      } else if (downRight.y > mapDims.y) {
+        position.y = mapDims.y - canvasDims.y;
       }
     }
 

@@ -20,9 +20,9 @@ public class Bomber extends DynamicObject {
 
   @Override
   public void start() {
-    this.setTexture(new AnimateTexture(this, 5, Sprite.player));
+    this.setTexture(new AnimateTexture(this, 3, Sprite.player));
     Manager.INSTANCE.getGame().getCamera().setFocusOn(this);
-    speed = new SimpleDoubleProperty(6f);
+    speed = new SimpleDoubleProperty(8f);
 
     orderedLayer = OrderedLayer.MIDGROUND;
     oldPosition = position.clone();
