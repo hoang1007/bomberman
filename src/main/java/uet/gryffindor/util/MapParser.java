@@ -9,8 +9,10 @@ import uet.gryffindor.game.Map;
 import uet.gryffindor.game.base.GameObject;
 import uet.gryffindor.game.base.Vector2D;
 import uet.gryffindor.game.object.dynamic.Bomber;
+import uet.gryffindor.game.object.statik.Floor;
 import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.graphic.texture.AnimateTexture;
+import uet.gryffindor.graphic.texture.SpriteTexture;
 
 public class MapParser {
 
@@ -63,7 +65,9 @@ public class MapParser {
         bomber.setTexture(new AnimateTexture(bomber, 3, Sprite.player));
         return bomber;
       default:
-        return null;
+        Floor floor = new Floor();
+        floor.setTexture(new SpriteTexture(Sprite., gameObject));
+        return ;
     }
   }
 }
