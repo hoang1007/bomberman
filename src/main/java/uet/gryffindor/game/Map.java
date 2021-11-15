@@ -5,20 +5,21 @@ import java.util.List;
 import uet.gryffindor.GameApplication;
 import uet.gryffindor.game.base.GameObject;
 import uet.gryffindor.util.MapParser;
+import uet.gryffindor.util.SortedList;
 
 public class Map {
   private char[][] rawMap;
-  private List<GameObject> objects;
+  private SortedList<GameObject> objects;
   private int level;
   private int score;
 
   /**
    * Màn chơi của game.
    * @param rawMap bản đồ thô sơ
-   * @param objects các game object có trong map
+   * @param objects2 các game object có trong map
    * @param level level của map
    */
-  public Map(char[][] rawMap, List<GameObject> objects, int level) {
+  public Map(char[][] rawMap, SortedList<GameObject> objects, int level) {
     this.rawMap = rawMap;
     this.objects = objects;
     this.level = level;

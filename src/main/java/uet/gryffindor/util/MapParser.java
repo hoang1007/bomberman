@@ -4,23 +4,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 
 import uet.gryffindor.game.Map;
 import uet.gryffindor.game.base.GameObject;
 import uet.gryffindor.game.base.Vector2D;
-import uet.gryffindor.game.object.Bomber;
-import uet.gryffindor.game.object.Brick;
-import uet.gryffindor.game.object.Grass;
-import uet.gryffindor.game.object.Portal;
-import uet.gryffindor.game.object.Wall;
-import uet.gryffindor.game.object.enemy.Balloom;
-import uet.gryffindor.game.object.enemy.Oneal;
-import uet.gryffindor.game.object.items.BombItem;
-import uet.gryffindor.game.object.items.FlameItem;
-import uet.gryffindor.game.object.items.SpeedItem;
+import uet.gryffindor.game.object.dynamic.Bomber;
 import uet.gryffindor.graphic.sprite.Sprite;
+import uet.gryffindor.graphic.texture.AnimateTexture;
 
 public class MapParser {
 
@@ -37,7 +27,7 @@ public class MapParser {
       int width = Integer.parseInt(mapInfo[2]);
 
       char[][] rawMap = new char[height][width];
-      List<GameObject> objects = new ArrayList<>();
+      SortedList<GameObject> objects = new SortedList<>();
 
       for (int i = 0; i < height; i++) {
         rawMap[i] = reader.readLine().toCharArray();
@@ -46,9 +36,11 @@ public class MapParser {
           Vector2D position = new Vector2D(j, i);
 
           GameObject object = decodeSymbol(rawMap[i][j]);
-          object.position = position.multiply(Sprite.DEFAULT_SIZE);
+          if (object != null) {
+            object.position = position.multiply(Sprite.DEFAULT_SIZE);
 
-          objects.add(object);
+            objects.add(object);
+          }
         }
       }
 
@@ -66,26 +58,12 @@ public class MapParser {
    */
   public static GameObject decodeSymbol(Character symbol) {
     switch (symbol) {
-      case '#':
-        return new Wall();
-      case '*':
-        return new Brick();
-      case 'x':
-        return new Portal();
       case 'p':
-        return new Bomber();
-      case '1':
-        return new Balloom();
-      case '2':
-        return new Oneal();
-      case 'b':
-        return new BombItem();
-      case 'f':
-        return new FlameItem();
-      case 's':
-        return new SpeedItem();
+        Bomber bomber = new Bomber();
+        bomber.setTexture(new AnimateTexture(bomber, 3, Sprite.player));
+        return bomber;
       default:
-        return new Grass();
+        return null;
     }
   }
 }
