@@ -1,21 +1,16 @@
 package uet.gryffindor.game.base;
 
-import java.util.List;
-
+import uet.gryffindor.game.Map;
 import uet.gryffindor.game.engine.Collider;
 import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.graphic.texture.Texture;
-import uet.gryffindor.util.SortedList;
-
-
 
 /**
  * Lớp cơ bản của game.
  * Mọi đối tượng của game nên kế thừa lớp này.
  */
 public abstract class GameObject implements Comparable<GameObject> {
-  public static final List<GameObject> objects = new SortedList<>();
-  
+  private static Map map; // bản đồ chứa các game object
   public Vector2D position; // Vị trí của đối tượng.
   public Vector2D dimension; // Kích thước của object
 
@@ -43,11 +38,6 @@ public abstract class GameObject implements Comparable<GameObject> {
   public abstract void update();
 
   /**
-   * Texture để render mỗi frame.
-   */
-  public abstract Texture getTexture();
-
-  /**
    * Hàm được gọi khi hai {@link Collider} bắt đầu va chạm.
    * @param that collider bị va chạm
    */
@@ -71,12 +61,14 @@ public abstract class GameObject implements Comparable<GameObject> {
 
   }
 
+  public abstract Texture getTexture();
+
   /**
    * Hủy game object.
    */
   public void destroy() {
-    GameObject.objects.remove(this);
     collider.setEnable(false);
+    map.getObjects().remove(this);
   }
 
   @Override
@@ -84,10 +76,11 @@ public abstract class GameObject implements Comparable<GameObject> {
     return this.orderedLayer.compareTo(that.orderedLayer);
   }
 
-  public static void clear() {
-    for (int i = GameObject.objects.size() - 1; !GameObject.objects.isEmpty(); i--) {
-      GameObject.objects.get(i).collider.setEnable(false);
-      GameObject.objects.remove(i);
-    }
+  public static void setMap(Map map) {
+    GameObject.map = map;
+  }
+
+  public static void addObject(GameObject object) {
+    map.getObjects().add(object);
   }
 }

@@ -2,22 +2,12 @@ package uet.gryffindor.game.engine;
 
 import java.util.concurrent.TimeUnit;
 
-import uet.gryffindor.game.base.GameObject;
-import uet.gryffindor.graphic.texture.Texture;
 import uet.gryffindor.util.ExecuteFunction;
 
-public class TimeCounter extends GameObject {
+public class TimeCounter extends BaseService {
   private long frameCount = 0;
   private ExecuteFunction function;
   private TaskType taskType;
-
-  @Override
-  public void start() {
-    GameObject.objects.add(this);
-    collider.setEnable(false);
-    position.setValue(-100, -100);
-    dimension.setValue(-100, -100);
-  }
 
   @Override
   public void update() {
@@ -90,10 +80,5 @@ public class TimeCounter extends GameObject {
 
   enum TaskType {
     AFTER, DURING
-  }
-
-  @Override
-  public Texture getTexture() {
-    return null;
   }
 }
