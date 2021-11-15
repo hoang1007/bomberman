@@ -1,10 +1,13 @@
 package uet.gryffindor.game;
 
+import java.util.List;
+
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import uet.gryffindor.game.base.GameObject;
 import uet.gryffindor.game.base.Vector2D;
+import uet.gryffindor.game.engine.BaseService;
 import uet.gryffindor.game.engine.Camera;
 import uet.gryffindor.game.engine.Collider;
 import uet.gryffindor.game.engine.FpsTracker;
@@ -25,6 +28,7 @@ public class Game {
       @Override
       public void handle(long now) {
         if (FpsTracker.isNextFrame(now)) {
+          BaseService.run();
           update();
           Collider.checkCollision();
           render();
@@ -40,15 +44,17 @@ public class Game {
   }
 
   private void update() {
-    int currentSize = GameObject.objects.size();
-    for (int i = 0; i < GameObject.objects.size(); i++) {
-      GameObject.objects.get(i).update();
+    List<GameObject> objects = playingMap.getObjects();
+    
+    int currentSize = objects.size();
+    for (int i = 0; i < objects.size(); i++) {
+      objects.get(i).update();
 
       // cập nhật cho trường hợp update có hủy object
-      int updateSize = GameObject.objects.size();
+      int updateSize = objects.size();
 
       if (currentSize > updateSize) {
-        i = i - (currentSize - updateSize);
+        i -= (currentSize - updateSize);
         currentSize = updateSize;
       }
     }
@@ -57,7 +63,7 @@ public class Game {
   private void render() {
     context.clearRect(0, 0, context.getCanvas().getWidth(), context.getCanvas().getHeight());
 
-    GameObject.objects.forEach(obj -> {
+    playingMap.getObjects().forEach(obj -> {
       Texture t = obj.getTexture();
 
       if (t != null) {
@@ -66,15 +72,9 @@ public class Game {
     });
   }
 
-  public void clear() {
-    GameObject.clear();
-    timer.stop();
-  }
-
   public void setMap(Map map) {
     playingMap = map;
-    GameObject.clear();
-    GameObject.objects.addAll(map.getObjects());
+    GameObject.setMap(map);
 
     System.out.println("New map");
   }
