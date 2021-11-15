@@ -1,9 +1,9 @@
 package uet.gryffindor.game.object.statics.items;
 
-import uet.gryffindor.game.base.GameObject;
+import uet.gryffindor.game.object.StaticObject;
 
-public abstract class Item extends GameObject {
-  private long effectDuration;
+public abstract class Item extends StaticObject {
+  protected long effectDuration;
 
   public void setEffectDuration(long effectDuration) {
     this.effectDuration = effectDuration;

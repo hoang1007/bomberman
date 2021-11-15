@@ -1,8 +1,5 @@
 package uet.gryffindor.game.object.dynamics;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import uet.gryffindor.game.Manager;
 import uet.gryffindor.game.base.GameObject;
 import uet.gryffindor.game.base.OrderedLayer;
@@ -53,7 +50,7 @@ public class Bomb extends GameObject {
     }
 
     public void deleteBomb() {
-        GameObject.objects.remove(this);
+        this.destroy();
     }
 
     /** hiệu ứng nổ. */
@@ -64,7 +61,7 @@ public class Bomb extends GameObject {
             Explosion centerExplosion = new Explosion();
             centerExplosion.start();
             centerExplosion.position.setValue(this.position);
-            GameObject.objects.add(centerExplosion);
+            GameObject.addObject(centerExplosion);
             System.out.println("posX: " + (this.position.x / Sprite.DEFAULT_SIZE));
             System.out.println("posY: " + (this.position.y / Sprite.DEFAULT_SIZE));
             // thêm vụ nổ các hướng sang phải
@@ -116,7 +113,7 @@ public class Bomb extends GameObject {
             Explosion e = new Explosion();
             e.start();
             e.position.setValue(x, y);
-            GameObject.objects.add(e);
+            GameObject.addObject(e);
             return true;
         }
     }

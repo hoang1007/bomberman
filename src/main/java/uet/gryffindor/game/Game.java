@@ -5,7 +5,6 @@ import java.util.List;
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
 import uet.gryffindor.game.base.GameObject;
 import uet.gryffindor.game.base.Vector2D;
 import uet.gryffindor.game.engine.BaseService;

@@ -31,7 +31,7 @@ public class Explosion extends GameObject {
     }
 
     public void deleteExplosion() {
-        GameObject.objects.remove(this);
+        this.destroy();
     }
 
     @Override

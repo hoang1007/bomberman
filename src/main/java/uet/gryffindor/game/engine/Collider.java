@@ -137,35 +137,36 @@ public class Collider {
       Collider a = colliders.get(i);
 
       for (int j = i + 1; j < colliders.size(); j++) {
-        Collider b = colliders.get(j);
+        // Collider b = colliders.get(j);
 
-        double overlapArea = a.computeOverlapArea(b);
-        // Nếu a va chạm với b
-        if (overlapArea != 0) {
+        // double overlapArea = a.computeOverlapArea(b);
+        // // Nếu a va chạm với b
+        // if (overlapArea != 0) {
 
-          if (!a.collidedList.containsKey(b) || a.collidedList.get(b) == 0) {
-            // Nếu danh sách va chạm của a chưa có b
-            // hoặc vùng giao nhau của a và b bằng không
-            // thì gọi onCollsionEnter
-            a.gameObject.onCollisionEnter(b);
-            b.gameObject.onCollisionEnter(a);
-          } else {
-            // Nếu đã va chạm
-            // thì gọi hàm onCollisionStay
-            a.gameObject.onCollisionStay(b);
-            b.gameObject.onCollisionStay(a);
-          }
-        } else {
-          // Nếu vùng giao nhau trước đó khác 0
-          // thì a và b mới bắt đầu rời va chạm
-          if (a.collidedList.containsKey(b) && a.collidedList.get(b) != 0) {
-            a.gameObject.onCollisionExit(b);
-            b.gameObject.onCollisionExit(a);
-          }
-        }
+        //   if (!a.collidedList.containsKey(b) || a.collidedList.get(b) == 0) {
+        //     // Nếu danh sách va chạm của a chưa có b
+        //     // hoặc vùng giao nhau của a và b bằng không
+        //     // thì gọi onCollsionEnter
+        //     a.gameObject.onCollisionEnter(b);
+        //     b.gameObject.onCollisionEnter(a);
+        //   } else {
+        //     // Nếu đã va chạm
+        //     // thì gọi hàm onCollisionStay
+        //     a.gameObject.onCollisionStay(b);
+        //     b.gameObject.onCollisionStay(a);
+        //   }
+        // } else {
+        //   // Nếu vùng giao nhau trước đó khác 0
+        //   // thì a và b mới bắt đầu rời va chạm
+        //   if (a.collidedList.containsKey(b) && a.collidedList.get(b) != 0) {
+        //     a.gameObject.onCollisionExit(b);
+        //     b.gameObject.onCollisionExit(a);
+        //   }
+        // }
 
-        a.collidedList.put(b, overlapArea);
-        b.collidedList.put(a, overlapArea);
+        // a.collidedList.put(b, overlapArea);
+        // b.collidedList.put(a, overlapArea);
+
       }
     }
   }

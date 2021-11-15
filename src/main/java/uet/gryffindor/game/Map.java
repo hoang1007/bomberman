@@ -22,7 +22,7 @@ public class Map {
    * @param objects các game object có trong map
    * @param level   level của map
    */
-  public Map(int[][] rawMap, List<GameObject> objects, int level) {
+  public Map(int[][] rawMap, SortedList<GameObject> objects, int level) {
     this.rawMap = rawMap;
     this.objects = objects;
     this.level = level;
