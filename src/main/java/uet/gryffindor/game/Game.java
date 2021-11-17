@@ -30,7 +30,7 @@ public class Game {
         if (FpsTracker.isNextFrame(now)) {
           BaseService.run();
           update();
-          Collider.checkCollision();
+          Collider.checkCollision(playingMap.getObjects());
           render();
         }
       }
