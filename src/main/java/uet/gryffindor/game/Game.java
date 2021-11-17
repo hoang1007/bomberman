@@ -5,6 +5,8 @@ import java.util.List;
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import uet.gryffindor.GameApplication;
+import uet.gryffindor.autopilot.EpsilonGreedyPolicy;
 import uet.gryffindor.game.base.GameObject;
 import uet.gryffindor.game.base.Vector2D;
 import uet.gryffindor.game.engine.BaseService;
@@ -19,11 +21,15 @@ public class Game {
   private Map playingMap;
   private Camera camera;
   private GraphicsContext context;
+  private EpsilonGreedyPolicy policy;
 
   public Game(Canvas canvas) {
     FpsTracker.setFps(30);
     context = canvas.getGraphicsContext2D();
     camera = new Camera(canvas);
+
+    policy = new EpsilonGreedyPolicy(true);
+    GameApplication.onExit(policy::save);
 
     timer = new AnimationTimer() {
 
@@ -32,7 +38,7 @@ public class Game {
         if (FpsTracker.isNextFrame(now)) {
           BaseService.run();
           update();
-          Collider.checkCollision();
+          Collider.checkCollision(playingMap.getObjects());
           render();
         }
       }
@@ -41,10 +47,8 @@ public class Game {
 
   public void start() {
     this.setMap(Map.getByLevel(1));
+    policy.initialize(this);
 
-    // for (int i = 0; i < GameObject.objects.size(); i++) {
-    // GameObject.objects.get(i).start();
-    // }
     timer.start();
   }
 
@@ -81,8 +85,6 @@ public class Game {
     playingMap = map;
     camera.setRange(new Vector2D(map.getWidth(), map.getHeight()).multiply(Sprite.DEFAULT_SIZE));
     GameObject.setMap(map);
-
-    System.out.println("New map");
   }
 
   public Camera getCamera() {

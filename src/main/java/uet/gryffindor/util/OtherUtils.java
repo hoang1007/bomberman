@@ -16,4 +16,18 @@ public class OtherUtils {
 
     return result;
   }
+
+  public static <T extends Comparable<? super T>> Pair<Integer, T> max(T[] values) {
+    T max = values[0];
+    int maxId = 0;
+
+    for (int i = 1; i < values.length; i++) {
+      if (max.compareTo(values[i]) < 0) {
+        max = values[i];
+        maxId = i;
+      }
+    }
+
+    return Pair.of(maxId, max);
+  }
 }

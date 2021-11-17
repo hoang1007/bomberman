@@ -1,5 +1,9 @@
 package uet.gryffindor.autopilot;
 
+import org.nd4j.linalg.api.buffer.DataType;
+import org.nd4j.linalg.api.ndarray.INDArray;
+import org.nd4j.linalg.factory.Nd4j;
+
 public enum GameAction {
   UP, DOWN, LEFT, RIGHT, BOMB, STAND;
 
@@ -16,5 +20,13 @@ public enum GameAction {
     }
 
     return null;
+  }
+
+  public INDArray toNdArray() {
+    int[] arr = new int[N_ACTIONS];
+
+    arr[this.ordinal()] = 1;
+
+    return Nd4j.create(arr, new long[]{1, arr.length}, DataType.INT16);
   }
 }

@@ -13,6 +13,7 @@ import uet.gryffindor.game.base.Vector2D;
 import uet.gryffindor.game.object.dynamics.Bomber;
 import uet.gryffindor.game.object.statics.Floor;
 import uet.gryffindor.game.object.statics.Wall;
+import uet.gryffindor.game.object.statics.items.SpeedItem;
 import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.graphic.texture.SpriteTexture;
 
@@ -57,9 +58,6 @@ public class MapParser {
       int level = scanner.nextInt();
       int height = scanner.nextInt();
       int width = scanner.nextInt();
-      System.out.println("level " + level);
-      System.out.println("height " + height);
-      System.out.println("width " + width);
 
       while (scanner.hasNext()) {
 
@@ -84,7 +82,6 @@ public class MapParser {
 
         Bomber player = new Bomber();
         player.position = new Vector2D(1, 2).multiply(Sprite.DEFAULT_SIZE);
-        player.start();
         objects.add(player);
         scanner.close();
         return new Map(rawMap, objects, level);
@@ -112,6 +109,8 @@ public class MapParser {
       Wall wall = new Wall();
       wall.setTexture(new SpriteTexture(Sprite.tiles[symbol], wall));
       return wall;
+    } else if (symbol == 28) {
+      return new SpeedItem();
     }
     return null;
   }

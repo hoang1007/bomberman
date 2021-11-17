@@ -2,6 +2,7 @@ package uet.gryffindor.game.object.dynamics;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import uet.gryffindor.autopilot.GameAction;
 import uet.gryffindor.game.Manager;
 import uet.gryffindor.game.base.OrderedLayer;
 import uet.gryffindor.game.base.Vector2D;
@@ -16,6 +17,7 @@ public class Bomber extends DynamicObject {
   private DoubleProperty speed;
 
   private boolean isBlocked = false;
+  private boolean auto = false;
   private Vector2D oldPosition;
 
   @Override
@@ -32,7 +34,7 @@ public class Bomber extends DynamicObject {
   public void update() {
     if (!isBlocked) {
       oldPosition = position.clone();
-      move();
+      if (!auto) move();
     }
   }
 
@@ -60,12 +62,35 @@ public class Bomber extends DynamicObject {
     }
   }
 
+  public void autopilot(GameAction action) {
+    switch (action) {
+      case UP:
+        this.position.y -= Sprite.DEFAULT_SIZE;
+        texture.changeTo("up");
+        break;
+      case DOWN: 
+        this.position.y += Sprite.DEFAULT_SIZE;
+        texture.changeTo("down");
+        break;
+      case RIGHT:
+        this.position.x += Sprite.DEFAULT_SIZE;
+        texture.changeTo("right");
+        break;
+      case LEFT:
+        this.position.x -= Sprite.DEFAULT_SIZE;
+        texture.changeTo("left");
+        break;
+      default:
+        break;
+    }
+  }
+
   @Override
   public void onCollisionEnter(Collider that) {
     if (that.gameObject instanceof Unmovable) {
       // nếu bomber va chạm với vật thể tĩnh
       // khôi phục vị trí trước khi va chạm
-      position = oldPosition.smooth(this.dimension.x);
+      position = oldPosition.smooth(this.dimension.x, 0.3);
       // gắn nhãn bị chặn
       isBlocked = true;
     }
@@ -76,5 +101,13 @@ public class Bomber extends DynamicObject {
     if (that.gameObject instanceof Unmovable) {
       isBlocked = false;
     }
+  }
+
+  public boolean isBlocked() {
+    return this.isBlocked;
+  }
+
+  public void setAuto(boolean b) {
+    this.auto = b;
   }
 }
