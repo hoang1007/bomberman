@@ -11,6 +11,7 @@ import uet.gryffindor.game.Map;
 import uet.gryffindor.game.base.GameObject;
 import uet.gryffindor.game.base.Vector2D;
 import uet.gryffindor.game.object.dynamics.Bomber;
+import uet.gryffindor.game.object.statics.Brick;
 import uet.gryffindor.game.object.statics.Floor;
 import uet.gryffindor.game.object.statics.Wall;
 import uet.gryffindor.graphic.sprite.Sprite;
@@ -68,14 +69,29 @@ public class MapParser {
 
         for (int i = 0; i < height; i++) {
           for (int j = 0; j < width; j++) {
-            rawMap[i][j] = scanner.nextInt();
-            // System.out.print(rawMap[i][j] + " ");
             Vector2D position = new Vector2D(j, i);
-            GameObject object = decodeSymbol(rawMap[i][j]);
+            GameObject object = null;
+            GameObject brick = null;
+
+            String data = scanner.next();
+            try {
+              rawMap[i][j] = Integer.parseInt(data);
+              object = decodeSymbol(rawMap[i][j]);
+            } catch (NumberFormatException e) {
+              String[] pair = data.split("-");
+              brick = decodeSymbol(pair[0]);
+              object = decodeSymbol(Integer.parseInt(pair[1]));
+            }
+            // System.out.print(rawMap[i][j] + " ");
 
             if (object != null) {
               object.position = position.multiply(Sprite.DEFAULT_SIZE);
               objects.add(object);
+            }
+
+            if (brick != null) {
+              brick.position = position.multiply(Sprite.DEFAULT_SIZE);
+              objects.add(brick);
             }
 
           }
@@ -103,15 +119,32 @@ public class MapParser {
    * @param symbol kí tự mã hóa
    * @return game object bị mã hóa
    */
-  public static GameObject decodeSymbol(Integer symbol) {
-    if (7 <= symbol && symbol <= 9) {
-      Floor floor = new Floor();
-      floor.setTexture(new SpriteTexture(Sprite.tiles[symbol], floor));
-      return floor;
-    } else if (0 <= symbol && symbol <= 27) {
-      Wall wall = new Wall();
-      wall.setTexture(new SpriteTexture(Sprite.tiles[symbol], wall));
-      return wall;
+  public static GameObject decodeSymbol(Object s) {
+    if (s instanceof Integer) {
+      Integer symbol = (Integer) s;
+      if (7 <= symbol && symbol <= 9) {
+        Floor floor = new Floor();
+        floor.setTexture(new SpriteTexture(Sprite.tiles[symbol], floor));
+        return floor;
+      } else if (0 <= symbol && symbol <= 27) {
+        Wall wall = new Wall();
+        wall.setTexture(new SpriteTexture(Sprite.tiles[symbol], wall));
+        return wall;
+      }
+
+    } else if (s instanceof String) {
+      String name = ((String) s).charAt(0) + "";
+
+      if (name.equals("B")) {
+        int index = Integer.parseInt(((String) s).charAt(1) + "");
+        Brick block = new Brick();
+        block.setTexture(new SpriteTexture(Sprite.brick[index], block));
+        return block;
+      } else if (name.equals("R")) {
+        Brick rock = new Brick();
+        rock.setTexture(new SpriteTexture(Sprite.rock, rock));
+        return rock;
+      }
     }
     return null;
   }
