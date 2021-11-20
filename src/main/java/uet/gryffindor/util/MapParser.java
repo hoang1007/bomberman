@@ -100,7 +100,6 @@ public class MapParser {
 
         Bomber player = new Bomber();
         player.position = new Vector2D(1, 2).multiply(Sprite.DEFAULT_SIZE);
-        player.start();
         objects.add(player);
         scanner.close();
         return new Map(rawMap, objects, level);
@@ -138,11 +137,11 @@ public class MapParser {
       if (name.equals("B")) {
         int index = Integer.parseInt(((String) s).charAt(1) + "");
         Brick block = new Brick();
-        block.setTexture(new SpriteTexture(Sprite.brick[index], block));
+        block.setTexture(new SpriteTexture(Sprite.obstacle[index], block));
         return block;
       } else if (name.equals("R")) {
         Brick rock = new Brick();
-        rock.setTexture(new SpriteTexture(Sprite.rock, rock));
+        rock.setTexture(new SpriteTexture(Sprite.obstacle[3], rock));
         return rock;
       }
     }

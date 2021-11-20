@@ -7,7 +7,7 @@ import uet.gryffindor.graphic.texture.SpriteTexture;
 public class Portal extends StaticObject {
   @Override
   public void start() {
-    this.setTexture(new SpriteTexture(Sprite.rock, this));
+    this.setTexture(new SpriteTexture(Sprite.obstacle[3], this));
   }
 
   @Override

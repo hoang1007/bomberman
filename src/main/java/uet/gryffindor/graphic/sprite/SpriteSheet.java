@@ -16,8 +16,7 @@ public class SpriteSheet {
     public static SpriteSheet speedPotion = new SpriteSheet("dynamics/items/speed-potion.png");
 
     // statics
-    public static SpriteSheet brick = new SpriteSheet("statics/block.png");
-    public static SpriteSheet rock = new SpriteSheet("statics/rock.png");
+    public static SpriteSheet obstacle = new SpriteSheet("statics/block.png");
     public static SpriteSheet wall2D = new SpriteSheet("statics/wall.png");
     public static SpriteSheet tiles = new SpriteSheet("statics/tiles.jpg");
 

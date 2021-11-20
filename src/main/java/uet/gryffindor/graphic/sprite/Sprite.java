@@ -16,8 +16,8 @@ public class Sprite {
   public static Sprite[] speedPotion;
 
   // statics
-  public static Sprite[] brick;
-  public static Sprite rock;
+  public static Sprite[] obstacle;
+  // public static Sprite rock;
   public static Sprite wall2D;
   public static Sprite[] tiles;
   public static Sprite tilesFloor;
@@ -110,12 +110,12 @@ public class Sprite {
     }
 
     // statics
-    brick = new Sprite[3];
-    brick[0] = new Sprite(17, 28, 112, 146, SpriteSheet.brick);
-    brick[1] = new Sprite(145, 28, 112, 146, SpriteSheet.brick);
-    brick[2] = new Sprite(271, 28, 112, 146, SpriteSheet.brick);
+    obstacle = new Sprite[4];
+    obstacle[0] = new Sprite(17, 28, 112, 146, SpriteSheet.obstacle);
+    obstacle[1] = new Sprite(145, 28, 112, 146, SpriteSheet.obstacle);
+    obstacle[2] = new Sprite(271, 28, 112, 146, SpriteSheet.obstacle);
+    obstacle[3] = new Sprite(513, 20, 188, 163, SpriteSheet.obstacle);
 
-    rock = new Sprite(0, 0, 256, 256, SpriteSheet.rock);
     wall2D = new Sprite(0, 0, SpriteSheet.wall2D.getWidth(), SpriteSheet.wall2D.getHeight(), SpriteSheet.wall2D);
 
     tiles = new Sprite[28];
