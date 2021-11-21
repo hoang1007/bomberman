@@ -22,8 +22,8 @@ public class MainSceneController {
     game = new Game(canvas);
     Manager.INSTANCE.setGame(game);
     game.start();
-  }
 
+  }
 
   @FXML
   private void backToMenu() {

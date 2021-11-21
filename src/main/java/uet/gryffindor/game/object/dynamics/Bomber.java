@@ -1,4 +1,4 @@
-package uet.gryffindor.game.object.dynamic;
+package uet.gryffindor.game.object.dynamics;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -9,6 +9,8 @@ import uet.gryffindor.game.behavior.Unmovable;
 import uet.gryffindor.game.engine.Collider;
 import uet.gryffindor.game.engine.Input;
 import uet.gryffindor.game.object.DynamicObject;
+import uet.gryffindor.graphic.sprite.Sprite;
+import uet.gryffindor.graphic.texture.AnimateTexture;
 
 public class Bomber extends DynamicObject {
   private DoubleProperty speed;
@@ -18,8 +20,9 @@ public class Bomber extends DynamicObject {
 
   @Override
   public void start() {
+    this.setTexture(new AnimateTexture(this, 3, Sprite.player));
     Manager.INSTANCE.getGame().getCamera().setFocusOn(this);
-    speed = new SimpleDoubleProperty(6f);
+    speed = new SimpleDoubleProperty(8f);
 
     orderedLayer = OrderedLayer.MIDGROUND;
     oldPosition = position.clone();

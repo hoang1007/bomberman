@@ -34,8 +34,9 @@ public class TimeCounter extends BaseService {
 
   /**
    * Thực thi hàm sau khoảng thời gian cho trước.
+   * 
    * @param function hàm muốn thực thi
-   * @param time thời gian đếm ngược
+   * @param time     thời gian đếm ngược
    * @param timeUnit đơn vị thời gian
    */
   public static void callAfter(ExecuteFunction function, long time, TimeUnit timeUnit) {
@@ -44,8 +45,9 @@ public class TimeCounter extends BaseService {
 
   /**
    * Thực thi hàm sau số frame cho trước.
+   * 
    * @param function hàm muốn thực thi
-   * @param frame số frame
+   * @param frame    số frame
    */
   public static void callAfter(ExecuteFunction function, long frame) {
     TimeCounter instance = new TimeCounter();
@@ -57,8 +59,9 @@ public class TimeCounter extends BaseService {
 
   /**
    * Thực thi hàm trong khoảng thời gian cho trước.
+   * 
    * @param function hàm muốn thực thi
-   * @param time thời gian thực thi hàm
+   * @param time     thời gian thực thi hàm
    * @param timeUnit đơn vị thời gian
    */
   public static void callDuring(ExecuteFunction function, long time, TimeUnit timeUnit) {
@@ -67,8 +70,9 @@ public class TimeCounter extends BaseService {
 
   /**
    * Thực thi hàm trong số frame cho trước.
+   * 
    * @param function hàm muốn thực thi
-   * @param frame số frame
+   * @param frame    số frame
    */
   public static void callDuring(ExecuteFunction function, long frame) {
     TimeCounter instance = new TimeCounter();

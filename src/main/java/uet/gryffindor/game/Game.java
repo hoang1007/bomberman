@@ -11,6 +11,7 @@ import uet.gryffindor.game.engine.BaseService;
 import uet.gryffindor.game.engine.Camera;
 import uet.gryffindor.game.engine.Collider;
 import uet.gryffindor.game.engine.FpsTracker;
+import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.graphic.texture.Texture;
 
 public class Game {
@@ -18,13 +19,14 @@ public class Game {
   private Map playingMap;
   private Camera camera;
   private GraphicsContext context;
-  
+
   public Game(Canvas canvas) {
     FpsTracker.setFps(30);
-    camera = new Camera(new Vector2D(canvas.getWidth(), canvas.getHeight()));
     context = canvas.getGraphicsContext2D();
+    camera = new Camera(canvas);
 
     timer = new AnimationTimer() {
+
       @Override
       public void handle(long now) {
         if (FpsTracker.isNextFrame(now)) {
@@ -40,6 +42,9 @@ public class Game {
   public void start() {
     this.setMap(Map.getByLevel(1));
 
+    // for (int i = 0; i < GameObject.objects.size(); i++) {
+    // GameObject.objects.get(i).start();
+    // }
     timer.start();
   }
 
@@ -74,6 +79,7 @@ public class Game {
 
   public void setMap(Map map) {
     playingMap = map;
+    camera.setRange(new Vector2D(map.getWidth(), map.getHeight()).multiply(Sprite.DEFAULT_SIZE));
     GameObject.setMap(map);
 
     System.out.println("New map");
