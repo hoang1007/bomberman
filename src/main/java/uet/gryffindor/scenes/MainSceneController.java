@@ -10,8 +10,7 @@ import uet.gryffindor.game.engine.Input;
 import uet.gryffindor.graphic.sprite.Sprite;
 
 public class MainSceneController {
-  @FXML
-  private Canvas canvas;
+  @FXML private Canvas canvas;
   private Game game;
 
   /** Hàm khởi tạo được gọi bởi fxml. */
@@ -22,7 +21,6 @@ public class MainSceneController {
     game = new Game(canvas);
     Manager.INSTANCE.setGame(game);
     game.start();
-
   }
 
   @FXML

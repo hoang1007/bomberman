@@ -12,7 +12,7 @@ public class GameEnvironment {
     height = game.getPlayingMap().getRawMap().length;
     width = game.getPlayingMap().getRawMap()[0].length;
   }
-  
+
   public void restart() {
     game.start();
   }

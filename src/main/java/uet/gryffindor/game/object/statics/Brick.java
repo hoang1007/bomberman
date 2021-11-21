@@ -12,7 +12,5 @@ public class Brick extends StaticObject implements Unmovable {
   }
 
   @Override
-  public void update() {
-  }
-
+  public void update() {}
 }

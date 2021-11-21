@@ -7,36 +7,35 @@ import uet.gryffindor.graphic.texture.SpriteTexture;
 
 public class Explosion extends GameObject {
 
-    private SpriteTexture texture;
-    private Animator burnOut;
+  private SpriteTexture texture;
+  private Animator burnOut;
 
-    public static long time;// thời gian xuất hiện vụ nổ
-    private long startTime;
+  public static long time; // thời gian xuất hiện vụ nổ
+  private long startTime;
 
-    @Override
-    public void start() {
-        texture = new SpriteTexture(Sprite.explosion[0], this);
-        double rate = 1;
-        burnOut = new Animator(rate, Sprite.explosion);
-        time = 600;
-        startTime = System.currentTimeMillis();
+  @Override
+  public void start() {
+    texture = new SpriteTexture(Sprite.explosion[0], this);
+    double rate = 1;
+    burnOut = new Animator(rate, Sprite.explosion);
+    time = 600;
+    startTime = System.currentTimeMillis();
+  }
+
+  @Override
+  public void update() {
+    texture.setSprite(burnOut.getSprite());
+    if (System.currentTimeMillis() - startTime >= time) {
+      deleteExplosion();
     }
+  }
 
-    @Override
-    public void update() {
-        texture.setSprite(burnOut.getSprite());
-        if (System.currentTimeMillis() - startTime >= time) {
-            deleteExplosion();
-        }
-    }
+  public void deleteExplosion() {
+    this.destroy();
+  }
 
-    public void deleteExplosion() {
-        this.destroy();
-    }
-
-    @Override
-    public SpriteTexture getTexture() {
-        return texture;
-    }
-
+  @Override
+  public SpriteTexture getTexture() {
+    return texture;
+  }
 }

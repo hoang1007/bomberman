@@ -3,7 +3,6 @@ package uet.gryffindor.game.object.dynamics.enemy;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import uet.gryffindor.autopilot.GameAction;
-import uet.gryffindor.game.Manager;
 import uet.gryffindor.game.base.OrderedLayer;
 import uet.gryffindor.game.base.Vector2D;
 import uet.gryffindor.game.behavior.Unmovable;
@@ -30,12 +29,9 @@ public class Oneal extends DynamicObject {
     }
   }
 
-  /**
-   * Hàm di chuyển cho enemy.
-   * Tạm thời thế thôi cần sử lại cho nó đi khôn hơn.
-   */
+  /** Hàm di chuyển cho enemy. Tạm thời thế thôi cần sử lại cho nó đi khôn hơn. */
   private void move() {
-    int value = ((int) (Math.random() * 100)) % 4 ;
+    int value = ((int) (Math.random() * 100)) % 4;
     // random hướng cho enemy.
     switch (GameAction.valueOf(value)) {
       case UP:

@@ -1,4 +1,5 @@
 package uet.gryffindor.graphic.sprite;
+
 import java.util.HashMap;
 /** Class này lưu trữ thông tin pixel của 1 sprite */
 public class Sprite {

@@ -14,5 +14,4 @@ public class SpeedItem extends Item {
     // TODO Auto-generated method stub
 
   }
-
 }

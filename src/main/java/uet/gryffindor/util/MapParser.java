@@ -1,11 +1,6 @@
 package uet.gryffindor.util;
 
 // import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-// import java.io.InputStreamReader;
-import java.util.Scanner;
 
 import uet.gryffindor.game.Map;
 import uet.gryffindor.game.base.GameObject;
@@ -17,11 +12,16 @@ import uet.gryffindor.game.object.statics.Wall;
 import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.graphic.texture.SpriteTexture;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Scanner;
+
 public class MapParser {
 
   /**
    * Tạo map từ file config.
-   * 
+   *
    * @param file file config
    * @return map
    */
@@ -93,7 +93,6 @@ public class MapParser {
               brick.position = position.multiply(Sprite.DEFAULT_SIZE);
               objects.add(brick);
             }
-
           }
           // System.out.println();
         }
@@ -114,7 +113,7 @@ public class MapParser {
 
   /**
    * Giải mã game object.
-   * 
+   *
    * @param symbol kí tự mã hóa
    * @return game object bị mã hóa
    */

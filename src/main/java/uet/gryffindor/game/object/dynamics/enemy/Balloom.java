@@ -3,16 +3,14 @@ package uet.gryffindor.game.object.dynamics.enemy;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import uet.gryffindor.autopilot.GameAction;
-import uet.gryffindor.game.Manager;
 import uet.gryffindor.game.base.OrderedLayer;
 import uet.gryffindor.game.base.Vector2D;
 import uet.gryffindor.game.behavior.Unmovable;
 import uet.gryffindor.game.engine.Collider;
-import uet.gryffindor.game.engine.Input;
 import uet.gryffindor.game.object.DynamicObject;
 
 public class Balloom extends DynamicObject {
-  private DoubleProperty speed; //tốc độ cho từng enemy
+  private DoubleProperty speed; // tốc độ cho từng enemy
   private boolean isBlocked = false;
   private Vector2D oldPosition;
 
@@ -32,7 +30,7 @@ public class Balloom extends DynamicObject {
   }
 
   private void move() {
-    int value = ((int) (Math.random() * 100)) % 4 ;
+    int value = ((int) (Math.random() * 100)) % 4;
     // random hướng cho enemy.
     switch (GameAction.valueOf(value)) {
       case UP:
@@ -55,7 +53,6 @@ public class Balloom extends DynamicObject {
         texture.pause();
         break;
     }
-
   }
 
   @Override

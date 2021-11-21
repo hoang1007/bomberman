@@ -1,8 +1,8 @@
 package uet.gryffindor.game.engine;
 
-import java.util.concurrent.TimeUnit;
-
 import uet.gryffindor.util.ExecuteFunction;
+
+import java.util.concurrent.TimeUnit;
 
 public class TimeCounter extends BaseService {
   private long frameCount = 0;
@@ -15,17 +15,17 @@ public class TimeCounter extends BaseService {
       frameCount--;
 
       switch (taskType) {
-      case AFTER:
-        if (frameCount == 0) {
-          function.invoke();
-        }
-        break;
+        case AFTER:
+          if (frameCount == 0) {
+            function.invoke();
+          }
+          break;
 
-      case DURING:
-        function.invoke();
-        break;
-      default:
-        break;
+        case DURING:
+          function.invoke();
+          break;
+        default:
+          break;
       }
     } else {
       this.destroy();
@@ -34,9 +34,9 @@ public class TimeCounter extends BaseService {
 
   /**
    * Thực thi hàm sau khoảng thời gian cho trước.
-   * 
+   *
    * @param function hàm muốn thực thi
-   * @param time     thời gian đếm ngược
+   * @param time thời gian đếm ngược
    * @param timeUnit đơn vị thời gian
    */
   public static void callAfter(ExecuteFunction function, long time, TimeUnit timeUnit) {
@@ -45,9 +45,9 @@ public class TimeCounter extends BaseService {
 
   /**
    * Thực thi hàm sau số frame cho trước.
-   * 
+   *
    * @param function hàm muốn thực thi
-   * @param frame    số frame
+   * @param frame số frame
    */
   public static void callAfter(ExecuteFunction function, long frame) {
     TimeCounter instance = new TimeCounter();
@@ -59,9 +59,9 @@ public class TimeCounter extends BaseService {
 
   /**
    * Thực thi hàm trong khoảng thời gian cho trước.
-   * 
+   *
    * @param function hàm muốn thực thi
-   * @param time     thời gian thực thi hàm
+   * @param time thời gian thực thi hàm
    * @param timeUnit đơn vị thời gian
    */
   public static void callDuring(ExecuteFunction function, long time, TimeUnit timeUnit) {
@@ -70,9 +70,9 @@ public class TimeCounter extends BaseService {
 
   /**
    * Thực thi hàm trong số frame cho trước.
-   * 
+   *
    * @param function hàm muốn thực thi
-   * @param frame    số frame
+   * @param frame số frame
    */
   public static void callDuring(ExecuteFunction function, long frame) {
     TimeCounter instance = new TimeCounter();
@@ -83,6 +83,7 @@ public class TimeCounter extends BaseService {
   }
 
   enum TaskType {
-    AFTER, DURING
+    AFTER,
+    DURING
   }
 }

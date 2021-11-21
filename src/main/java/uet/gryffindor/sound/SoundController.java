@@ -12,6 +12,7 @@ public class SoundController {
 
   /**
    * Hàm khởi tạo âm thanh.
+   *
    * @param path đường dẫn file âm thanh mp3.
    */
   public void initSound(String path) {
@@ -26,5 +27,4 @@ public class SoundController {
   public void pauseAudio() {
     mediaPlayer.pause();
   }
-
 }

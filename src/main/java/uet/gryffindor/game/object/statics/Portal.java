@@ -11,7 +11,5 @@ public class Portal extends StaticObject {
   }
 
   @Override
-  public void update() {
-
-  }
+  public void update() {}
 }

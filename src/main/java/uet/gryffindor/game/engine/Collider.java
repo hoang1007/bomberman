@@ -1,16 +1,14 @@
 package uet.gryffindor.game.engine;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import uet.gryffindor.game.base.GameObject;
 import uet.gryffindor.game.base.Vector2D;
 import uet.gryffindor.game.object.StaticObject;
 
-/**
- * Lớp máy va chạm giúp phát hiện va chạm.
- */
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+/** Lớp máy va chạm giúp phát hiện va chạm. */
 public class Collider {
   private static List<Collider> colliders = new ArrayList<>();
 
@@ -74,7 +72,7 @@ public class Collider {
 
   /**
    * Lấy diện tích giao nhau giữa hai collider.
-   * 
+   *
    * @param that collider muốn tìm diện tích giao nhau với collider hiện tại
    * @return diện tích giao nhau của hai collider
    */
@@ -83,9 +81,8 @@ public class Collider {
   }
 
   /**
-   * Hàm cân đối collider với game object (Vì tâm của collider phải trùng với tâm
-   * của game object).
-   * 
+   * Hàm cân đối collider với game object (Vì tâm của collider phải trùng với tâm của game object).
+   *
    * @return tọa độ trung tâm sau khi cân bằng
    */
   private Vector2D fitObject() {
@@ -101,7 +98,7 @@ public class Collider {
 
   /**
    * Tính diện tích giao nhau của hai collider.
-   * 
+   *
    * @param that collider muốn kiểm tra
    * @return diện tích của vùng giao nhau
    */
@@ -129,9 +126,8 @@ public class Collider {
   }
 
   /**
-   * Kiểm tra va chạm của tất cả các collider được khai báo. Nếu có hai collider
-   * va chạm với nhau, các hàm {@link GameObject#onCollision(Collider)} của game
-   * object chứa colldier sẽ được gọi.
+   * Kiểm tra va chạm của tất cả các collider được khai báo. Nếu có hai collider va chạm với nhau,
+   * các hàm {@link GameObject#onCollision(Collider)} của game object chứa colldier sẽ được gọi.
    */
   public static void checkCollision() {
     for (int i = 0; i < colliders.size(); i++) {
@@ -175,7 +171,6 @@ public class Collider {
 
         a.collidedList.put(b, overlapArea);
         b.collidedList.put(a, overlapArea);
-
       }
     }
   }

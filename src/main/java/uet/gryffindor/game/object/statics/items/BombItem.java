@@ -13,7 +13,5 @@ public class BombItem extends Item {
   }
 
   @Override
-  public void update() {
-
-  }
+  public void update() {}
 }
