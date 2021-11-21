@@ -4,6 +4,10 @@ module uet.gryffindor {
   requires transitive javafx.graphics;
   requires javafx.media;
 
+  requires deeplearning4j.nn;
+  requires deeplearning4j.core;
+  requires nd4j.api;
+
   opens uet.gryffindor.scenes to javafx.fxml;
   
   exports uet.gryffindor;
