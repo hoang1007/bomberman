@@ -14,6 +14,7 @@ public class SpriteSheet {
     public static SpriteSheet explosionPotion = new SpriteSheet("dynamics/items/explosion-potion.png");
     public static SpriteSheet heart = new SpriteSheet("dynamics/items/heart.png");
     public static SpriteSheet speedPotion = new SpriteSheet("dynamics/items/speed-potion.png");
+    public static SpriteSheet balloomAndOneal = new SpriteSheet("dynamics/enemy/BalloomAndOneal.png");
 
     // statics
     public static SpriteSheet obstacle = new SpriteSheet("statics/block.png");

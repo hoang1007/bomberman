@@ -8,12 +8,16 @@ import java.util.HashMap;
 public class Sprite {
   // dynamics
   public static HashMap<String, Sprite[]> player = new HashMap<>();
+  public static HashMap<String, Sprite[]> enemy = new HashMap<>();
 
   public static Sprite[] bomb;
   public static Sprite[] explosion;
   public static Sprite[] explosionPotion;
   public static Sprite[] heart;
   public static Sprite[] speedPotion;
+
+  public static Sprite[] balloom;
+  public static Sprite[] oneal;
 
   // statics
   public static Sprite[] obstacle;
@@ -108,6 +112,29 @@ public class Sprite {
     for (int i = 0; i <= 7; i++) {
       speedPotion[i] = new Sprite(i * 135, 0, 135, 174, SpriteSheet.speedPotion);
     }
+
+    // Monster
+    balloom = new Sprite[7];
+    balloom[0] = new Sprite(16, 5, 16, 16, SpriteSheet.balloomAndOneal);
+    balloom[1] = new Sprite(32, 5, 16, 16, SpriteSheet.balloomAndOneal);
+    balloom[2] = new Sprite(49, 5, 16, 16, SpriteSheet.balloomAndOneal);
+    balloom[3] = new Sprite(64, 5, 16, 16, SpriteSheet.balloomAndOneal);
+    balloom[4] = new Sprite(80, 5, 16, 16, SpriteSheet.balloomAndOneal);
+    balloom[5] = new Sprite(96, 5, 16, 16, SpriteSheet.balloomAndOneal);
+    balloom[6] = new Sprite(112, 5, 16, 16, SpriteSheet.balloomAndOneal);
+
+    oneal = new Sprite[8];
+    oneal[0] = new Sprite(5, 88, 16, 16, SpriteSheet.balloomAndOneal);
+    oneal[1] = new Sprite(24, 88, 16, 16, SpriteSheet.balloomAndOneal);
+    oneal[2] = new Sprite(41, 88, 16, 16, SpriteSheet.balloomAndOneal);
+    oneal[3] = new Sprite(59, 88, 16, 16, SpriteSheet.balloomAndOneal);
+    oneal[4] = new Sprite(77, 88, 16, 16, SpriteSheet.balloomAndOneal);
+    oneal[5] = new Sprite(95, 88, 16, 16, SpriteSheet.balloomAndOneal);
+    oneal[6] = new Sprite(112, 88, 16, 16, SpriteSheet.balloomAndOneal);
+    oneal[7] = new Sprite(131, 88, 16, 16, SpriteSheet.balloomAndOneal);
+
+    enemy.put("balloom", balloom);
+    enemy.put("oneal", oneal);
 
     // statics
     obstacle = new Sprite[4];
