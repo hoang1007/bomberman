@@ -18,7 +18,7 @@ public class SortedList<T extends Comparable<T>> extends ArrayList<T> {
       // if value is greater than tail of list
       // insert to the last
       super.add(value);
-    } else if (value.compareTo(this.get(0)) < 0) { 
+    } else if (value.compareTo(this.get(0)) < 0) {
       // if value is smaller than head of list
       // insert to the head
       super.add(0, value);
