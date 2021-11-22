@@ -5,7 +5,6 @@ import java.util.List;
 import uet.gryffindor.GameApplication;
 import uet.gryffindor.game.base.GameObject;
 import uet.gryffindor.util.MapParser;
-import uet.gryffindor.util.MapParser1;
 import uet.gryffindor.util.SortedList;
 
 public class Map {
@@ -63,6 +62,6 @@ public class Map {
 
   public static Map getByLevel(int level) {
     level = 2;
-    return MapParser1.parse(GameApplication.class.getResourceAsStream("map/" + level + ".txt"));
+    return MapParser.parse(GameApplication.class.getResourceAsStream("map/" + level + ".txt"));
   }
 }
