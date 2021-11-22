@@ -128,8 +128,9 @@ public class Collider {
   /**
    * Kiểm tra va chạm của tất cả các collider được khai báo. Nếu có hai collider va chạm với nhau,
    * các hàm {@link GameObject#onCollision(Collider)} của game object chứa colldier sẽ được gọi.
+   * @param objects
    */
-  public static void checkCollision() {
+  public static void checkCollision(List<GameObject> objects) {
     for (int i = 0; i < colliders.size(); i++) {
       Collider a = colliders.get(i);
 

@@ -11,6 +11,7 @@ import uet.gryffindor.game.object.DynamicObject;
 
 public class Balloom extends DynamicObject {
   private DoubleProperty speed; // tốc độ cho từng enemy
+  private boolean isDead = false;
   private boolean isBlocked = false;
   private Vector2D oldPosition;
 
@@ -30,6 +31,8 @@ public class Balloom extends DynamicObject {
   }
 
   private void move() {
+
+    //cho enemy đi theo pattern.
     int value = ((int) (Math.random() * 100)) % 4;
     // random hướng cho enemy.
     switch (GameAction.valueOf(value)) {
