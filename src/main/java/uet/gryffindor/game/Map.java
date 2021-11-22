@@ -1,11 +1,11 @@
 package uet.gryffindor.game;
 
+import java.util.List;
+
 import uet.gryffindor.GameApplication;
 import uet.gryffindor.game.base.GameObject;
-import uet.gryffindor.util.MapParser1;
+import uet.gryffindor.util.MapParser;
 import uet.gryffindor.util.SortedList;
-
-import java.util.List;
 
 public class Map {
   private int[][] rawMap;
@@ -17,10 +17,10 @@ public class Map {
 
   /**
    * Màn chơi của game.
-   *
-   * @param rawMap bản đồ thô sơ
+   * 
+   * @param rawMap  bản đồ thô sơ
    * @param objects các game object có trong map
-   * @param level level của map
+   * @param level   level của map
    */
   public Map(int[][] rawMap, SortedList<GameObject> objects, int level) {
     this.rawMap = rawMap;
@@ -29,6 +29,7 @@ public class Map {
     this.score = 0;
     height = rawMap.length;
     width = rawMap[0].length;
+
   }
 
   public List<GameObject> getObjects() {
@@ -61,6 +62,6 @@ public class Map {
 
   public static Map getByLevel(int level) {
     level = 2;
-    return MapParser1.parse(GameApplication.class.getResourceAsStream("map/" + level + ".txt"));
+    return MapParser.parse(GameApplication.class.getResourceAsStream("map/" + level + ".txt"));
   }
 }
