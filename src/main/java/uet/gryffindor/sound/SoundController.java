@@ -11,11 +11,31 @@ public class SoundController {
   private MediaPlayer mediaPlayer;
 
   /**
+   * Constructor
+   * @param path gang dẫn file âm thanh mp3.
+   */
+  public SoundController(String path) {
+    this.path = path;
+    this.initSound();
+  }
+
+  public void setPath(String path) {
+    this.path = path;
+  }
+
+  public Media getSound() {
+    return sound;
+  }
+
+  public MediaPlayer getMediaPlayer() {
+    return mediaPlayer;
+  }
+
+  /**
    * Hàm khởi tạo âm thanh.
    *
-   * @param path đường dẫn file âm thanh mp3.
    */
-  public void initSound(String path) {
+  public void initSound() {
     sound = new Media(new File(path).toURI().toString());
     mediaPlayer = new MediaPlayer(sound);
   }

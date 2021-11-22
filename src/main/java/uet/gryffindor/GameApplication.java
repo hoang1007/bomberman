@@ -5,18 +5,22 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import uet.gryffindor.sound.SoundInGame;
 
 import java.io.IOException;
 
 /** JavaFX App. */
 public class GameApplication extends Application {
   private static Scene scene;
+  private static SoundInGame soundInGame;
 
   @Override
   public void start(Stage stage) throws IOException {
     scene = new Scene(loadFXML("main"));
     stage.setScene(scene);
     stage.show();
+    soundInGame = new SoundInGame();
+    soundInGame.playAudio();
   }
 
   public static void setRoot(String fxml) {
