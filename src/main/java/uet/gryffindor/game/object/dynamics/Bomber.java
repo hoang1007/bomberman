@@ -65,7 +65,7 @@ public class Bomber extends DynamicObject {
     if (that.gameObject instanceof Unmovable) {
       // nếu bomber va chạm với vật thể tĩnh
       // khôi phục vị trí trước khi va chạm
-      position = oldPosition.smooth(this.dimension.x);
+      position = oldPosition.smooth(this.dimension.x, 0.3);
       // gắn nhãn bị chặn
       isBlocked = true;
     }

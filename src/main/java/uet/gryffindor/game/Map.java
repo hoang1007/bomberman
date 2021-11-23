@@ -1,7 +1,5 @@
 package uet.gryffindor.game;
 
-import java.util.List;
-
 import uet.gryffindor.GameApplication;
 import uet.gryffindor.game.base.GameObject;
 import uet.gryffindor.util.MapParser;
@@ -9,7 +7,7 @@ import uet.gryffindor.util.SortedList;
 
 public class Map {
   private int[][] rawMap;
-  private List<GameObject> objects;
+  private SortedList<GameObject> objects;
   private int level;
   private int score;
   private int height;
@@ -32,7 +30,7 @@ public class Map {
 
   }
 
-  public List<GameObject> getObjects() {
+  public SortedList<GameObject> getObjects() {
     return this.objects;
   }
 
