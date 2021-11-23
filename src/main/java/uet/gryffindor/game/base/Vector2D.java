@@ -20,6 +20,13 @@ public class Vector2D {
     return new Vector2D(1, 1);
   }
 
+  public static double distanceOfPoint(Vector2D a, Vector2D b) {
+    double deltaX = a.x - b.x;
+    double deltaY = a.y - b.y;
+
+    return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+  }
+
   public void setValue(double x, double y) {
     this.x = x;
     this.y = y;
@@ -54,20 +61,31 @@ public class Vector2D {
     return new Vector2D(this.x * factor, this.y * factor);
   }
 
+  public boolean equals(Object o) {
+    if (o instanceof Vector2D) {
+      Vector2D that = (Vector2D) o;
+
+      return that.x == this.x && that.y == this.y;
+    }
+
+    return false;
+  }
+
   public Vector2D clone() {
     return new Vector2D(this.x, this.y);
   }
 
   /**
    * Làm tròn x, y với factor cho trước.
-   * @param factor giá trị làm tròn
+   * @param unit đơn vị làm tròn
+   * @param factor độ làm tròn
    * @return vector sau khi làm tròn
    */
-  public Vector2D smooth(double factor) {
-    double x = Math.round(this.x / factor) * factor;
-    double y = Math.round(this.y / factor) * factor;
+  public Vector2D smooth(double unit, double factor) {
+    double x = Math.round(this.x / unit) * unit;
+    double y = Math.round(this.y / unit) * unit;
 
-    double delta = factor * 0.3;
+    double delta = unit * factor;
     if (Math.abs(x - this.x) <= delta && Math.abs(y - this.y) <= delta) {
       this.setValue(x, y);
     }
