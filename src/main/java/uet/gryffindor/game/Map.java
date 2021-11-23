@@ -2,6 +2,7 @@ package uet.gryffindor.game;
 
 import uet.gryffindor.GameApplication;
 import uet.gryffindor.game.base.GameObject;
+import uet.gryffindor.game.base.Vector2D;
 import uet.gryffindor.util.MapParser;
 import uet.gryffindor.util.SortedList;
 
@@ -56,6 +57,22 @@ public class Map {
 
   public int getHeight() {
     return this.height;
+  }
+
+  /**
+   * Tìm object với loại mong muốn theo position.
+   * @param position
+   * @param type class của object
+   * @return object
+   */
+  public <T> T getObject(Vector2D position, Class<T> type) {
+    for (GameObject object : this.objects) {
+      if (type.isInstance(object) && object.position.equals(position)) {
+        return type.cast(object);
+      }
+    }
+
+    return null;
   }
 
   public static Map getByLevel(int level) {
