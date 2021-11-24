@@ -9,6 +9,7 @@ import uet.gryffindor.game.behavior.Unmovable;
 import uet.gryffindor.game.engine.Collider;
 import uet.gryffindor.game.engine.Input;
 import uet.gryffindor.game.object.DynamicObject;
+import uet.gryffindor.game.object.dynamics.enemy.Enemy;
 import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.graphic.texture.AnimateTexture;
 
@@ -68,6 +69,8 @@ public class Bomber extends DynamicObject {
       position = oldPosition.smooth(this.dimension.x, 0.3);
       // gắn nhãn bị chặn
       isBlocked = true;
+    } else if (that.gameObject instanceof Enemy) {
+      // this.destroy();
     }
   }
 

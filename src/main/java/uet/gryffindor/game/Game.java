@@ -54,7 +54,6 @@ public class Game {
 
       if (curSize > oldSize) {
         var obj = objects.getLastElement();
-        obj.second.start();
         if (obj.first <= i) {
           i += 1;
         }
