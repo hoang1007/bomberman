@@ -28,7 +28,7 @@ public class Game {
     context = canvas.getGraphicsContext2D();
     camera = new Camera(canvas);
 
-    policy = new EpsilonGreedyPolicy(true);
+    policy = new EpsilonGreedyPolicy(false);
     GameApplication.onExit(policy::save);
 
     timer = new AnimationTimer() {

@@ -21,7 +21,7 @@ public class GameApplication extends Application {
     scene = new Scene(loadFXML("main"));
     stage.setScene(scene);
     stage.show();
-    stage.setOnCloseRequest(event -> func.invoke());
+    stage.setOnCloseRequest(event -> {if (func != null) func.invoke();});
   }
 
   public static void setRoot(String fxml) {
@@ -40,7 +40,7 @@ public class GameApplication extends Application {
     return FXMLLoader.load(GameApplication.class.getResource(fxml + ".fxml"));
   }
 
-  // public static void main(String[] args) {
-  //   launch(args);
-  // }
+  public static void main(String[] args) {
+    launch(args);
+  }
 }

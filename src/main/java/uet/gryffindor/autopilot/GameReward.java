@@ -30,7 +30,7 @@ public class GameReward {
     double dis = Vector2D.distanceOfPoint(item.position, agent.position);
 
     if (dis < disToItem) {
-      disToItem = dis;
+      disToItem = dis == 0 ? Double.MAX_VALUE : dis;
       return 1;
     } else if (dis > disToItem) {
       return -1;

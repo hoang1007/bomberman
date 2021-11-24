@@ -30,4 +30,14 @@ public class OtherUtils {
 
     return Pair.of(maxId, max);
   }
+
+  public static Double[] toObject(double[] values) {
+    Double[] result = new Double[values.length];
+
+    for (int i = 0; i < values.length; i++) {
+      result[i] = Double.valueOf(values[i]);
+    }
+
+    return result;
+  }
 }

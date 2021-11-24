@@ -32,13 +32,13 @@ public class Bomber extends DynamicObject {
 
   @Override
   public void update() {
-    if (!isBlocked) {
-      oldPosition = position.clone();
-      if (!auto) move();
+    if (!isBlocked && !auto) {
+      move();
     }
   }
 
   private void move() {
+    oldPosition = position.clone();
     switch (Input.INSTANCE.getCode()) {
       case UP:
         this.position.y -= speed.get();
@@ -63,25 +63,28 @@ public class Bomber extends DynamicObject {
   }
 
   public void autopilot(GameAction action) {
-    switch (action) {
-      case UP:
-        this.position.y -= Sprite.DEFAULT_SIZE;
-        texture.changeTo("up");
-        break;
-      case DOWN: 
-        this.position.y += Sprite.DEFAULT_SIZE;
-        texture.changeTo("down");
-        break;
-      case RIGHT:
-        this.position.x += Sprite.DEFAULT_SIZE;
-        texture.changeTo("right");
-        break;
-      case LEFT:
-        this.position.x -= Sprite.DEFAULT_SIZE;
-        texture.changeTo("left");
-        break;
-      default:
-        break;
+    if (!isBlocked) {
+      oldPosition = position.clone();
+      switch (action) {
+        case UP:
+          this.position.y -= Sprite.DEFAULT_SIZE;
+          texture.changeTo("up");
+          break;
+        case DOWN: 
+          this.position.y += Sprite.DEFAULT_SIZE;
+          texture.changeTo("down");
+          break;
+        case RIGHT:
+          this.position.x += Sprite.DEFAULT_SIZE;
+          texture.changeTo("right");
+          break;
+        case LEFT:
+          this.position.x -= Sprite.DEFAULT_SIZE;
+          texture.changeTo("left");
+          break;
+        default:
+          break;
+      }
     }
   }
 

@@ -1,9 +1,5 @@
 package uet.gryffindor.autopilot;
 
-import org.nd4j.linalg.api.buffer.DataType;
-import org.nd4j.linalg.api.ndarray.INDArray;
-import org.nd4j.linalg.factory.Nd4j;
-
 import uet.gryffindor.game.base.GameObject;
 import uet.gryffindor.game.base.Vector2D;
 import uet.gryffindor.game.object.statics.items.Item;
@@ -25,12 +21,9 @@ public class GameState {
   private static final int down = 2;
   private static final int up = 3;
 
-  public INDArray data;
   String ele = "";
 
   private GameState(int[] array) {
-    this.data = Nd4j.create(array, new long[]{1, array.length}, DataType.INT16);
-    
     for (int i : array) {
       ele += i;
     }
@@ -75,12 +68,12 @@ public class GameState {
   private static <T extends GameObject> int[] getRelativeNearestObject(Vector2D agentPos, GameEnvironment env, Class<T> clazz) {
     T nearestObj = null;
     double minDis = Double.MAX_VALUE;
-    for (T enemy : env.getObject(clazz)) {
-      double dis = Vector2D.distanceOfPoint(agentPos, enemy.position);
+    for (T obj : env.getObject(clazz)) {
+      double dis = Vector2D.distanceOfPoint(agentPos, obj.position);
 
       if (minDis > dis) {
         minDis = dis;
-        nearestObj = enemy;
+        nearestObj = obj;
       }
     }
     
