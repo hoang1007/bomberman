@@ -27,7 +27,7 @@ public class GameReward {
 
     Item item = env.getObject(Item.class).get(0);
 
-    double dis = Vector2D.distanceOfPoint(item.position, agent.position);
+    double dis = Vector2D.euclideanDistance(item.position, agent.position);
 
     if (dis < disToItem) {
       disToItem = dis == 0 ? Double.MAX_VALUE : dis;

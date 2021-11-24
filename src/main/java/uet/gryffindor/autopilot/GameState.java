@@ -69,7 +69,7 @@ public class GameState {
     T nearestObj = null;
     double minDis = Double.MAX_VALUE;
     for (T obj : env.getObject(clazz)) {
-      double dis = Vector2D.distanceOfPoint(agentPos, obj.position);
+      double dis = Vector2D.euclideanDistance(agentPos, obj.position);
 
       if (minDis > dis) {
         minDis = dis;

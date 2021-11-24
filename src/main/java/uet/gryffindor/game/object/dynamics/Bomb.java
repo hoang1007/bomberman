@@ -3,6 +3,7 @@ package uet.gryffindor.game.object.dynamics;
 import uet.gryffindor.game.Manager;
 import uet.gryffindor.game.base.GameObject;
 import uet.gryffindor.game.base.OrderedLayer;
+import uet.gryffindor.game.base.Vector2D;
 import uet.gryffindor.game.object.dynamics.explosion.Explosion;
 import uet.gryffindor.graphic.Animator;
 import uet.gryffindor.graphic.sprite.Sprite;
@@ -58,10 +59,7 @@ public class Bomb extends GameObject {
 
         if (explored) {
             // thêm vụ nổ ở trung tâm.
-            Explosion centerExplosion = new Explosion();
-            centerExplosion.start();
-            centerExplosion.position.setValue(this.position);
-            GameObject.addObject(centerExplosion);
+            GameObject.instantiate(Explosion.class, this.position);
             System.out.println("posX: " + (this.position.x / Sprite.DEFAULT_SIZE));
             System.out.println("posY: " + (this.position.y / Sprite.DEFAULT_SIZE));
             // thêm vụ nổ các hướng sang phải
@@ -110,10 +108,11 @@ public class Bomb extends GameObject {
         if (entangle(coordinatesX, coordinatesY)) {
             return false;
         } else {
-            Explosion e = new Explosion();
-            e.start();
-            e.position.setValue(x, y);
-            GameObject.addObject(e);
+            // Explosion e = new Explosion(new Vector2D(x, y));
+            // e.start();
+            // e.position.setValue(x, y);
+            // // GameObject.addObject(e);
+            GameObject.instantiate(Explosion.class, new Vector2D(x, y));
             return true;
         }
     }

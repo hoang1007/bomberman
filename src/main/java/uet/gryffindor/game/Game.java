@@ -15,6 +15,7 @@ import uet.gryffindor.game.engine.Collider;
 import uet.gryffindor.game.engine.FpsTracker;
 import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.graphic.texture.Texture;
+import uet.gryffindor.util.SortedList;
 
 public class Game {
   private AnimationTimer timer;
@@ -49,6 +50,24 @@ public class Game {
     this.setMap(Map.getByLevel(1));
     policy.initialize(this);
 
+    SortedList<GameObject> objects = playingMap.getObjects();
+
+    // Gọi phương thức khởi tạo thuộc tính
+    // Bao gồm cả trường hợp kích thước của list thay đổi
+    for (int i = 0; i < objects.size(); i++) {
+      int oldSize = objects.size();
+      objects.get(i).start();
+      int curSize = objects.size();
+
+      if (curSize > oldSize) {
+        var obj = objects.getLastElement();
+        if (obj.first <= i) {
+          i += 1;
+        }
+      }
+    }
+
+    playingMap.getObjects().sort();
     timer.start();
   }
 

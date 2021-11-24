@@ -1,15 +1,14 @@
 package uet.gryffindor.game;
 
-import java.util.List;
-
 import uet.gryffindor.GameApplication;
 import uet.gryffindor.game.base.GameObject;
+import uet.gryffindor.game.base.Vector2D;
 import uet.gryffindor.util.MapParser;
 import uet.gryffindor.util.SortedList;
 
 public class Map {
   private int[][] rawMap;
-  private List<GameObject> objects;
+  private SortedList<GameObject> objects;
   private int level;
   private int score;
   private int height;
@@ -32,7 +31,7 @@ public class Map {
 
   }
 
-  public List<GameObject> getObjects() {
+  public SortedList<GameObject> getObjects() {
     return this.objects;
   }
 
@@ -60,7 +59,24 @@ public class Map {
     return this.height;
   }
 
+  /**
+   * Tìm object với loại mong muốn theo position.
+   * @param position
+   * @param type class của object
+   * @return object
+   */
+  public <T> T getObject(Vector2D position, Class<T> type) {
+    for (GameObject object : this.objects) {
+      if (type.isInstance(object) && object.position.equals(position)) {
+        return type.cast(object);
+      }
+    }
+
+    return null;
+  }
+
   public static Map getByLevel(int level) {
+    level = 2;
     return MapParser.parse(GameApplication.class.getResourceAsStream("map/" + level + ".txt"));
   }
 }

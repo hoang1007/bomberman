@@ -20,11 +20,18 @@ public class Vector2D {
     return new Vector2D(1, 1);
   }
 
-  public static double distanceOfPoint(Vector2D a, Vector2D b) {
+  public static double euclideanDistance(Vector2D a, Vector2D b) {
     double deltaX = a.x - b.x;
     double deltaY = a.y - b.y;
 
     return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+  }
+
+  public static double manhattanDistance(Vector2D a, Vector2D b) {
+    double deltaX = a.x - b.x;
+    double deltaY = a.y - b.y;
+
+    return Math.abs(deltaX) + Math.abs(deltaY); 
   }
 
   public void setValue(double x, double y) {
@@ -69,6 +76,10 @@ public class Vector2D {
     }
 
     return false;
+  }
+
+  public int hashCode() {
+    return this.toString().hashCode();
   }
 
   public Vector2D clone() {
