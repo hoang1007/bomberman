@@ -40,4 +40,14 @@ public class OtherUtils {
 
     return result;
   }
+
+  public static Integer[] toObject(int[] values) {
+    Integer[] result = new Integer[values.length];
+
+    for (int i = 0; i < values.length; i++) {
+      result[i] = Integer.valueOf(values[i]);
+    }
+
+    return result;
+  }
 }

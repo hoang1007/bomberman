@@ -1,9 +1,17 @@
 package uet.gryffindor.autopilot;
 
-import uet.gryffindor.game.base.GameObject;
+import java.util.HashMap;
+
+import org.nd4j.linalg.api.buffer.DataType;
+import org.nd4j.linalg.api.ndarray.INDArray;
+import org.nd4j.linalg.factory.Nd4j;
+
 import uet.gryffindor.game.base.Vector2D;
+import uet.gryffindor.game.object.dynamics.enemy.Enemy;
+import uet.gryffindor.game.object.statics.Brick;
 import uet.gryffindor.game.object.statics.items.Item;
 import uet.gryffindor.graphic.sprite.Sprite;
+import uet.gryffindor.util.OtherUtils;
 
 public class GameState {
   public static final int N_FEATURES = 24;
@@ -21,15 +29,27 @@ public class GameState {
   private static final int down = 2;
   private static final int up = 3;
 
-  String ele = "";
+  private String ele = "";
+  private INDArray array;
 
   private GameState(int[] array) {
+    if (array.length != N_FEATURES) {
+      System.out.println("sadasd");
+    }
+    
     for (int i : array) {
       ele += i;
     }
+
+    this.array = Nd4j.create(array, new long[] {1, array.length}, DataType.INT16);
   }
 
-  public static GameState getStateAsArray(Vector2D agentPos, GameEnvironment env) {
+  public INDArray getNdArray() {
+    return this.array;
+  }
+
+  /** Array of features. */
+  public static GameState getState(Vector2D agentPos, GameEnvironment env) {
     int[] state = new int[N_FEATURES];
     int i = 0;
     // wall
@@ -38,7 +58,7 @@ public class GameState {
     }
 
     // brick
-    for (int k : new int[4]) {
+    for (int k : getRelativeWithObstacles(agentPos, env)) {
       state[i++] = k;
     }
 
@@ -53,31 +73,55 @@ public class GameState {
     }
 
     // item
-    for (int k : getRelativeNearestObject(agentPos, env, Item.class)) {
+    for (int k : getRelativeWithItems(agentPos, env)) {
       state[i++] = k;
     }
     
     // enemy
-    for (int k : new int[4]) {
+    for (int k : getRelativeWithEnemies(agentPos, env)) {
       state[i++] = k;
     }
 
     return new GameState(state);
   }
 
-  private static <T extends GameObject> int[] getRelativeNearestObject(Vector2D agentPos, GameEnvironment env, Class<T> clazz) {
-    T nearestObj = null;
-    double minDis = Double.MAX_VALUE;
-    for (T obj : env.getObject(clazz)) {
-      double dis = Vector2D.euclideanDistance(agentPos, obj.position);
+  private static int[] getRelativeWithObstacles(Vector2D agentPos, GameEnvironment env) {
+    HashMap<Vector2D, Integer[]> neighbors = new HashMap<>();
+    neighbors.put(agentPos.subtract(new Vector2D(0, Sprite.DEFAULT_SIZE)), null); // up
+    neighbors.put(agentPos.add(new Vector2D(0, Sprite.DEFAULT_SIZE)), null);  // down
+    neighbors.put(agentPos.subtract(new Vector2D(Sprite.DEFAULT_SIZE, 0)), null); // left
+    neighbors.put(agentPos.add(new Vector2D(Sprite.DEFAULT_SIZE, 0)), null);  // right
 
-      if (minDis > dis) {
-        minDis = dis;
-        nearestObj = obj;
+    for (Brick brick : env.getObject(Brick.class)) {
+      if (neighbors.containsKey(brick.position)) {
+        neighbors.put(brick.position, OtherUtils.toObject(getRelativePosition(agentPos, brick.position)));
       }
     }
-    
-    return getRelativePosition(agentPos, nearestObj.position);
+
+    int[] pos = new int[4];
+
+    for (Integer[] relativePos : neighbors.values()) {
+      if (relativePos != null) {
+        for (int i = 0; i < pos.length; i++) {
+          if (relativePos[i] == 1) {
+            pos[i] = 1;
+          }
+        }
+      }
+    }
+
+    return pos;
+  }
+
+  private static int[] getRelativeWithItems(Vector2D agentPos, GameEnvironment env) {
+    int[] pos = new int[4];
+    Item item = env.getNearestObject(Item.class);
+
+    if (item == null) {
+      return pos;
+    }
+
+    return getRelativePosition(agentPos, item.position);
   }
 
   private static int[] getRelativeWithWall(Vector2D agentPos, GameEnvironment env) {
@@ -87,25 +131,48 @@ public class GameState {
 
     // up
     wallPos.setValue(agentPos.x, agentPos.y - Sprite.DEFAULT_SIZE);
-    pos[up] = env.getWallMap().get(wallPos.toString()) == null ? 0 : 1;
+    pos[up] = env.getWallMap().get(wallPos) == null ? 0 : 1;
 
     // down
     wallPos.setValue(agentPos.x, agentPos.y + Sprite.DEFAULT_SIZE);
-    pos[down] = env.getWallMap().get(wallPos.toString()) == null ? 0 : 1;
+    pos[down] = env.getWallMap().get(wallPos) == null ? 0 : 1;
 
     // left
     wallPos.setValue(agentPos.x - Sprite.DEFAULT_SIZE, agentPos.y);
-    pos[left] = env.getWallMap().get(wallPos.toString()) == null ? 0 : 1;
+    pos[left] = env.getWallMap().get(wallPos) == null ? 0 : 1;
 
     // right
     wallPos.setValue(agentPos.x + Sprite.DEFAULT_SIZE, agentPos.y);
-    pos[right] = env.getWallMap().get(wallPos.toString()) == null ? 0 : 1;
+    pos[right] = env.getWallMap().get(wallPos) == null ? 0 : 1;
+
+    return pos;
+  }
+
+  private static int[] getRelativeWithEnemies(Vector2D agentPos, GameEnvironment env) {
+    int[] pos = new int[4];
+    double dangerZone = Sprite.DEFAULT_SIZE * 3;
+
+    for (Enemy enemy : env.getObject(Enemy.class)) {
+      if (Vector2D.euclideanDistance(agentPos, enemy.position) <= dangerZone) {
+        int[] posI = getRelativePosition(agentPos, enemy.position);
+
+        for (int i = 0; i < posI.length; i++) {
+          if (posI[i] == 1) {
+            pos[i] = 1;
+          }
+        }
+      }
+    }
 
     return pos;
   }
 
   private static int[] getRelativePosition(Vector2D posSrc, Vector2D posDst) {
     int[] pos = new int[4];
+    
+    if (posDst == null) {
+      return null;
+    }
 
     if (posDst.x < posSrc.x) {
       pos[left] = 1;
@@ -125,5 +192,10 @@ public class GameState {
   @Override
   public String toString() {
     return ele;
+  }
+
+  @Override
+  public int hashCode() {
+    return toString().hashCode();
   }
 }

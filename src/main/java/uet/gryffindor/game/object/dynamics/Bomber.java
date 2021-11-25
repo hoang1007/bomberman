@@ -11,6 +11,8 @@ import uet.gryffindor.game.engine.Collider;
 import uet.gryffindor.game.engine.Input;
 import uet.gryffindor.game.object.DynamicObject;
 import uet.gryffindor.game.object.dynamics.enemy.Enemy;
+import uet.gryffindor.game.object.statics.Portal;
+import uet.gryffindor.game.object.statics.items.Item;
 import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.graphic.texture.AnimateTexture;
 
@@ -18,8 +20,10 @@ public class Bomber extends DynamicObject {
   private DoubleProperty speed;
 
   private boolean isBlocked = false;
-  private boolean auto = false;
+  private boolean auto = true;
   private Vector2D oldPosition;
+  private boolean dead = false;
+  private boolean won = false;
 
   @Override
   public void start() {
@@ -98,7 +102,10 @@ public class Bomber extends DynamicObject {
       // gắn nhãn bị chặn
       isBlocked = true;
     } else if (that.gameObject instanceof Enemy) {
-      // this.destroy();
+      this.destroy();
+      dead = true;
+    } else if (that.gameObject instanceof Item) {
+      won = true;
     }
   }
 
@@ -115,5 +122,13 @@ public class Bomber extends DynamicObject {
 
   public void setAuto(boolean b) {
     this.auto = b;
+  }
+
+  public boolean isDeath() {
+    return this.dead;
+  }
+
+  public boolean isWon() {
+    return this.won;
   }
 }

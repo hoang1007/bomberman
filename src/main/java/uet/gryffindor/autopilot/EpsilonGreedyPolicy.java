@@ -1,113 +1,144 @@
 package uet.gryffindor.autopilot;
 
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Random;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import org.deeplearning4j.nn.conf.MultiLayerConfiguration;
+import org.deeplearning4j.nn.conf.NeuralNetConfiguration;
+import org.deeplearning4j.nn.conf.layers.DenseLayer;
+import org.deeplearning4j.nn.conf.layers.OutputLayer;
+import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
+import org.deeplearning4j.nn.weights.WeightInit;
+import org.nd4j.linalg.activations.Activation;
+import org.nd4j.linalg.api.ndarray.INDArray;
+import org.nd4j.linalg.learning.config.Adam;
+import org.nd4j.linalg.lossfunctions.LossFunctions;
 
 import uet.gryffindor.game.Game;
 import uet.gryffindor.game.engine.BaseService;
-import uet.gryffindor.game.object.dynamics.Bomber;
-import uet.gryffindor.game.object.statics.items.Item;
-import uet.gryffindor.util.OtherUtils;
-import uet.gryffindor.util.Pair;
 
 public class EpsilonGreedyPolicy extends BaseService {
-  private HashMap<String, double[]> qTable = new HashMap<>();
-  private double epsilon = 0.6;
-  private double lr = 0.1;
-  private double discountFactor = 0.9;
-  private Random random;
+    // Double Deep Q-Learning
+    private MultiLayerNetwork model1;
+    private MultiLayerNetwork model2;
+    private MemoryBatch memoryBatch;
+    private GameEnvironment env;
+    private Random random;
 
-  private GameEnvironment env;
-  private Bomber agent;
+    private final int N_HIDDENS = 128;
+    private final int N_LAYERS = 3;
 
-  public EpsilonGreedyPolicy(boolean trainContinue) {
-    if (trainContinue) {
-      try (FileReader reader = new FileReader(new File("src/main/resources/uet/gryffindor/table.json"))) {
-        qTable = new Gson().fromJson(reader, new TypeToken<HashMap<String, double[]>>(){}.getType());
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
+    /**
+     * Initialize deep network.
+     * 
+     * @param update restore previous version
+     */
+    public EpsilonGreedyPolicy(boolean update) {
+        if (update) {
+            try {
+                model1 = MultiLayerNetwork.load(new File("src/main/resources/uet/gryffindor/model1.pth"), true);
+
+                model2 = MultiLayerNetwork.load(new File("src/main/resources/uet/gryffindor/model2.pth"), true);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            MultiLayerConfiguration config = new NeuralNetConfiguration.Builder().activation(Activation.RELU)
+                    .weightInit(WeightInit.XAVIER).updater(new Adam()).list()
+                    .layer(new DenseLayer.Builder().nIn(GameState.N_FEATURES).nOut(N_HIDDENS).build())
+                    .layer(new DenseLayer.Builder().nIn(N_HIDDENS).nOut(N_HIDDENS).build())
+                    .layer(new OutputLayer.Builder(LossFunctions.LossFunction.MSE).nOut(GameAction.N_ACTIONS).build())
+                    .build();
+
+            model1 = new MultiLayerNetwork(config);
+            model2 = new MultiLayerNetwork(config);
+            model1.init();
+            model2.init();
+        }
+
+        memoryBatch = new MemoryBatch();
+        random = new Random();
     }
 
-    random = new Random();
-    random.setSeed(System.currentTimeMillis());
-  }
-
-  public void initialize(Game game) {
-    env = new GameEnvironment(game);
-    agent = env.getAgent();
-    agent.setAuto(true);
-  }  
-
-  public void save() {
-    try (FileWriter wr = new FileWriter(new File("src/main/resources/uet/gryffindor/table.json"))) {
-      new Gson().toJson(qTable, wr);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-  }
-
-  private GameAction getAction(GameState state) {
-    if (random.nextDouble() < epsilon) {
-      Pair<Integer, Double> maxQVal = OtherUtils.max(OtherUtils.toObject(qTable.get(state.toString())));
-
-      return GameAction.valueOf(maxQVal.first);
-    } else {
-      return GameAction.valueOf(random.nextInt(GameAction.N_ACTIONS));
-    }
-  }
-
-  private void reTrain() {
-    env.restart();
-    agent = env.getAgent();
-  }
-
-  private void trainModel(GameState oldState, GameState newState, GameAction action, int reward) {
-    double qOld = 0;
-    if (qTable.containsKey(oldState.toString())) {
-      qOld = qTable.get(oldState.toString())[action.ordinal()];
-    } else {
-      qTable.put(oldState.toString(), new double[GameAction.N_ACTIONS]);
+    public void initialize(Game game) {
+        env = new GameEnvironment(game);
     }
 
-    Pair<Integer, Double> futureQVal = null; 
-    if (qTable.containsKey(newState.toString())) {
-      double[] qAction = qTable.get(newState.toString());
-
-      futureQVal = OtherUtils.max(OtherUtils.toObject(qAction));
-    } else {
-      qTable.put(newState.toString(), new double[GameAction.N_ACTIONS]);
-      futureQVal = Pair.of(0, 0.0);
+    public void save() {
+        try {
+            model1.save(new File("src/main/resources/uet/gryffindor/model1.pth"), true);
+            model2.save(new File("src/main/resources/uet/gryffindor/model2.pth"), true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-    
-    double temporalDiff = reward + discountFactor * futureQVal.second - qOld;
 
-    double qNew = qOld + lr * temporalDiff;
+    private double bellmanEqualtion(double reward, GameState nextState) {
+        final double gamma = 0.7;
+        INDArray qvaluesOfModel1 = model1.feedForward(nextState.getNdArray()).get(N_LAYERS);
+        INDArray qvaluesOfModel2 = model2.feedForward(nextState.getNdArray()).get(N_LAYERS);
 
-    qTable.get(oldState.toString())[action.ordinal()] = qNew;
-  }
+        double maxQOfModel1 = qvaluesOfModel1.max().getDouble(0);
+        double maxQOfModel2 = qvaluesOfModel2.max().getDouble(0);
 
-  @Override
-  public void update() {
-    if (env.getObject(Item.class).isEmpty()) {
-      reTrain();
-    } else {
-      GameState state = GameState.getStateAsArray(agent.position, env);
-      GameAction action = getAction(state);
-
-      agent.autopilot(action);
-
-      int reward = GameReward.getReward(action, env);
-      GameState newState = GameState.getStateAsArray(agent.position, env);
-
-      trainModel(state, newState, action, reward);
+        return reward + gamma * (maxQOfModel1 < maxQOfModel2 ? maxQOfModel1 : maxQOfModel2);
     }
-  } 
+
+    private void updatePolicy() {
+        model1.fit(memoryBatch.features, memoryBatch.labels1);
+        model2.fit(memoryBatch.features, memoryBatch.labels2);
+        memoryBatch.clear();
+    }
+
+    private GameAction getAction(GameState state) {
+        final double epsilon = 0.6;
+        if (random.nextDouble() < epsilon) {
+            INDArray qValues = model1.feedForward(state.getNdArray()).get(N_LAYERS);
+            return GameAction.valueOf(qValues.argMax().getInt());
+        } else {
+            return GameAction.valueOf(random.nextInt(GameAction.N_ACTIONS));
+        }
+    }
+
+    //////// Update ////////
+    // Order of game services is: autopilot -> update game object -> collider update -> autopilot
+    // But rewards only can be updated when collider update is called
+    // Thus the update method is divided into two parts
+    // 1. Update previous parameters
+    // 2. Predict next action and call autopilot
+
+    private GameAction preAction = null;
+    private GameState preState = null;
+
+    @Override
+    public void update() {
+        GameState state = GameState.getState(env.getAgent().position, env);
+
+        if (preAction != null) {
+            double reward = GameReward.getReward(preAction, env);
+
+            double qExpected = bellmanEqualtion(reward, state);
+
+            INDArray predict1 = model1.feedForward(preState.getNdArray()).get(N_LAYERS);
+            INDArray predict2 = model2.feedForward(preState.getNdArray()).get(N_LAYERS);
+
+            memoryBatch.add(state, preAction, predict1, predict2, qExpected);
+
+            if (memoryBatch.isFull()) {
+                updatePolicy();
+            }
+        }
+
+        if (env.getAgent().isDeath() || env.getAgent().isWon()) {
+            preAction = null;
+            preState = null;
+            env.restart();
+        } else {
+            GameAction action = getAction(state);
+            env.getAgent().autopilot(action);
+            preState = state;
+            preAction = action;
+        }
+    }
 }

@@ -29,7 +29,7 @@ public class Game {
     context = canvas.getGraphicsContext2D();
     camera = new Camera(canvas);
 
-    policy = new EpsilonGreedyPolicy(false);
+    policy = new EpsilonGreedyPolicy(true);
     GameApplication.onExit(policy::save);
 
     timer = new AnimationTimer() {
@@ -47,8 +47,7 @@ public class Game {
   }
 
   public void start() {
-    this.setMap(Map.getByLevel(1));
-    policy.initialize(this);
+    this.setMap(Map.getByLevel(2));
 
     SortedList<GameObject> objects = playingMap.getObjects();
 
@@ -68,6 +67,8 @@ public class Game {
     }
 
     playingMap.getObjects().sort();
+
+    policy.initialize(this);
     timer.start();
   }
 

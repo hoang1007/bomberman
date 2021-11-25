@@ -10,10 +10,11 @@ public class GameReward {
   public static final int obstacle = -10;
   public static final int portal = 10;
   public static final int flame = -10;
-  public static final int enemy = -10;
+  public static final int dead = -10;
 
   private static double disToItem = Double.MAX_VALUE;
 
+  /** Reward after take an action. */
   public static int getReward(GameAction action, GameEnvironment env) {
     Bomber agent = env.getAgent();
 
@@ -21,19 +22,29 @@ public class GameReward {
       return obstacle;
     }
 
-    if (action == GameAction.BOMB || action == GameAction.STAND) {
-      return useless;
+    if (agent.isDeath()) {
+      System.out.println("Heavy penance");
+      return dead;
     }
 
-    Item item = env.getObject(Item.class).get(0);
+    if (agent.isWon()) {
+      return item;
+    }
+
+    Item item = env.getNearestObject(Item.class);
 
     double dis = Vector2D.euclideanDistance(item.position, agent.position);
 
     if (dis < disToItem) {
-      disToItem = dis == 0 ? Double.MAX_VALUE : dis;
+      disToItem = (dis == 0 ? Double.MAX_VALUE : dis);
       return 1;
     } else if (dis > disToItem) {
+      disToItem = dis;
       return -1;
+    }
+
+    if (action == GameAction.BOMB || action == GameAction.STAND) {
+      return useless;
     }
 
     return 0;

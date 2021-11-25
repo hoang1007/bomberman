@@ -32,49 +32,49 @@ public class Oneal extends Enemy {
     public void start() {
         this.texture = new AnimateTexture(this, 5, Sprite.oneal);
 
-        // Object giúp phát hiện bomber có vào vùng tấn công hay không
-        GameObject.addObject(new GameObject() {
-            private OutlineTexture texture;
+        // // Object giúp phát hiện bomber có vào vùng tấn công hay không
+        // GameObject.addObject(new GameObject() {
+        //     private OutlineTexture texture;
 
-            @Override
-            public void start() {
-                this.texture = new OutlineTexture(this, Color.RED);
-                this.orderedLayer = OrderedLayer.FOREGROUND;
-                this.position = Oneal.this.position;
-                // d = 2*r + 1
-                this.dimension = new Vector2D(attackRadius, attackRadius).add(this.dimension).multiply(2);
-            }
+        //     @Override
+        //     public void start() {
+        //         this.texture = new OutlineTexture(this, Color.RED);
+        //         this.orderedLayer = OrderedLayer.FOREGROUND;
+        //         this.position = Oneal.this.position;
+        //         // d = 2*r + 1
+        //         this.dimension = new Vector2D(attackRadius, attackRadius).add(this.dimension).multiply(2);
+        //     }
 
-            @Override
-            public void update() {
-                Vector2D center = Oneal.this.position.add(Oneal.this.dimension.multiply(0.5));
-                this.position = center.subtract(this.dimension.multiply(0.5));
-            }
+        //     @Override
+        //     public void update() {
+        //         Vector2D center = Oneal.this.position.add(Oneal.this.dimension.multiply(0.5));
+        //         this.position = center.subtract(this.dimension.multiply(0.5));
+        //     }
 
-            @Override
-            public void onCollisionStay(Collider that) {
-                if (that.gameObject instanceof Bomber) {
-                    if (traceBack.isEmpty()) {
-                        speed = 5.0;
-                        traceBack = findPath(that.gameObject.position);
-                        System.out.println(traceBack);
-                    }
-                }
-            }
+        //     @Override
+        //     public void onCollisionStay(Collider that) {
+        //         if (that.gameObject instanceof Bomber) {
+        //             if (traceBack.isEmpty()) {
+        //                 speed = 5.0;
+        //                 traceBack = findPath(that.gameObject.position);
+        //                 System.out.println(traceBack);
+        //             }
+        //         }
+        //     }
 
-            @Override
-            public void onCollisionExit(Collider that) {
-                if (that.gameObject instanceof Bomber) {
-                    traceBack.clear();
-                    speed = 3.0;
-                }
-            }
+        //     @Override
+        //     public void onCollisionExit(Collider that) {
+        //         if (that.gameObject instanceof Bomber) {
+        //             traceBack.clear();
+        //             speed = 3.0;
+        //         }
+        //     }
 
-            @Override
-            public Texture getTexture() {
-                return this.texture;
-            }
-        });
+        //     @Override
+        //     public Texture getTexture() {
+        //         return this.texture;
+        //     }
+        // });
     }
 
     @Override

@@ -5,6 +5,7 @@ public enum GameAction {
 
   public static final int N_ACTIONS = 6;
 
+  /** Value of ordinal of the action. */
   public static GameAction valueOf(int value) {
     switch (value) {
       case 0: return UP;
@@ -13,8 +14,7 @@ public enum GameAction {
       case 3: return RIGHT;
       case 4: return BOMB;
       case 5: return STAND;
+      default: return null;
     }
-
-    return null;
   }
 }

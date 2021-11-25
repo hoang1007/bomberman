@@ -74,6 +74,9 @@ public class MapParser {
             case 'e':
                 objects.add(type == 0 ? new Balloom() : new Oneal());
                 break;
+            case 'i':
+                objects.add(new SpeedItem());
+                break;
             default:
                 break;
             }

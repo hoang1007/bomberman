@@ -39,8 +39,4 @@ public class GameApplication extends Application {
   private static Parent loadFXML(String fxml) throws IOException {
     return FXMLLoader.load(GameApplication.class.getResource(fxml + ".fxml"));
   }
-
-  public static void main(String[] args) {
-    launch(args);
-  }
 }
