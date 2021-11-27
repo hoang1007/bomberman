@@ -62,6 +62,7 @@ public class AStar {
 
     /**
      * Chuyển list direction trên grid thành list position step.
+     * 
      * @param path
      * @param src
      * @param dst
@@ -122,7 +123,8 @@ public class AStar {
         return result;
     }
 
-    public static Queue<Vector2D> findPath(uet.gryffindor.game.Map map, Vector2D srcPosition, Vector2D dstPosition, double step) {
+    public static Queue<Vector2D> findPath(uet.gryffindor.game.Map map, Vector2D srcPosition, Vector2D dstPosition,
+            double step) {
         Stack<MoveStep> path = new Stack<>();
         Queue<MoveStep> queue = new PriorityQueue<>();
         Map<Vector2D, MoveStep> evaluated = new HashMap<>();
@@ -155,10 +157,12 @@ public class AStar {
 
         MoveStep traceBack = evaluated.get(dstGridPos);
 
-        if (traceBack.preStep != null) {
-            while (traceBack.preStep.direction != null) {
-                path.push(traceBack);
-                traceBack = traceBack.preStep;
+        if (traceBack != null) {
+            if (traceBack.preStep != null) {
+                while (traceBack.preStep.direction != null) {
+                    path.push(traceBack);
+                    traceBack = traceBack.preStep;
+                }
             }
         }
 
