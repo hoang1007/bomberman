@@ -4,7 +4,7 @@ import java.util.Random;
 
 import uet.gryffindor.game.behavior.Unmovable;
 import uet.gryffindor.game.engine.Collider;
-import uet.gryffindor.game.object.dynamics.Direction;
+import uet.gryffindor.game.movement.Direction;
 import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.graphic.texture.AnimateTexture;
 
