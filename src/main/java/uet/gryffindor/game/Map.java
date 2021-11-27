@@ -7,7 +7,7 @@ import uet.gryffindor.util.MapParser;
 import uet.gryffindor.util.SortedList;
 
 public class Map {
-  private int[][] rawMap;
+  private String[][] rawMap;
   private SortedList<GameObject> objects;
   private int level;
   private int score;
@@ -21,7 +21,7 @@ public class Map {
    * @param objects các game object có trong map
    * @param level   level của map
    */
-  public Map(int[][] rawMap, SortedList<GameObject> objects, int level) {
+  public Map(String[][] rawMap, SortedList<GameObject> objects, int level) {
     this.rawMap = rawMap;
     this.objects = objects;
     this.level = level;
@@ -35,11 +35,11 @@ public class Map {
     return this.objects;
   }
 
-  public int[][] getRawMap() {
+  public String[][] getRawMap() {
     return this.rawMap;
   }
 
-  public int getRawMapAt(int x, int y) {
+  public String getRawMapAt(int x, int y) {
     return rawMap[x][y];
   }
 
@@ -61,8 +61,9 @@ public class Map {
 
   /**
    * Tìm object với loại mong muốn theo position.
+   * 
    * @param position
-   * @param type class của object
+   * @param type     class của object
    * @return object
    */
   public <T> T getObject(Vector2D position, Class<T> type) {

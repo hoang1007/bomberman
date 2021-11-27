@@ -14,7 +14,7 @@ public class Bomb extends GameObject {
     private SpriteTexture texture;
     private Animator aboutToExplore;
     private boolean explored;
-    private long time; // giới hạn thời gian
+    public static long time; // giới hạn thời gian
     private long startTime;
     private int explosionRadius; // bán kính vụ nổ
 
@@ -60,8 +60,6 @@ public class Bomb extends GameObject {
         if (explored) {
             // thêm vụ nổ ở trung tâm.
             GameObject.instantiate(Explosion.class, this.position);
-            System.out.println("posX: " + (this.position.x / Sprite.DEFAULT_SIZE));
-            System.out.println("posY: " + (this.position.y / Sprite.DEFAULT_SIZE));
             // thêm vụ nổ các hướng sang phải
             for (int i = 1; i <= explosionRadius; i++) {
                 int x = (int) this.position.x + i * Sprite.DEFAULT_SIZE;
@@ -108,21 +106,17 @@ public class Bomb extends GameObject {
         if (entangle(coordinatesX, coordinatesY)) {
             return false;
         } else {
-            // Explosion e = new Explosion(new Vector2D(x, y));
-            // e.start();
-            // e.position.setValue(x, y);
-            // // GameObject.addObject(e);
             GameObject.instantiate(Explosion.class, new Vector2D(x, y));
             return true;
         }
     }
 
     public boolean entangle(int coordinatesX, int coordinatesY) {
-        int symbol = Manager.INSTANCE.getGame().getPlayingMap().getRawMapAt(coordinatesY, coordinatesX);
-        if (symbol != 07 && symbol != 01 && symbol != 25 && symbol != 04 && symbol != 26) {
-            return true;
+        String symbol = Manager.INSTANCE.getGame().getPlayingMap().getRawMapAt(coordinatesY, coordinatesX);
+        if (symbol.equals("f7") || symbol.equals("w25") || symbol.equals("w1") || symbol.equals("w4")) {
+            return false;
         }
-        return false;
+        return true;
     }
 
     public void setExplored(boolean explored) {

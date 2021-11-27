@@ -1,8 +1,12 @@
 package uet.gryffindor.game.object.dynamics;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import uet.gryffindor.game.Manager;
+import uet.gryffindor.game.base.GameObject;
 import uet.gryffindor.game.base.OrderedLayer;
 import uet.gryffindor.game.base.Vector2D;
 import uet.gryffindor.game.behavior.Unmovable;
@@ -19,6 +23,12 @@ public class Bomber extends DynamicObject {
   private boolean isBlocked = false;
   private Vector2D oldPosition;
 
+  private int numberOfBombs;
+  private int bombDropped;
+  private long delay;
+
+  private List<Long> sinceDropping;
+
   @Override
   public void start() {
     this.setTexture(new AnimateTexture(this, 3, Sprite.player));
@@ -27,10 +37,25 @@ public class Bomber extends DynamicObject {
 
     orderedLayer = OrderedLayer.MIDGROUND;
     oldPosition = position.clone();
+
+    numberOfBombs = 3;
+    bombDropped = 0;
+    sinceDropping = new ArrayList<>();
   }
 
   @Override
   public void update() {
+    for (int i = 0; i < sinceDropping.size(); i++) {
+      if (System.currentTimeMillis() - sinceDropping.get(i) >= Bomb.time) {
+        sinceDropping.remove(sinceDropping.get(i));
+        i--;
+      }
+    }
+
+    if (sinceDropping.isEmpty()) {
+      bombDropped = 0;
+    }
+
     if (!isBlocked) {
       oldPosition = position.clone();
       move();
@@ -54,6 +79,16 @@ public class Bomber extends DynamicObject {
       case LEFT:
         this.position.x -= speed.get();
         texture.changeTo("left");
+        break;
+      case SPACE:
+        if (bombDropped < numberOfBombs && System.currentTimeMillis() - delay >= 100) {
+          bombDropped++;
+          Bomb bomb = new Bomb();
+          bomb.position.setValue(this.position.clone().smooth(Sprite.DEFAULT_SIZE, 1));
+          GameObject.addObject(bomb);
+          sinceDropping.add(System.currentTimeMillis());
+          delay = System.currentTimeMillis();
+        }
         break;
       default:
         texture.pause();
