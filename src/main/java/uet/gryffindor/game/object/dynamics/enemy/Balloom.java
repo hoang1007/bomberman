@@ -20,7 +20,7 @@ public class Balloom extends Enemy {
 
     @Override
     public void update() {
-        move();
+        // move();
     }
 
     @Override

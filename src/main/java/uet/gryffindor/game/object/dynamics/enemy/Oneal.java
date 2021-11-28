@@ -80,11 +80,11 @@ public class Oneal extends Enemy {
     public void update() {
         oldPosition = position.clone();
 
-        if (!chasePath.isEmpty()) {
-            chase();
-        } else {
-            move();
-        }
+        // if (!chasePath.isEmpty()) {
+        //     chase();
+        // } else {
+        //     move();
+        // }
     }
 
     @Override
