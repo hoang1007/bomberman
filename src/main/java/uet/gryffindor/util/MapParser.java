@@ -14,6 +14,10 @@ import uet.gryffindor.game.object.dynamics.enemy.Oneal;
 import uet.gryffindor.game.object.statics.Brick;
 import uet.gryffindor.game.object.statics.Floor;
 import uet.gryffindor.game.object.statics.Wall;
+import uet.gryffindor.game.object.statics.items.BombItem;
+import uet.gryffindor.game.object.statics.items.FlameItem;
+import uet.gryffindor.game.object.statics.items.Item;
+import uet.gryffindor.game.object.statics.items.SpeedItem;
 import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.graphic.texture.SpriteTexture;
 
@@ -74,6 +78,7 @@ public class MapParser {
                 case 'e':
                     objects.add(type == 0 ? new Balloom() : new Oneal());
                     break;
+
                 default:
                     break;
             }

@@ -77,7 +77,7 @@ public class Map {
   }
 
   public static Map getByLevel(int level) {
-    level = 2;
+    level = 1;
     return MapParser.parse(GameApplication.class.getResourceAsStream("map/" + level + ".txt"));
   }
 }

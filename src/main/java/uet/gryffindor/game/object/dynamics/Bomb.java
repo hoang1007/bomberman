@@ -7,6 +7,7 @@ import uet.gryffindor.game.base.OrderedLayer;
 import uet.gryffindor.game.base.Vector2D;
 import uet.gryffindor.game.object.dynamics.explosion.Explosion;
 import uet.gryffindor.game.object.statics.Brick;
+import uet.gryffindor.game.object.statics.items.Item;
 import uet.gryffindor.graphic.Animator;
 import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.graphic.texture.SpriteTexture;
@@ -31,7 +32,7 @@ public class Bomb extends GameObject {
 
         startTime = System.currentTimeMillis();
         time = 2000; // giới hạn 2 giây
-        explosionRadius = 3;
+        explosionRadius = 1;
     }
 
     @Override
@@ -121,12 +122,19 @@ public class Bomb extends GameObject {
         if (symbol.endsWith("f7") && !symbol.startsWith("o3") || symbol.equals("w25") || symbol.equals("w1")
                 || symbol.equals("w4")) {
             for (int i = 0; i < myMap.getObjects().size(); i++) {
-                if (myMap.getObjects().get(i).getClass().getSimpleName().equals("Brick")) {
-                    if (myMap.getObjects().get(i).position
-                            .equals(new Vector2D(coordinatesX * Sprite.DEFAULT_SIZE, coordinatesY
-                                    * Sprite.DEFAULT_SIZE))) {
+                if (myMap.getObjects().get(i) instanceof Brick) {
+                    Brick b = (Brick) myMap.getObjects().get(i);
+                    if (b.position.equals(
+                            new Vector2D(coordinatesX * Sprite.DEFAULT_SIZE, coordinatesY * Sprite.DEFAULT_SIZE))) {
+
+                        Item item = b.getItem();
+                        if (item != null) {
+                            item.start();
+                            myMap.getObjects().add(item);
+                        }
                         myMap.getObjects().remove(i);
                         i--;
+
                     }
                 }
             }
