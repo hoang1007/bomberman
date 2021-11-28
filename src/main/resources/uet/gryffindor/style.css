@@ -1,0 +1,19 @@
+.menuMain {
+    -fx-background-color: redpastel;
+    /* -fx-background-color: rgb(240, 240, 158);*/
+    -fx-width: 100%;
+    -fx-height: 100%
+}
+
+.button {
+    /* -fx-background-color: rgb(223, 223, 223);
+    */
+}
+
+.button:hover {
+    -fx-background-color: #04BFAD;
+}
+
+.lineInMenu {
+    -fx-background-color: royalblue;
+}
