@@ -32,11 +32,7 @@ public class MapParser {
                     Vector2D position = new Vector2D(j, i);
 
                     String tokens = sc.next();
-                    if (tokens.matches("e[0-9]\\-f7")) {
-                        rawMap[i][j] = tokens.split("-")[1];
-                    } else {
-                        rawMap[i][j] = tokens;
-                    }
+                    rawMap[i][j] = tokens;
 
                     for (GameObject obj : decodeTokens(tokens)) {
                         obj.position = position.multiply(Sprite.DEFAULT_SIZE);

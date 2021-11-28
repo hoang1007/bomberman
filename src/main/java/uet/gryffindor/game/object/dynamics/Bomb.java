@@ -1,10 +1,12 @@
 package uet.gryffindor.game.object.dynamics;
 
 import uet.gryffindor.game.Manager;
+import uet.gryffindor.game.Map;
 import uet.gryffindor.game.base.GameObject;
 import uet.gryffindor.game.base.OrderedLayer;
 import uet.gryffindor.game.base.Vector2D;
 import uet.gryffindor.game.object.dynamics.explosion.Explosion;
+import uet.gryffindor.game.object.statics.Brick;
 import uet.gryffindor.graphic.Animator;
 import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.graphic.texture.SpriteTexture;
@@ -29,7 +31,7 @@ public class Bomb extends GameObject {
 
         startTime = System.currentTimeMillis();
         time = 2000; // giới hạn 2 giây
-        explosionRadius = 1;
+        explosionRadius = 3;
     }
 
     @Override
@@ -107,13 +109,27 @@ public class Bomb extends GameObject {
             return false;
         } else {
             GameObject.instantiate(Explosion.class, new Vector2D(x, y));
+
             return true;
         }
     }
 
     public boolean entangle(int coordinatesX, int coordinatesY) {
-        String symbol = Manager.INSTANCE.getGame().getPlayingMap().getRawMapAt(coordinatesY, coordinatesX);
-        if (symbol.equals("f7") || symbol.equals("w25") || symbol.equals("w1") || symbol.equals("w4")) {
+        Map myMap = Manager.INSTANCE.getGame().getPlayingMap();
+
+        String symbol = myMap.getRawMapAt(coordinatesY, coordinatesX);
+        if (symbol.endsWith("f7") && !symbol.startsWith("o3") || symbol.equals("w25") || symbol.equals("w1")
+                || symbol.equals("w4")) {
+            for (int i = 0; i < myMap.getObjects().size(); i++) {
+                if (myMap.getObjects().get(i).getClass().getSimpleName().equals("Brick")) {
+                    if (myMap.getObjects().get(i).position
+                            .equals(new Vector2D(coordinatesX * Sprite.DEFAULT_SIZE, coordinatesY
+                                    * Sprite.DEFAULT_SIZE))) {
+                        myMap.getObjects().remove(i);
+                        i--;
+                    }
+                }
+            }
             return false;
         }
         return true;

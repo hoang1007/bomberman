@@ -38,7 +38,7 @@ public class Bomber extends DynamicObject {
     orderedLayer = OrderedLayer.MIDGROUND;
     oldPosition = position.clone();
 
-    numberOfBombs = 3;
+    numberOfBombs = 1;
     bombDropped = 0;
     sinceDropping = new ArrayList<>();
   }
