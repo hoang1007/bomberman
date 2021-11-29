@@ -5,7 +5,6 @@ import java.util.List;
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import uet.gryffindor.game.autopilot.GameEnvironment;
 import uet.gryffindor.game.base.GameObject;
 import uet.gryffindor.game.base.Vector2D;
 import uet.gryffindor.game.engine.BaseService;
@@ -21,7 +20,6 @@ public class Game {
   private Map playingMap;
   private Camera camera;
   private GraphicsContext context;
-  private GameEnvironment environment = new GameEnvironment();
 
   public Game(Canvas canvas) {
     FpsTracker.setFps(30);
@@ -64,8 +62,6 @@ public class Game {
 
     playingMap.getObjects().sort();
     timer.start();
-
-    environment.initialize(this);
   }
 
   private void update() {
@@ -116,9 +112,5 @@ public class Game {
   public void nextLevel() {
     int level = playingMap != null ? playingMap.getLevel() : 1;
     setMap(Map.getByLevel(level));
-  }
-
-  public GameEnvironment getEnv() {
-    return this.environment;
   }
 }

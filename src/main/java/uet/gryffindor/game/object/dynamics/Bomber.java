@@ -3,13 +3,12 @@ package uet.gryffindor.game.object.dynamics;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import uet.gryffindor.game.Manager;
-import uet.gryffindor.game.autopilot.AutoPilot;
 import uet.gryffindor.game.base.OrderedLayer;
 import uet.gryffindor.game.base.Vector2D;
 import uet.gryffindor.game.behavior.Unmovable;
 import uet.gryffindor.game.engine.Collider;
 import uet.gryffindor.game.engine.Input;
-import uet.gryffindor.game.movement.Direction;
+import uet.gryffindor.game.movement.AutoPilot;
 import uet.gryffindor.game.object.DynamicObject;
 import uet.gryffindor.game.object.dynamics.enemy.Enemy;
 import uet.gryffindor.graphic.sprite.Sprite;
@@ -20,6 +19,7 @@ public class Bomber extends DynamicObject {
 
   private boolean isBlocked = false;
   private Vector2D oldPosition;
+  private AutoPilot pilot;
 
   @Override
   public void start() {
@@ -29,14 +29,14 @@ public class Bomber extends DynamicObject {
 
     orderedLayer = OrderedLayer.MIDGROUND;
     oldPosition = position.clone();
+    pilot = new AutoPilot(this);
   }
 
   @Override
   public void update() {
     if (!isBlocked) {
       oldPosition = position.clone();
-      // move();
-      automove();
+      move();
     }
   }
 
@@ -64,12 +64,6 @@ public class Bomber extends DynamicObject {
     }
   }
 
-  private void automove() {
-    Direction dir = AutoPilot.getAction(Manager.INSTANCE.getGame().getEnv());
-
-    this.position = dir.does(this.position, Sprite.DEFAULT_SIZE);
-  }
-
   @Override
   public void onCollisionEnter(Collider that) {
     if (that.gameObject instanceof Unmovable) {
@@ -88,6 +82,10 @@ public class Bomber extends DynamicObject {
     if (that.gameObject instanceof Unmovable) {
       isBlocked = false;
     }
+  }
+
+  public double getSpeed() {
+    return this.speed.get();
   }
 
   public static enum Action {
