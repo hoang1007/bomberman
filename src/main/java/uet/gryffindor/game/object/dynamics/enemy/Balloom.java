@@ -20,7 +20,7 @@ public class Balloom extends Enemy {
 
     @Override
     public void update() {
-        // move();
+        move();
     }
 
     @Override
@@ -38,25 +38,7 @@ public class Balloom extends Enemy {
     }
 
     private void move() {
-        switch (direction) {
-        case UP:
-            this.position.y -= speed;
-            this.texture.changeTo("up");
-            break;
-        case DOWN:
-            this.position.y += speed;
-            this.texture.changeTo("down");
-            break;
-        case LEFT:
-            this.position.x -= speed;
-            this.texture.changeTo("left");
-            break;
-        case RIGHT:
-            this.position.x += speed;
-            this.texture.changeTo("right");
-            break;
-        default:
-            break;
-        }
+        position = direction.forward(position, speed);
+        texture.changeTo(direction.toString());
     }
 }

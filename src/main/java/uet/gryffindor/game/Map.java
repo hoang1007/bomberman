@@ -3,6 +3,7 @@ package uet.gryffindor.game;
 import uet.gryffindor.GameApplication;
 import uet.gryffindor.game.base.GameObject;
 import uet.gryffindor.game.base.Vector2D;
+import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.util.MapParser;
 import uet.gryffindor.util.SortedList;
 
@@ -26,8 +27,8 @@ public class Map {
     this.objects = objects;
     this.level = level;
     this.score = 0;
-    height = rawMap.length;
-    width = rawMap[0].length;
+    height = rawMap.length * Sprite.DEFAULT_SIZE;
+    width = rawMap[0].length * Sprite.DEFAULT_SIZE;
 
   }
 

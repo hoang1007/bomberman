@@ -25,7 +25,7 @@ public enum Direction {
         }
     }
 
-    public Vector2D does(Vector2D position, double step) {
+    public Vector2D forward(Vector2D position, double step) {
         Vector2D result = position.clone();
 
         switch (this) {

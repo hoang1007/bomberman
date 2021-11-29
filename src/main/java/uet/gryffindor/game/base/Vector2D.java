@@ -20,20 +20,6 @@ public class Vector2D {
     return new Vector2D(1, 1);
   }
 
-  public static double euclideanDistance(Vector2D a, Vector2D b) {
-    double deltaX = a.x - b.x;
-    double deltaY = a.y - b.y;
-
-    return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-  }
-
-  public static double manhattanDistance(Vector2D a, Vector2D b) {
-    double deltaX = a.x - b.x;
-    double deltaY = a.y - b.y;
-
-    return Math.abs(deltaX) + Math.abs(deltaY); 
-  }
-
   public void setValue(double x, double y) {
     this.x = x;
     this.y = y;
@@ -90,18 +76,19 @@ public class Vector2D {
    * Làm tròn x, y với factor cho trước.
    * @param unit đơn vị làm tròn
    * @param factor độ làm tròn
-   * @return vector sau khi làm tròn
+   * @return vector copy đã được làm tròn của vector cũ
    */
   public Vector2D smooth(double unit, double factor) {
     double x = Math.round(this.x / unit) * unit;
     double y = Math.round(this.y / unit) * unit;
+    Vector2D result = this.clone();
 
     double delta = unit * factor;
     if (Math.abs(x - this.x) <= delta && Math.abs(y - this.y) <= delta) {
-      this.setValue(x, y);
+      result.setValue(x, y);
     }
 
-    return this;
+    return result;
   }
 
   @Override
