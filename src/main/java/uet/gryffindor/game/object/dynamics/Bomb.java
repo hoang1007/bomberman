@@ -133,4 +133,7 @@ public class Bomb extends GameObject {
         return this.explored;
     }
 
+    public int getExplosionRadius() {
+        return this.explosionRadius;
+    }
 }

@@ -12,11 +12,13 @@ import uet.gryffindor.game.behavior.Unmovable;
 import uet.gryffindor.game.engine.Collider;
 import uet.gryffindor.game.movement.AStar;
 import uet.gryffindor.game.movement.Direction;
+import uet.gryffindor.game.movement.MovableMap;
 import uet.gryffindor.game.object.dynamics.Bomber;
 import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.graphic.texture.AnimateTexture;
 import uet.gryffindor.graphic.texture.OutlineTexture;
 import uet.gryffindor.graphic.texture.Texture;
+import uet.gryffindor.util.Geometry;
 
 public class Oneal extends Enemy {
     private int attackRadius = 50;
@@ -56,7 +58,18 @@ public class Oneal extends Enemy {
 
                     if (isInside && chasePath.isEmpty()) {
                         speed = 5.0;
-                        chasePath = AStar.findPath(this.getMap(), Oneal.this.position, that.gameObject.position, speed);
+                        var rect = Geometry.unionRect(that.gameObject.position.clone().smooth(Sprite.DEFAULT_SIZE, 1),
+                            Oneal.this.position.clone().smooth(Sprite.DEFAULT_SIZE, 1));
+
+                        // MovableMap map = new MovableMap(Vector2D.zero(), new Vector2D(getMap().getWidth(), getMap().getHeight()));
+                        MovableMap map = new MovableMap(rect.first, rect.second);
+                        for (GameObject m : getMap().getObjects()) {
+                            if (m instanceof Unmovable) {
+                                map.addObstacle(m.position);
+                            }
+                        }
+
+                        chasePath = AStar.findPath(map, Oneal.this.position, that.gameObject.position, speed);
                     }
                 }
             }
@@ -64,7 +77,6 @@ public class Oneal extends Enemy {
             @Override
             public void onCollisionExit(Collider that) {
                 if (that.gameObject instanceof Bomber) {
-                    // chasePath.clear();
                     speed = 3.0;
                 }
             }
@@ -102,7 +114,7 @@ public class Oneal extends Enemy {
     }
 
     private void move() {
-        this.position = direction.does(position, speed);
+        this.position = direction.forward(position, speed);
         this.texture.changeTo(direction.toString());
     }
 

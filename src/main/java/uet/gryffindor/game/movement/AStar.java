@@ -8,8 +8,8 @@ import java.util.Queue;
 import java.util.Stack;
 
 import uet.gryffindor.game.base.Vector2D;
-import uet.gryffindor.game.behavior.Unmovable;
 import uet.gryffindor.graphic.sprite.Sprite;
+import uet.gryffindor.util.Geometry;
 
 public class AStar {
     static class MoveStep implements Comparable<MoveStep> {
@@ -21,12 +21,12 @@ public class AStar {
         private double cost;
 
         public MoveStep(MoveStep preStep, Direction direction, Vector2D dstPos) {
-            this.position = direction.does(preStep.position, Sprite.DEFAULT_SIZE);
+            this.position = direction.forward(preStep.position, Sprite.DEFAULT_SIZE);
 
             this.direction = direction;
             this.preStep = preStep;
-            this.hCost = preStep.hCost + Vector2D.manhattanDistance(position, preStep.position);
-            this.gCost = Vector2D.manhattanDistance(position, dstPos);
+            this.hCost = preStep.hCost + Geometry.manhattanDistance(position, preStep.position);
+            this.gCost = Geometry.manhattanDistance(position, dstPos);
 
             this.cost = this.hCost + this.gCost;
         }
@@ -77,7 +77,7 @@ public class AStar {
 
             if (src.x > gridPos.x) {
                 while (src.x - gridPos.x >= step) {
-                    src = Direction.LEFT.does(src, step);
+                    src = Direction.LEFT.forward(src, step);
                     result.add(src);
                 }
 
@@ -87,7 +87,7 @@ public class AStar {
                 }
             } else if (src.x < gridPos.x) {
                 while (gridPos.x - src.x >= step) {
-                    src = Direction.RIGHT.does(src, step);
+                    src = Direction.RIGHT.forward(src, step);
                     result.add(src);
                 }
 
@@ -99,7 +99,7 @@ public class AStar {
 
             if (src.y > gridPos.y) {
                 while (src.y - gridPos.y >= step) {
-                    src = Direction.UP.does(src, step);
+                    src = Direction.UP.forward(src, step);
                     result.add(src);
                 }
 
@@ -109,7 +109,7 @@ public class AStar {
                 }
             } else if (src.y < gridPos.y) {
                 while (gridPos.y - src.y >= step) {
-                    src = Direction.DOWN.does(src, step);
+                    src = Direction.DOWN.forward(src, step);
                     result.add(src);
                 }
 
@@ -123,8 +123,7 @@ public class AStar {
         return result;
     }
 
-    public static Queue<Vector2D> findPath(uet.gryffindor.game.Map map, Vector2D srcPosition, Vector2D dstPosition,
-            double step) {
+    public static Queue<Vector2D> findPath(MovableMap canMove, Vector2D srcPosition, Vector2D dstPosition, double step) {
         Stack<MoveStep> path = new Stack<>();
         Queue<MoveStep> queue = new PriorityQueue<>();
         Map<Vector2D, MoveStep> evaluated = new HashMap<>();
@@ -145,24 +144,24 @@ public class AStar {
             MoveStep[] neighbors = findNeighbors(current, srcGridPos, dstGridPos);
 
             for (MoveStep neighbor : neighbors) {
-                if (map.getObject(neighbor.position, Unmovable.class) != null) {
-                    continue;
-                }
-
-                if (!evaluated.containsKey(neighbor.position)) {
-                    queue.add(neighbor);
+                if (neighbor != null) {
+                    if (canMove.at(neighbor.position) == false) {
+                        continue;
+                    }
+    
+                    if (!evaluated.containsKey(neighbor.position)) {
+                        queue.add(neighbor);
+                    }
                 }
             }
         }
 
         MoveStep traceBack = evaluated.get(dstGridPos);
 
-        if (traceBack != null) {
-            if (traceBack.preStep != null) {
-                while (traceBack.preStep.direction != null) {
-                    path.push(traceBack);
-                    traceBack = traceBack.preStep;
-                }
+        if (traceBack != null && traceBack.preStep != null) {
+            while (traceBack.preStep.direction != null) {
+                path.push(traceBack);
+                traceBack = traceBack.preStep;
             }
         }
 
