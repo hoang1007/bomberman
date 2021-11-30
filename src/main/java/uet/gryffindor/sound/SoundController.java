@@ -4,7 +4,6 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 
 public class SoundController {
   private String path;
@@ -13,6 +12,7 @@ public class SoundController {
 
   /**
    * Constructor
+   *
    * @param path gang dẫn file âm thanh mp3.
    */
   public SoundController(String path) {
@@ -31,14 +31,11 @@ public class SoundController {
     return mediaPlayer;
   }
 
-  /**
-   * Hàm khởi tạo âm thanh.
-   *
-   */
+  /** Hàm khởi tạo âm thanh. */
   public void initSound() {
     try {
-    sound = new Media(new File(path).toURI().toString());
-    mediaPlayer = new MediaPlayer(sound);
+      sound = new Media(new File(path).toURI().toString());
+      mediaPlayer = new MediaPlayer(sound);
     } catch (Exception e) {
       System.out.println("Error: ");
     }
@@ -49,12 +46,11 @@ public class SoundController {
   }
 
   public void repeatAudio() {
-    mediaPlayer.setOnRepeat(new Runnable() {
-      @Override
-      public void run() {
-
-      }
-    });
+    mediaPlayer.setOnRepeat(
+        new Runnable() {
+          @Override
+          public void run() {}
+        });
   }
 
   public void pauseAudio() {
@@ -70,16 +66,15 @@ public class SoundController {
   }
 }
 
-
-//import javax.sound.sampled.AudioSystem;
-//import javax.sound.sampled.Clip;
-//import java.io.File;
-//import java.net.URL;
-//import javax.sound.sampled.AudioInputStream;
-//import sun.applet.Main;
-//import javax.sound.sampled.*;
+// import javax.sound.sampled.AudioSystem;
+// import javax.sound.sampled.Clip;
+// import java.io.File;
+// import java.net.URL;
+// import javax.sound.sampled.AudioInputStream;
+// import sun.applet.Main;
+// import javax.sound.sampled.*;
 //
-//public class Sound {
+// public class Sound {
 //  public static void play(String sound) {
 //    new Thread(new Runnable() {
 //      public void run() {
@@ -111,4 +106,4 @@ public class SoundController {
 //      }
 //    }).start();
 //  }
-//}
+// }

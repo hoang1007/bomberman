@@ -1,5 +1,3 @@
 package uet.gryffindor.sound;
 
-public class BoomberSound {
-
-}
+public class BoomberSound {}

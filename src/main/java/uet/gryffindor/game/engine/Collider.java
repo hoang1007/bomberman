@@ -1,16 +1,14 @@
 package uet.gryffindor.game.engine;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import uet.gryffindor.game.base.GameObject;
 import uet.gryffindor.game.base.Vector2D;
 import uet.gryffindor.game.object.DynamicObject;
 
-/**
- * Lớp máy va chạm giúp phát hiện va chạm.
- */
+import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
+
+/** Lớp máy va chạm giúp phát hiện va chạm. */
 public class Collider {
   public final GameObject gameObject;
 
@@ -22,7 +20,7 @@ public class Collider {
 
   /**
    * Lấy diện tích giao nhau giữa hai collider.
-   * 
+   *
    * @param that collider muốn tìm diện tích giao nhau với collider hiện tại
    * @return diện tích giao nhau của hai collider
    */
@@ -32,7 +30,7 @@ public class Collider {
 
   /**
    * Tính diện tích giao nhau của hai collider.
-   * 
+   *
    * @param that collider muốn kiểm tra
    * @return diện tích của vùng giao nhau
    */
@@ -57,13 +55,15 @@ public class Collider {
   }
 
   /**
-   * Kiểm tra va chạm của tất cả các collider được khai báo. Nếu có hai collider
-   * va chạm với nhau, các hàm {@link GameObject#onCollision(Collider)} của game
-   * object chứa colldier sẽ được gọi.
+   * Kiểm tra va chạm của tất cả các collider được khai báo. Nếu có hai collider va chạm với nhau,
+   * các hàm {@link GameObject#onCollision(Collider)} của game object chứa colldier sẽ được gọi.
    */
   public static void checkCollision(List<GameObject> objects) {
-    var colliders = objects.stream().map(GameObject::getCollider).collect(Collectors.partitioningBy(col -> col.gameObject instanceof DynamicObject));
-    
+    var colliders =
+        objects.stream()
+            .map(GameObject::getCollider)
+            .collect(Collectors.partitioningBy(col -> col.gameObject instanceof DynamicObject));
+
     List<Collider> dynamics = colliders.get(true);
     List<Collider> statics = colliders.get(false);
 
@@ -118,6 +118,5 @@ public class Collider {
 
     a.collidedList.put(b, overlapArea);
     b.collidedList.put(a, overlapArea);
-
   }
 }

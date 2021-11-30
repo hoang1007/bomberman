@@ -1,8 +1,6 @@
 package uet.gryffindor.game.base;
 
-/**
- * Lớp vector hỗ trợ các phép toán trên vector
- */
+/** Lớp vector hỗ trợ các phép toán trên vector */
 public class Vector2D {
   public double x;
   public double y;
@@ -74,6 +72,7 @@ public class Vector2D {
 
   /**
    * Làm tròn x, y với factor cho trước.
+   *
    * @param unit đơn vị làm tròn
    * @param factor độ làm tròn
    * @return vector copy đã được làm tròn của vector cũ

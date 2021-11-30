@@ -1,21 +1,19 @@
 package uet.gryffindor.scenes;
 
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import uet.gryffindor.GameApplication;
-import uet.gryffindor.sound.SoundInGame;
 
 public class StartSceneController {
-//  private static SoundInGame soundInGame;
+  //  private static SoundInGame soundInGame;
   @FXML
   private void startGame() {
-    //GameApplication.setRoot("main");
+    // GameApplication.setRoot("main");
     GameApplication.setRoot("ingame");
-//    soundInGame = new SoundInGame();
-//    soundInGame.initSound();
-//    soundInGame.playAudio();
-//    soundInGame.repeatAudio();
+    //    soundInGame = new SoundInGame();
+    //    soundInGame.initSound();
+    //    soundInGame.playAudio();
+    //    soundInGame.repeatAudio();
   }
 
   @FXML

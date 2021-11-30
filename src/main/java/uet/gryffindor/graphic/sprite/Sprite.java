@@ -2,9 +2,7 @@ package uet.gryffindor.graphic.sprite;
 
 import java.util.HashMap;
 
-/**
- * Class này lưu trữ thông tin pixel của 1 sprite
- */
+/** Class này lưu trữ thông tin pixel của 1 sprite */
 public class Sprite {
   // dynamics
   public static HashMap<String, Sprite[]> player = new HashMap<>();
@@ -31,7 +29,7 @@ public class Sprite {
   private double x; // tọa độ x so với ảnh cha
   private double y; // tọa độ y so với ảnh cha
   private double sWidth; // chiều rộng ảnh con
-  private double sHeight;// chiều cao ảnh con
+  private double sHeight; // chiều cao ảnh con
   private SpriteSheet spriteSheet; // lớp chứa ảnh cha
 
   public Sprite(double _x, double _y, double sWidth, double sHeight, SpriteSheet _spriteSheet) {
@@ -154,7 +152,13 @@ public class Sprite {
     obstacle[2] = new Sprite(271, 28, 112, 146, SpriteSheet.obstacle);
     obstacle[3] = new Sprite(513, 20, 188, 163, SpriteSheet.obstacle);
 
-    wall2D = new Sprite(0, 0, SpriteSheet.wall2D.getWidth(), SpriteSheet.wall2D.getHeight(), SpriteSheet.wall2D);
+    wall2D =
+        new Sprite(
+            0,
+            0,
+            SpriteSheet.wall2D.getWidth(),
+            SpriteSheet.wall2D.getHeight(),
+            SpriteSheet.wall2D);
 
     tiles = new Sprite[28];
     // tiles[0] = new Sprite(21, 44, 140, 137, SpriteSheet.tiles);

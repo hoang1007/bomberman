@@ -7,7 +7,7 @@ public class BalloomSound extends SoundController {
   /**
    * Constructor
    *
-   *  gang dẫn file âm thanh mp3.
+   * <p>gang dẫn file âm thanh mp3.
    */
   public BalloomSound() {
     super("");

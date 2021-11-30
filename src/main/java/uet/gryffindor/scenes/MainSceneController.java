@@ -14,7 +14,7 @@ public class MainSceneController {
   @FXML private Canvas canvas;
   private Game game;
 
-  @FXML  private Label scoreLabel;
+  @FXML private Label scoreLabel;
   @FXML private Label timeLabel;
   @FXML private Label levelLabel;
 
@@ -31,7 +31,7 @@ public class MainSceneController {
   @FXML
   private void backToMenu() {
 
-//    GameApplication.setRoot("start");
+    //    GameApplication.setRoot("start");
     GameApplication.setRoot("menu");
   }
 

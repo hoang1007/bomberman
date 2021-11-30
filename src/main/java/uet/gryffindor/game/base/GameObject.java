@@ -1,12 +1,12 @@
 package uet.gryffindor.game.base;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-
 import uet.gryffindor.game.Map;
 import uet.gryffindor.game.engine.Collider;
 import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.graphic.texture.Texture;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 /** Lớp cơ bản của game. Mọi đối tượng của game nên kế thừa lớp này. */
 public abstract class GameObject implements Comparable<GameObject> {
@@ -27,7 +27,7 @@ public abstract class GameObject implements Comparable<GameObject> {
 
   /**
    * Khởi tạo game object thông qua class
-   * 
+   *
    * @param clazz class của game object
    */
   public static void instantiate(Class<? extends GameObject> clazz) {
@@ -37,16 +37,20 @@ public abstract class GameObject implements Comparable<GameObject> {
       GameObject obj = constructor.newInstance();
 
       GameObject.addObject(obj);
-    } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
-        | NoSuchMethodException | SecurityException e) {
+    } catch (InstantiationException
+        | IllegalAccessException
+        | IllegalArgumentException
+        | InvocationTargetException
+        | NoSuchMethodException
+        | SecurityException e) {
       e.printStackTrace();
     }
   }
 
   /**
    * Khởi tạo game object thông qua class
-   * 
-   * @param clazz    class của game object
+   *
+   * @param clazz class của game object
    * @param position vị trí của game object
    */
   public static void instantiate(Class<? extends GameObject> clazz, Vector2D position) {
@@ -57,8 +61,12 @@ public abstract class GameObject implements Comparable<GameObject> {
       obj.position = position;
 
       GameObject.addObject(obj);
-    } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
-        | NoSuchMethodException | SecurityException e) {
+    } catch (InstantiationException
+        | IllegalAccessException
+        | IllegalArgumentException
+        | InvocationTargetException
+        | NoSuchMethodException
+        | SecurityException e) {
       e.printStackTrace();
     }
   }

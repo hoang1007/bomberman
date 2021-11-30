@@ -17,10 +17,10 @@ public class Map {
 
   /**
    * Màn chơi của game.
-   * 
-   * @param rawMap  bản đồ thô sơ
+   *
+   * @param rawMap bản đồ thô sơ
    * @param objects các game object có trong map
-   * @param level   level của map
+   * @param level level của map
    */
   public Map(int[][] rawMap, SortedList<GameObject> objects, int level) {
     this.rawMap = rawMap;
@@ -29,7 +29,6 @@ public class Map {
     this.score = 0;
     height = rawMap.length * Sprite.DEFAULT_SIZE;
     width = rawMap[0].length * Sprite.DEFAULT_SIZE;
-
   }
 
   public SortedList<GameObject> getObjects() {
@@ -62,6 +61,7 @@ public class Map {
 
   /**
    * Tìm object với loại mong muốn theo position.
+   *
    * @param position
    * @param type class của object
    * @return object

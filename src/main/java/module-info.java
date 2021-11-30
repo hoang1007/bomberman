@@ -5,7 +5,8 @@ module uet.gryffindor {
   requires javafx.media;
   requires java.desktop;
 
-  opens uet.gryffindor.scenes to javafx.fxml;
-  
+  opens uet.gryffindor.scenes to
+      javafx.fxml;
+
   exports uet.gryffindor;
 }
