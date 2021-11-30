@@ -1,15 +1,15 @@
 package uet.gryffindor.game;
 
-import java.util.List;
-
 import uet.gryffindor.GameApplication;
 import uet.gryffindor.game.base.GameObject;
+import uet.gryffindor.game.base.Vector2D;
+import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.util.MapParser;
 import uet.gryffindor.util.SortedList;
 
 public class Map {
   private int[][] rawMap;
-  private List<GameObject> objects;
+  private SortedList<GameObject> objects;
   private int level;
   private int score;
   private int height;
@@ -27,12 +27,12 @@ public class Map {
     this.objects = objects;
     this.level = level;
     this.score = 0;
-    height = rawMap.length;
-    width = rawMap[0].length;
+    height = rawMap.length * Sprite.DEFAULT_SIZE;
+    width = rawMap[0].length * Sprite.DEFAULT_SIZE;
 
   }
 
-  public List<GameObject> getObjects() {
+  public SortedList<GameObject> getObjects() {
     return this.objects;
   }
 
@@ -58,6 +58,22 @@ public class Map {
 
   public int getHeight() {
     return this.height;
+  }
+
+  /**
+   * Tìm object với loại mong muốn theo position.
+   * @param position
+   * @param type class của object
+   * @return object
+   */
+  public <T> T getObject(Vector2D position, Class<T> type) {
+    for (GameObject object : this.objects) {
+      if (type.isInstance(object) && object.position.equals(position)) {
+        return type.cast(object);
+      }
+    }
+
+    return null;
   }
 
   public static Map getByLevel(int level) {

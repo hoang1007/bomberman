@@ -1,5 +1,8 @@
 package uet.gryffindor.game.base;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
 import uet.gryffindor.game.Map;
 import uet.gryffindor.game.engine.Collider;
 import uet.gryffindor.graphic.sprite.Sprite;
@@ -15,13 +18,49 @@ public abstract class GameObject implements Comparable<GameObject> {
   protected OrderedLayer orderedLayer; // thứ tự render
 
   /** Khởi tạo mặc định của object. */
-  public GameObject() {
+  protected GameObject() {
     position = Vector2D.zero();
     dimension = new Vector2D(Sprite.DEFAULT_SIZE, Sprite.DEFAULT_SIZE);
     orderedLayer = OrderedLayer.BACKGROUND;
     collider = new Collider(this);
+  }
 
-    start();
+  /**
+   * Khởi tạo game object thông qua class
+   * 
+   * @param clazz class của game object
+   */
+  public static void instantiate(Class<? extends GameObject> clazz) {
+    try {
+      Constructor<? extends GameObject> constructor = clazz.getDeclaredConstructor();
+      constructor.setAccessible(true);
+      GameObject obj = constructor.newInstance();
+
+      GameObject.addObject(obj);
+    } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
+        | NoSuchMethodException | SecurityException e) {
+      e.printStackTrace();
+    }
+  }
+
+  /**
+   * Khởi tạo game object thông qua class
+   * 
+   * @param clazz    class của game object
+   * @param position vị trí của game object
+   */
+  public static void instantiate(Class<? extends GameObject> clazz, Vector2D position) {
+    try {
+      Constructor<? extends GameObject> constructor = clazz.getDeclaredConstructor();
+      constructor.setAccessible(true);
+      GameObject obj = constructor.newInstance();
+      obj.position = position;
+
+      GameObject.addObject(obj);
+    } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
+        | NoSuchMethodException | SecurityException e) {
+      e.printStackTrace();
+    }
   }
 
   /** Khởi tạo các thuộc tính (thay thế cho contructor). */
@@ -51,7 +90,13 @@ public abstract class GameObject implements Comparable<GameObject> {
    */
   public void onCollisionExit(Collider that) {}
 
-  public abstract Texture getTexture();
+  public Texture getTexture() {
+    return null;
+  }
+
+  public Map getMap() {
+    return GameObject.map;
+  }
 
   /** Hủy game object. */
   public void destroy() {
@@ -72,6 +117,7 @@ public abstract class GameObject implements Comparable<GameObject> {
   }
 
   public static void addObject(GameObject object) {
+    object.start();
     map.getObjects().add(object);
   }
 }

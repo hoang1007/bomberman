@@ -1,74 +1,44 @@
 package uet.gryffindor.game.object.dynamics.enemy;
 
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import uet.gryffindor.game.base.OrderedLayer;
-import uet.gryffindor.game.base.Vector2D;
+import java.util.Random;
+
 import uet.gryffindor.game.behavior.Unmovable;
 import uet.gryffindor.game.engine.Collider;
-import uet.gryffindor.game.object.DynamicObject;
+import uet.gryffindor.game.movement.Direction;
+import uet.gryffindor.graphic.sprite.Sprite;
+import uet.gryffindor.graphic.texture.AnimateTexture;
 
-public class Balloom extends DynamicObject {
-  private DoubleProperty speed; // tốc độ cho từng enemy
-  private boolean isDead = false;
-  private boolean isBlocked = false;
-  private Vector2D oldPosition;
+public class Balloom extends Enemy {
+    private Direction direction = Direction.UP;
+    private double speed = 2.0;
+    private Random random = new Random();
 
-  @Override
-  public void start() {
-    speed = new SimpleDoubleProperty(8f);
-    orderedLayer = OrderedLayer.MIDGROUND;
-    oldPosition = position.clone();
-  }
-
-  @Override
-  public void update() {
-    if (!isBlocked) {
-      oldPosition = position.clone();
-      move();
+    @Override
+    public void start() {
+        this.texture = new AnimateTexture(this, 6, Sprite.balloom);
     }
-  }
 
-  private void move() {
-//
-//    //cho enemy đi theo pattern.
-//    int value = ((int) (Math.random() * 100)) % 4;
-//    // random hướng cho enemy.
-//    switch (GameAction.valueOf(value)) {
-//      case UP:
-//        this.position.y -= speed.get();
-//        // load texture
-//        break;
-//      case DOWN:
-//        this.position.y += speed.get();
-//        // load texture
-//        break;
-//      case RIGHT:
-//        this.position.x += speed.get();
-//        // load texture
-//        break;
-//      case LEFT:
-//        this.position.x -= speed.get();
-//        // load texture: texture.changeTo("name");
-//        break;
-//      default:
-//        texture.pause();
-//        break;
-//    }
-  }
-
-  @Override
-  public void onCollisionEnter(Collider that) {
-    if (that.gameObject instanceof Unmovable) { // nếu balloom va chạm với vật thể tĩnh
-      position = oldPosition.smooth(this.dimension.x); // khôi phục vị trí trước khi va chạm
-      isBlocked = true; // gắn nhãn bị chặn
+    @Override
+    public void update() {
+        move();
     }
-  }
 
-  @Override
-  public void onCollisionExit(Collider that) {
-    if (that.gameObject instanceof Unmovable) {
-      isBlocked = false;
+    @Override
+    public void onCollisionEnter(Collider that) {
+        if (that.gameObject instanceof Unmovable) {
+            this.position.smooth(Sprite.DEFAULT_SIZE, 1);
+
+            int dirCode = 0;
+            do {
+                dirCode = random.nextInt(4);
+            } while (dirCode == direction.ordinal());
+
+            direction = Direction.valueOf(dirCode);
+        }
     }
-  }
+
+    private void move() {
+        position = direction.forward(position, speed);
+        texture.changeTo(direction.toString());
+    }
 }

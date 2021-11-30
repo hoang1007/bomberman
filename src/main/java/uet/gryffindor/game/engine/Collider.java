@@ -14,38 +14,10 @@ import uet.gryffindor.game.object.DynamicObject;
 public class Collider {
   public final GameObject gameObject;
 
-  private Vector2D dimension;
-  public Vector2D position;
-
   private HashMap<Collider, Double> collidedList = new HashMap<>();
-  private boolean isChangeByGameObject;
 
   public Collider(GameObject gameObject) {
     this.gameObject = gameObject;
-    this.isChangeByGameObject = true;
-
-    // Thuộc tính mặc định là thuộc tính của game object
-    this.dimension = gameObject.dimension.clone();
-    this.position = gameObject.position.clone();
-  }
-
-  public Collider(GameObject gameObject, Vector2D dimension) {
-    this.gameObject = gameObject;
-    this.dimension = dimension;
-    this.isChangeByGameObject = false;
-  }
-
-  public void changeByGameObject(boolean value) {
-    this.isChangeByGameObject = value;
-  }
-
-  public Vector2D getDimension() {
-    return this.dimension;
-  }
-
-  public void setDimension(Vector2D dimension) {
-    this.dimension.setValue(dimension.x, dimension.y);
-    this.isChangeByGameObject = false;
   }
 
   /**
@@ -59,37 +31,17 @@ public class Collider {
   }
 
   /**
-   * Hàm cân đối collider với game object (Vì tâm của collider phải trùng với tâm
-   * của game object).
-   * 
-   * @return tọa độ trung tâm sau khi cân bằng
-   */
-  private Vector2D fitObject() {
-    Vector2D center = gameObject.position.add(gameObject.dimension.multiply(0.5f));
-
-    if (isChangeByGameObject) {
-      this.dimension.setValue(gameObject.dimension.x, gameObject.dimension.y);
-    }
-
-    this.position = center.subtract(dimension.multiply(0.5f));
-    return center;
-  }
-
-  /**
    * Tính diện tích giao nhau của hai collider.
    * 
    * @param that collider muốn kiểm tra
    * @return diện tích của vùng giao nhau
    */
   public double computeOverlapArea(Collider that) {
-    this.fitObject();
-    that.fitObject();
+    Vector2D topLeft1 = this.gameObject.position;
+    Vector2D topLeft2 = that.gameObject.position;
 
-    Vector2D topLeft1 = this.position;
-    Vector2D topLeft2 = that.position;
-
-    Vector2D botRight1 = topLeft1.add(this.dimension);
-    Vector2D botRight2 = topLeft2.add(that.dimension);
+    Vector2D botRight1 = topLeft1.add(this.gameObject.dimension);
+    Vector2D botRight2 = topLeft2.add(that.gameObject.dimension);
 
     // tìm tọa độ 4 đỉnh của hình chữ nhật giao
     double xLeft = Math.max(topLeft1.x, topLeft2.x);
