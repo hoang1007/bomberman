@@ -1,21 +1,23 @@
 .menuMain {
-    /* -fx-background-color: redpastel;*/
-    -fx-background-color: rgb(240, 240, 158);
-    -fx-width: 100%;
-    -fx-height: 100%
+  /* -fx-background-color: redpastel;*/
+  /* -fx-background-color: rgb(240, 240, 158); */
+  -fx-width: 100%;
+  -fx-height: 100%;
+  -fx-background-image: url("file:src/main/resources/uet/gryffindor/img/menu/background.jpg");
+  -fx-background-size: 100%;
 }
 
 .button {
-    /* -fx-background-color: rgb(223, 223, 223);
-    */
-    -fx-min-width: 100%
-    -fx-min-height: 30px;
+  -fx-background-color: rgb(46, 212, 204);
+
+  -fx-min-width: 100%;
+  -fx-min-height: 30px;
 }
 
 .button:hover {
-    -fx-background-color: #04BFAD;
+  -fx-opacity: 0.6;
 }
 
 .lineInMenu {
-    -fx-background-color: royalblue;
+  -fx-background-color: royalblue;
 }

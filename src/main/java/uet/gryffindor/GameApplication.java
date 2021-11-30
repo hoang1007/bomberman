@@ -17,7 +17,7 @@ public class GameApplication extends Application {
   @Override
   public void start(Stage stage) throws IOException {
     // scene = new Scene(loadFXML("main"));
-    scene = new Scene(loadFXML("ingame"));
+    scene = new Scene(loadFXML("menu"));
     stage.setScene(scene);
     stage.show();
   }
