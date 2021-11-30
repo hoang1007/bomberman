@@ -120,7 +120,7 @@ public class Bomb extends GameObject {
 
         String symbol = myMap.getRawMapAt(coordinatesY, coordinatesX);
         if (symbol.endsWith("f7") && !symbol.startsWith("o3") || symbol.equals("w25") || symbol.equals("w1")
-                || symbol.equals("w4")) {
+                || symbol.equals("w4") || symbol.contains("f23")) {
             for (int i = 0; i < myMap.getObjects().size(); i++) {
                 if (myMap.getObjects().get(i) instanceof Brick) {
                     Brick b = (Brick) myMap.getObjects().get(i);
