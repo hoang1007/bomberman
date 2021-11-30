@@ -13,33 +13,33 @@
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="menuMain" stylesheets="@style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uet.gryffindor.scenes.StartSceneController">
+<AnchorPane prefHeight="630.0" prefWidth="800.0" styleClass="menuMain" stylesheets="@style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uet.gryffindor.scenes.StartSceneController">
    <children>
-      <Button fx:id="startButton" layoutX="214.0" layoutY="186.0" mnemonicParsing="false" onAction="#startGame" prefHeight="26.0" prefWidth="206.0" style="-fx-background-position: center;" stylesheets="@style.css" text="PLAY">
+      <Button fx:id="startButton" layoutX="306.0" layoutY="295.0" mnemonicParsing="false" onAction="#startGame" prefHeight="40.0" prefWidth="210.0" style="-fx-background-position: center;" stylesheets="@style.css" text="PLAY">
          <font>
-            <Font name="UTM Nokia" size="12.0" />
+            <Font name="UTM Nokia" size="16.0" />
          </font></Button>
-      <Button fx:id="scoreButton" layoutX="214.0" layoutY="229.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="206.0" style="-fx-background-position: center;" stylesheets="@style.css" text="HIGHT SCORE">
+      <Button fx:id="scoreButton" layoutX="306.0" layoutY="361.0" mnemonicParsing="false" onAction="#hightScore" prefHeight="40.0" prefWidth="210.0" style="-fx-background-position: center;" stylesheets="@style.css" text="HIGHT SCORE">
          <font>
-            <Font name="UTM Nokia" size="12.0" />
+            <Font name="UTM Nokia" size="16.0" />
          </font></Button>
-      <MenuButton alignment="CENTER" layoutX="214.0" layoutY="271.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="206.0" styleClass="button" stylesheets="@style.css" text="  BOMBER" textAlignment="JUSTIFY">
+      <MenuButton alignment="CENTER" layoutX="306.0" layoutY="427.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="210.0" styleClass="button" stylesheets="@style.css" text="  BOMBER" textAlignment="JUSTIFY">
         <items>
-          <MenuItem mnemonicParsing="false" text="Action 1" />
-          <MenuItem mnemonicParsing="false" text="Action 2" />
+          <MenuItem text="Bomber 1" />
+          <MenuItem mnemonicParsing="false" text="Bomber 2" />
         </items>
          <font>
-            <Font name="UTM Nokia" size="12.0" />
+            <Font name="UTM Nokia" size="16.0" />
          </font>
       </MenuButton>
-      <Button fx:id="quitButton" layoutX="214.0" layoutY="314.0" mnemonicParsing="false" onAction="#quitGame" prefHeight="26.0" prefWidth="206.0" stylesheets="@style.css" text="QUIT">
+      <Button fx:id="quitButton" layoutX="306.0" layoutY="492.0" mnemonicParsing="false" onAction="#quitGame" prefHeight="40.0" prefWidth="210.0" stylesheets="@style.css" text="QUIT">
          <font>
-            <Font name="UTM Nokia" size="12.0" />
+            <Font name="UTM Nokia" size="16.0" />
          </font></Button>
-      <Separator layoutX="21.0" layoutY="363.0" prefHeight="28.0" prefWidth="558.0" style="-fx-background-color: pastel;" styleClass="lineInMenu" stylesheets="@style.css" />
-      <Label layoutX="507.0" layoutY="359.0" prefHeight="18.0" prefWidth="86.0" text="by Gryffindor">
+      <Separator layoutX="28.0" layoutY="605.0" prefHeight="11.0" prefWidth="744.0" stylesheets="@style.css" />
+      <Label layoutX="681.0" layoutY="585.0" prefHeight="20.0" prefWidth="89.0" text="by Gryffindor">
          <font>
-            <Font name="System Italic" size="12.0" />
+            <Font name="System Italic" size="14.0" />
          </font>
          <textFill>
             <LinearGradient endX="0.32196968342318677" endY="0.8106060425440471" startX="0.3143939392810518" startY="0.26515151515151514">
@@ -63,12 +63,12 @@
             </LinearGradient>
          </textFill>
       </Label>
-      <ImageView fitHeight="215.0" fitWidth="237.0" layoutX="14.0" layoutY="150.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="288.0" fitWidth="330.0" layoutX="14.0" layoutY="237.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@img/menu/bomber.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="171.0" fitWidth="360.0" layoutX="233.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="248.0" fitWidth="616.0" layoutX="251.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@img/menu/logoGame.png" />
          </image>

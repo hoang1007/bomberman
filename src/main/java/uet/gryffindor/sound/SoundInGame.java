@@ -2,6 +2,6 @@ package uet.gryffindor.sound;
 
 public class SoundInGame extends SoundController {
   public SoundInGame() {
-    super("SoundTrack.mp3");
+    super("./src/main/resources/uet/gryffindor/sound/SoundTrack.mp3");
   }
 }

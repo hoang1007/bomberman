@@ -1,6 +1,6 @@
 .menuMain {
-    -fx-background-color: redpastel;
-    /* -fx-background-color: rgb(240, 240, 158);*/
+    /* -fx-background-color: redpastel;*/
+    -fx-background-color: rgb(240, 240, 158);
     -fx-width: 100%;
     -fx-height: 100%
 }
@@ -8,6 +8,8 @@
 .button {
     /* -fx-background-color: rgb(223, 223, 223);
     */
+    -fx-min-width: 100%
+    -fx-min-height: 30px;
 }
 
 .button:hover {

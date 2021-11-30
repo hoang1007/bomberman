@@ -2,7 +2,6 @@ package uet.gryffindor.game.object.dynamics.enemy;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import uet.gryffindor.autopilot.GameAction;
 import uet.gryffindor.game.base.OrderedLayer;
 import uet.gryffindor.game.base.Vector2D;
 import uet.gryffindor.game.behavior.Unmovable;
@@ -31,31 +30,31 @@ public class Balloom extends DynamicObject {
   }
 
   private void move() {
-
-    //cho enemy đi theo pattern.
-    int value = ((int) (Math.random() * 100)) % 4;
-    // random hướng cho enemy.
-    switch (GameAction.valueOf(value)) {
-      case UP:
-        this.position.y -= speed.get();
-        // load texture
-        break;
-      case DOWN:
-        this.position.y += speed.get();
-        // load texture
-        break;
-      case RIGHT:
-        this.position.x += speed.get();
-        // load texture
-        break;
-      case LEFT:
-        this.position.x -= speed.get();
-        // load texture: texture.changeTo("name");
-        break;
-      default:
-        texture.pause();
-        break;
-    }
+//
+//    //cho enemy đi theo pattern.
+//    int value = ((int) (Math.random() * 100)) % 4;
+//    // random hướng cho enemy.
+//    switch (GameAction.valueOf(value)) {
+//      case UP:
+//        this.position.y -= speed.get();
+//        // load texture
+//        break;
+//      case DOWN:
+//        this.position.y += speed.get();
+//        // load texture
+//        break;
+//      case RIGHT:
+//        this.position.x += speed.get();
+//        // load texture
+//        break;
+//      case LEFT:
+//        this.position.x -= speed.get();
+//        // load texture: texture.changeTo("name");
+//        break;
+//      default:
+//        texture.pause();
+//        break;
+//    }
   }
 
   @Override
