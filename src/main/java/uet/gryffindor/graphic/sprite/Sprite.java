@@ -42,6 +42,15 @@ public class Sprite {
     this.spriteSheet = _spriteSheet;
   }
 
+  public static void loadSprite() {
+    loadPlayer();
+    loadBomb();
+    loadEnemy();
+    loadExplosion();
+    loadItems();
+    loadObstacle();
+  }
+
   private static void loadPlayer() {
     Sprite[] player_right = new Sprite[6];
     player_right[0] = new Sprite(114, 35, 14, 27, SpriteSheet.player);
@@ -99,10 +108,10 @@ public class Sprite {
     balloomSprites[5] = new Sprite(96, 5, 16, 16, SpriteSheet.balloomAndOneal);
     balloomSprites[6] = new Sprite(112, 5, 16, 16, SpriteSheet.balloomAndOneal);
 
-    balloom.put("up", new Sprite[] {balloomSprites[2], balloomSprites[4]});
-    balloom.put("down", new Sprite[] {balloomSprites[2], balloomSprites[4]});
-    balloom.put("left", new Sprite[] {balloomSprites[0], balloomSprites[1], balloomSprites[2]});
-    balloom.put("right", new Sprite[] {balloomSprites[4], balloomSprites[5], balloomSprites[6]});
+    balloom.put("up", new Sprite[] { balloomSprites[2], balloomSprites[4] });
+    balloom.put("down", new Sprite[] { balloomSprites[2], balloomSprites[4] });
+    balloom.put("left", new Sprite[] { balloomSprites[0], balloomSprites[1], balloomSprites[2] });
+    balloom.put("right", new Sprite[] { balloomSprites[4], balloomSprites[5], balloomSprites[6] });
 
     Sprite[] onealSprites = new Sprite[8];
     onealSprites[0] = new Sprite(5, 88, 16, 16, SpriteSheet.balloomAndOneal);
@@ -114,24 +123,21 @@ public class Sprite {
     onealSprites[6] = new Sprite(112, 88, 16, 16, SpriteSheet.balloomAndOneal);
     onealSprites[7] = new Sprite(131, 88, 16, 16, SpriteSheet.balloomAndOneal);
 
-    oneal.put("up", new Sprite[] {onealSprites[2], onealSprites[5]});
-    oneal.put("down", new Sprite[] {onealSprites[2], onealSprites[5]});
-    oneal.put("left", new Sprite[] {onealSprites[0], onealSprites[1], onealSprites[2]});
-    oneal.put("right", new Sprite[] {onealSprites[5], onealSprites[6], onealSprites[7]});
+    oneal.put("up", new Sprite[] { onealSprites[2], onealSprites[5] });
+    oneal.put("down", new Sprite[] { onealSprites[2], onealSprites[5] });
+    oneal.put("left", new Sprite[] { onealSprites[0], onealSprites[1], onealSprites[2] });
+    oneal.put("right", new Sprite[] { onealSprites[5], onealSprites[6], onealSprites[7] });
   }
 
-  public static void loadSprite() {
-    // dynamics
-    loadPlayer();
-    loadBomb();
-    loadEnemy();
-
+  public static void loadExplosion() {
     explosion = new Sprite[12];
     for (int i = 0; i <= 5; i++) {
       explosion[i] = new Sprite(i * 330, 0, 320, 350, SpriteSheet.explosion);
       explosion[i + 6] = new Sprite(i * 330, 350, 320, 350, SpriteSheet.explosion);
     }
+  }
 
+  public static void loadItems() {
     explosionPotion = new Sprite[8];
     for (int i = 0; i <= 7; i++) {
       explosionPotion[i] = new Sprite(i * 132, 0, 132, 174, SpriteSheet.explosionPotion);
@@ -146,8 +152,9 @@ public class Sprite {
     for (int i = 0; i <= 7; i++) {
       speedPotion[i] = new Sprite(i * 135, 0, 135, 174, SpriteSheet.speedPotion);
     }
+  }
 
-    // statics
+  public static void loadObstacle() {
     obstacle = new Sprite[4];
     obstacle[0] = new Sprite(17, 28, 112, 146, SpriteSheet.obstacle);
     obstacle[1] = new Sprite(145, 28, 112, 146, SpriteSheet.obstacle);
@@ -157,8 +164,6 @@ public class Sprite {
     wall2D = new Sprite(0, 0, SpriteSheet.wall2D.getWidth(), SpriteSheet.wall2D.getHeight(), SpriteSheet.wall2D);
 
     tiles = new Sprite[28];
-    // tiles[0] = new Sprite(21, 44, 140, 137, SpriteSheet.tiles);
-    // tiles[1] = new Sprite(178, 353, 140, 137, SpriteSheet.tiles);
     int x = 0;
     for (int i = 0; i < 4; i++) {
       for (int j = 0; j < 7; j++) {

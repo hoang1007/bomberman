@@ -14,6 +14,10 @@ import uet.gryffindor.game.object.dynamics.enemy.Oneal;
 import uet.gryffindor.game.object.statics.Brick;
 import uet.gryffindor.game.object.statics.Floor;
 import uet.gryffindor.game.object.statics.Wall;
+import uet.gryffindor.game.object.statics.items.BombItem;
+import uet.gryffindor.game.object.statics.items.FlameItem;
+import uet.gryffindor.game.object.statics.items.Item;
+import uet.gryffindor.game.object.statics.items.SpeedItem;
 import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.graphic.texture.SpriteTexture;
 
@@ -24,7 +28,7 @@ public class MapParser {
             int height = sc.nextInt();
             int width = sc.nextInt();
 
-            int[][] rawMap = new int[height][width];
+            String[][] rawMap = new String[height][width];
             SortedList<GameObject> objects = new SortedList<>();
 
             for (int i = 0; i < height; i++) {
@@ -32,6 +36,7 @@ public class MapParser {
                     Vector2D position = new Vector2D(j, i);
 
                     String tokens = sc.next();
+                    rawMap[i][j] = tokens;
 
                     for (GameObject obj : decodeTokens(tokens)) {
                         obj.position = position.multiply(Sprite.DEFAULT_SIZE);
@@ -51,30 +56,31 @@ public class MapParser {
             int type = Integer.parseInt(token.substring(1));
 
             switch (symbol) {
-            case 'w':
-                Wall wall = new Wall();
-                wall.setTexture(new SpriteTexture(Sprite.tiles[type], wall));
-                objects.add(wall);
-                break;
-            case 'o':
-                Brick obstacle = new Brick();
-                obstacle.setTexture(new SpriteTexture(Sprite.obstacle[type], obstacle));
-                objects.add(obstacle);
-                break;
-            case 'f':
-                Floor floor = new Floor();
-                floor.setTexture(new SpriteTexture(Sprite.tiles[type], floor));
-                objects.add(floor);
-                break;
-            case 'p':
-                Bomber bomber = new Bomber();
-                objects.add(bomber);
-                break;
-            case 'e':
-                objects.add(type == 0 ? new Balloom() : new Oneal());
-                break;
-            default:
-                break;
+                case 'w':
+                    Wall wall = new Wall();
+                    wall.setTexture(new SpriteTexture(Sprite.tiles[type], wall));
+                    objects.add(wall);
+                    break;
+                case 'o':
+                    Brick obstacle = new Brick();
+                    obstacle.setTexture(new SpriteTexture(Sprite.obstacle[type], obstacle));
+                    objects.add(obstacle);
+                    break;
+                case 'f':
+                    Floor floor = new Floor();
+                    floor.setTexture(new SpriteTexture(Sprite.tiles[type], floor));
+                    objects.add(floor);
+                    break;
+                case 'p':
+                    Bomber bomber = new Bomber();
+                    objects.add(bomber);
+                    break;
+                case 'e':
+                    objects.add(type == 0 ? new Balloom() : new Oneal());
+                    break;
+
+                default:
+                    break;
             }
         }
 
