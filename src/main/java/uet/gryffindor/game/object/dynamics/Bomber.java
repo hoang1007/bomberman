@@ -36,7 +36,11 @@ public class Bomber extends DynamicObject {
   public void update() {
     if (!isBlocked) {
       oldPosition = position.clone();
-      move();
+      if (pilot != null) {
+        pilot.action();
+      } else {
+        move();
+      }
     }
   }
 

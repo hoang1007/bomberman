@@ -122,13 +122,21 @@ public class AStar {
         return result;
     }
 
-    public static Queue<Vector2D> findPath(MovableMap canMove, Vector2D srcPosition, Vector2D dstPosition, double step) {
+    /**
+     * Tìm đường từ nguồn tới đích.
+     * @param canMove bản đồ {@link MovableMap}
+     * @param srcPosition điểm xuất phát
+     * @param dstPosition điểm đến
+     * @param step bước di chuyển
+     * @return hàng đợi các vị trí theo từng step đã cho. Hàng đợi rỗng nếu không có đường đi.
+     */
+    public static Queue<Vector2D> findAbsolutePath(MovableMap canMove, Vector2D srcPosition, Vector2D dstPosition, double step) {
         Stack<MoveStep> path = new Stack<>();
         Queue<MoveStep> queue = new PriorityQueue<>();
         Map<Vector2D, MoveStep> evaluated = new HashMap<>();
 
-        Vector2D srcGridPos = srcPosition.clone().smooth(Sprite.DEFAULT_SIZE, 1);
-        Vector2D dstGridPos = dstPosition.clone().smooth(Sprite.DEFAULT_SIZE, 1);
+        Vector2D srcGridPos = srcPosition.smooth(Sprite.DEFAULT_SIZE, 1);
+        Vector2D dstGridPos = dstPosition.smooth(Sprite.DEFAULT_SIZE, 1);
 
         queue.add(new MoveStep(srcGridPos, null, null, Double.MAX_VALUE));
 
@@ -158,6 +166,77 @@ public class AStar {
         MoveStep traceBack = evaluated.get(dstGridPos);
 
         if (traceBack != null && traceBack.preStep != null) {
+            while (traceBack.preStep.direction != null) {
+                path.push(traceBack);
+                traceBack = traceBack.preStep;
+            }
+        }
+
+        return adjustPath(path, srcPosition, dstPosition, step);
+    }
+
+
+    /**
+     * Tìm đường từ nguồn tới đích nếu có thể.
+     * Nếu không thì dừng lại ở vị trí bị chặn.
+     * @param canMove bản đồ {@link MovableMap}
+     * @param src vị trí xuất phát
+     * @param dst điểm đến
+     * @param step bước đi
+     * @return hàng đợi các vị trí trên đường đi theo step
+     */
+    public static Queue<Vector2D> findPath(MovableMap canMove, Vector2D srcPosition, Vector2D dstPosition, double step) {
+        Stack<MoveStep> path = new Stack<>();
+        Queue<MoveStep> queue = new PriorityQueue<>();
+        Map<Vector2D, MoveStep> evaluated = new HashMap<>();
+
+        Vector2D srcGridPos = srcPosition.smooth(Sprite.DEFAULT_SIZE, 1);
+        Vector2D dstGridPos = dstPosition.smooth(Sprite.DEFAULT_SIZE, 1);
+
+        queue.add(new MoveStep(srcGridPos, null, null, Double.MAX_VALUE));
+
+        while (!queue.isEmpty()) {
+            MoveStep current = queue.remove();
+            evaluated.put(current.position, current);
+
+            if (current.position.equals(dstGridPos)) {
+                break;
+            }
+
+            MoveStep[] neighbors = findNeighbors(current, srcGridPos, dstGridPos);
+
+            for (MoveStep neighbor : neighbors) {
+                if (neighbor != null) {
+                    if (canMove.at(neighbor.position) == false) {
+                        continue;
+                    }
+    
+                    if (!evaluated.containsKey(neighbor.position)) {
+                        queue.add(neighbor);
+                    }
+                }
+            }
+        }
+
+        MoveStep traceBack = evaluated.get(dstGridPos);
+
+        double minDis = Double.MAX_VALUE;
+        Vector2D newDstGridPos = null;
+        if (traceBack == null) {
+            for (var pos : evaluated.keySet()) {
+                double dis = Geometry.manhattanDistance(pos, dstGridPos);
+
+                if (dis < minDis) {
+                    minDis = dis;
+                    newDstGridPos = pos;
+                }
+            }
+
+            dstGridPos = newDstGridPos;
+            traceBack = evaluated.get(dstGridPos);
+        }
+
+        if (traceBack.preStep != null) {
             while (traceBack.preStep.direction != null) {
                 path.push(traceBack);
                 traceBack = traceBack.preStep;
