@@ -48,6 +48,24 @@ public enum Direction {
         return result;
     }
 
+    public static Direction of(Vector2D src, Vector2D dst) {
+        if (src.x == dst.x) {
+            if (src.y < dst.y) {
+                return DOWN;
+            } else if (src.y > dst.y) {
+                return UP;
+            }
+        } else if (src.y == dst.y) {
+            if (src.x < dst.x) {
+                return RIGHT;
+            } else if (src.x > dst.x) {
+                return LEFT;
+            }
+        }
+
+        return NONE;
+    }
+
     public String toString() {
         return this.name;
     }

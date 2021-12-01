@@ -10,6 +10,7 @@ import java.util.Stack;
 import uet.gryffindor.game.base.Vector2D;
 import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.util.Geometry;
+import uet.gryffindor.util.Pair;
 
 public class AStar {
     static class MoveStep implements Comparable<MoveStep> {
@@ -184,12 +185,13 @@ public class AStar {
      * @param src vị trí xuất phát
      * @param dst điểm đến
      * @param step bước đi
-     * @return hàng đợi các vị trí trên đường đi theo step
+     * @return (có tìm được đường đến đích hay không, hàng đợi các vị trí trên đường đi theo step)
      */
-    public static Queue<Vector2D> findPath(MovableMap canMove, Vector2D srcPosition, Vector2D dstPosition, double step) {
+    public static Pair<Boolean, Queue<Vector2D>> findPath(MovableMap canMove, Vector2D srcPosition, Vector2D dstPosition, double step) {
         Stack<MoveStep> path = new Stack<>();
         Queue<MoveStep> queue = new PriorityQueue<>();
         Map<Vector2D, MoveStep> evaluated = new HashMap<>();
+        boolean reachable = true;
 
         Vector2D srcGridPos = srcPosition.smooth(Sprite.DEFAULT_SIZE, 1);
         Vector2D dstGridPos = dstPosition.smooth(Sprite.DEFAULT_SIZE, 1);
@@ -233,6 +235,7 @@ public class AStar {
                 }
             }
 
+            reachable = false;
             dstGridPos = newDstGridPos;
             traceBack = evaluated.get(dstGridPos);
         }
@@ -244,6 +247,6 @@ public class AStar {
             }
         }
 
-        return adjustPath(path, srcPosition, dstPosition, step);
+        return Pair.of(reachable, adjustPath(path, srcPosition, dstPosition, step));
     }
 }

@@ -22,7 +22,7 @@ public class Game {
   private GraphicsContext context;
 
   public Game(Canvas canvas) {
-    FpsTracker.setFps(30);
+    FpsTracker.setFps(10);
     context = canvas.getGraphicsContext2D();
     camera = new Camera(canvas);
 

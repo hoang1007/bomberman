@@ -13,6 +13,7 @@ import uet.gryffindor.game.behavior.Unmovable;
 import uet.gryffindor.game.engine.Collider;
 import uet.gryffindor.game.engine.Input;
 import uet.gryffindor.game.movement.AutoPilot;
+import uet.gryffindor.game.movement.Direction;
 import uet.gryffindor.game.object.DynamicObject;
 import uet.gryffindor.game.object.dynamics.enemy.Enemy;
 import uet.gryffindor.graphic.sprite.Sprite;
@@ -36,6 +37,7 @@ public class Bomber extends DynamicObject {
     this.setTexture(new AnimateTexture(this, 3, Sprite.player));
     Manager.INSTANCE.getGame().getCamera().setFocusOn(this);
     speed = new SimpleDoubleProperty(8f);
+    pilot = new AutoPilot(this);
 
     orderedLayer = OrderedLayer.MIDGROUND;
     oldPosition = position.clone();
@@ -61,7 +63,7 @@ public class Bomber extends DynamicObject {
     if (!isBlocked) {
       oldPosition = position.clone();
       if (pilot != null) {
-        pilot.action();
+        pilot.processing();
       } else {
         move();
       }
@@ -87,18 +89,30 @@ public class Bomber extends DynamicObject {
         texture.changeTo("left");
         break;
       case SPACE:
-        if (bombDropped < numberOfBombs && System.currentTimeMillis() - delay >= 100) {
-          bombDropped++;
-          Bomb bomb = new Bomb();
-          bomb.position.setValue(this.position.clone().smooth(Sprite.DEFAULT_SIZE, 1));
-          GameObject.addObject(bomb);
-          sinceDropping.add(System.currentTimeMillis());
-          delay = System.currentTimeMillis();
-        }
+        dropBomb();
         break;
       default:
         texture.pause();
         break;
+    }
+  }
+
+  public void move(Vector2D newPos) {
+    Direction dir = Direction.of(position, newPos);
+    this.position = newPos;
+    if (dir != Direction.NONE) {
+      texture.changeTo(dir.toString());
+    }
+  }
+
+  public void dropBomb() {
+    if (bombDropped < numberOfBombs && System.currentTimeMillis() - delay >= 100) {
+      bombDropped++;
+      Bomb bomb = new Bomb();
+      bomb.position.setValue(this.position.clone().smooth(Sprite.DEFAULT_SIZE, 1));
+      GameObject.addObject(bomb);
+      sinceDropping.add(System.currentTimeMillis());
+      delay = System.currentTimeMillis();
     }
   }
 

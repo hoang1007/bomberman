@@ -2,11 +2,12 @@ package uet.gryffindor.game.engine;
 
 import java.util.concurrent.TimeUnit;
 
-import uet.gryffindor.util.ExecuteFunction;
+import uet.gryffindor.util.VoidFunction;
 
 public class TimeCounter extends BaseService {
   private long frameCount = 0;
-  private ExecuteFunction function;
+  private VoidFunction function;
+  private VoidFunction callBack;
   private TaskType taskType;
 
   @Override
@@ -28,8 +29,17 @@ public class TimeCounter extends BaseService {
         break;
       }
     } else {
+      if (callBack != null) {
+        callBack.invoke();
+      }
+      
       this.destroy();
     }
+  }
+
+  public TimeCounter onComplete(VoidFunction callback) {
+    this.callBack = callback;
+    return this;
   }
 
   /**
@@ -39,8 +49,8 @@ public class TimeCounter extends BaseService {
    * @param time     thời gian đếm ngược
    * @param timeUnit đơn vị thời gian
    */
-  public static void callAfter(ExecuteFunction function, long time, TimeUnit timeUnit) {
-    callAfter(function, timeUnit.toNanos(time) / FpsTracker.getFrameTime());
+  public static TimeCounter callAfter(VoidFunction function, long time, TimeUnit timeUnit) {
+    return callAfter(function, timeUnit.toNanos(time) / FpsTracker.getFrameTime());
   }
 
   /**
@@ -49,12 +59,14 @@ public class TimeCounter extends BaseService {
    * @param function hàm muốn thực thi
    * @param frame    số frame
    */
-  public static void callAfter(ExecuteFunction function, long frame) {
+  public static TimeCounter callAfter(VoidFunction function, long frame) {
     TimeCounter instance = new TimeCounter();
 
     instance.function = function;
     instance.frameCount = frame;
     instance.taskType = TaskType.AFTER;
+
+    return instance;
   }
 
   /**
@@ -64,8 +76,8 @@ public class TimeCounter extends BaseService {
    * @param time     thời gian thực thi hàm
    * @param timeUnit đơn vị thời gian
    */
-  public static void callDuring(ExecuteFunction function, long time, TimeUnit timeUnit) {
-    callDuring(function, timeUnit.toNanos(time) / FpsTracker.getFrameTime());
+  public static TimeCounter callDuring(VoidFunction function, long time, TimeUnit timeUnit) {
+    return callDuring(function, timeUnit.toNanos(time) / FpsTracker.getFrameTime());
   }
 
   /**
@@ -74,12 +86,14 @@ public class TimeCounter extends BaseService {
    * @param function hàm muốn thực thi
    * @param frame    số frame
    */
-  public static void callDuring(ExecuteFunction function, long frame) {
+  public static TimeCounter callDuring(VoidFunction function, long frame) {
     TimeCounter instance = new TimeCounter();
 
     instance.function = function;
     instance.frameCount = frame;
     instance.taskType = TaskType.DURING;
+
+    return instance;
   }
 
   enum TaskType {

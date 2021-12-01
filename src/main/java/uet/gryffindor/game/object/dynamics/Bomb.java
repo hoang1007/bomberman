@@ -1,13 +1,10 @@
 package uet.gryffindor.game.object.dynamics;
 
-import uet.gryffindor.game.Manager;
-import uet.gryffindor.game.Map;
 import uet.gryffindor.game.base.GameObject;
 import uet.gryffindor.game.base.OrderedLayer;
 import uet.gryffindor.game.base.Vector2D;
+import uet.gryffindor.game.movement.Direction;
 import uet.gryffindor.game.object.dynamics.explosion.Explosion;
-import uet.gryffindor.game.object.statics.Brick;
-import uet.gryffindor.game.object.statics.items.Item;
 import uet.gryffindor.graphic.Animator;
 import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.graphic.texture.SpriteTexture;
@@ -59,88 +56,16 @@ public class Bomb extends GameObject {
 
     /** hiệu ứng nổ. */
     public void explore() {
-
         if (explored) {
             // thêm vụ nổ ở trung tâm.
             GameObject.instantiate(Explosion.class, this.position);
-            // thêm vụ nổ các hướng sang phải
             for (int i = 1; i <= explosionRadius; i++) {
-                int x = (int) this.position.x + i * Sprite.DEFAULT_SIZE;
-                int y = (int) this.position.y;
-                if (addExplosionAt(x, y) == false) {
-                    break;
-                }
-            }
-
-            // thêm vụ nổ các hướng sang trái
-            for (int i = 1; i <= explosionRadius; i++) {
-                int x = (int) this.position.x - i * Sprite.DEFAULT_SIZE;
-                int y = (int) this.position.y;
-                if (addExplosionAt(x, y) == false) {
-                    break;
-                }
-            }
-
-            // thêm vụ nổ các hướng lên trên
-            for (int i = 1; i <= explosionRadius; i++) {
-                int x = (int) this.position.x;
-                int y = (int) this.position.y - i * Sprite.DEFAULT_SIZE;
-                if (addExplosionAt(x, y) == false) {
-                    break;
-                }
-            }
-
-            // thêm vụ nổ các hướng xuống dưới
-            for (int i = 1; i <= explosionRadius; i++) {
-                int x = (int) this.position.x;
-                int y = (int) this.position.y + i * Sprite.DEFAULT_SIZE;
-                if (addExplosionAt(x, y) == false) {
-                    break;
+                for (int j = 0; j < 4; j++) {
+                    Vector2D neighbor = Direction.valueOf(j).forward(position, Sprite.DEFAULT_SIZE * i);
+                    GameObject.instantiate(Explosion.class, neighbor);
                 }
             }
         }
-    }
-
-    /** Thêm 1 explosion tại (x,y) */
-    public boolean addExplosionAt(int x, int y) {
-        int coordinatesX = (x + Sprite.DEFAULT_SIZE / 2) / Sprite.DEFAULT_SIZE;
-        int coordinatesY = (y + Sprite.DEFAULT_SIZE / 2) / Sprite.DEFAULT_SIZE;
-        // nếu vướng tường , return false.
-        if (entangle(coordinatesX, coordinatesY)) {
-            return false;
-        } else {
-            GameObject.instantiate(Explosion.class, new Vector2D(x, y));
-
-            return true;
-        }
-    }
-
-    public boolean entangle(int coordinatesX, int coordinatesY) {
-        Map myMap = Manager.INSTANCE.getGame().getPlayingMap();
-
-        String symbol = myMap.getRawMapAt(coordinatesY, coordinatesX);
-        if (symbol.endsWith("f7") && !symbol.startsWith("o3") || symbol.equals("w25") || symbol.equals("w1")
-                || symbol.equals("w4")) {
-            for (int i = 0; i < myMap.getObjects().size(); i++) {
-                if (myMap.getObjects().get(i) instanceof Brick) {
-                    Brick b = (Brick) myMap.getObjects().get(i);
-                    if (b.position.equals(
-                            new Vector2D(coordinatesX * Sprite.DEFAULT_SIZE, coordinatesY * Sprite.DEFAULT_SIZE))) {
-
-                        Item item = b.getItem();
-                        if (item != null) {
-                            item.start();
-                            myMap.getObjects().add(item);
-                        }
-                        myMap.getObjects().remove(i);
-                        i--;
-
-                    }
-                }
-            }
-            return false;
-        }
-        return true;
     }
 
     public void setExplored(boolean explored) {

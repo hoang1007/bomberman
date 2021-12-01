@@ -1,5 +1,6 @@
 package uet.gryffindor.game.movement;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -14,6 +15,7 @@ import uet.gryffindor.game.base.GameObject;
 import uet.gryffindor.game.base.Vector2D;
 import uet.gryffindor.game.behavior.Unmovable;
 import uet.gryffindor.game.engine.Collider;
+import uet.gryffindor.game.engine.TimeCounter;
 import uet.gryffindor.game.object.DynamicObject;
 import uet.gryffindor.game.object.dynamics.Bomb;
 import uet.gryffindor.game.object.dynamics.Bomber;
@@ -24,7 +26,7 @@ import uet.gryffindor.game.object.statics.Floor;
 import uet.gryffindor.game.object.statics.items.Item;
 import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.util.Geometry;
-import uet.gryffindor.util.IterateUtils;
+import uet.gryffindor.util.VoidFunction;
 
 public class AutoPilot {
   private Bomber agent;
@@ -36,6 +38,7 @@ public class AutoPilot {
   private MovableMap map;
   private Inspector inspector;
   private Random random = new Random();
+  private TimeCounter taskDoing;
 
   public AutoPilot(Bomber agent) {
     this.agent = agent;
@@ -65,7 +68,7 @@ public class AutoPilot {
                                 new ConditionNode.Builder()
                                     .setConditionName("Is there any enemy in the vision?")
                                     .setCondition(inspector::hasEnemies)
-                                    .setPositive(new ActionNode<Action>().setAction(Action.KillEnemy))
+                                    .setPositive(new ActionNode<Action>().setAction(Action.HuntEnemy))
                                     .setNegative(new ActionNode<Action>().setAction(Action.DestroyObstacle))
                                     .build())
                             .build())
@@ -74,7 +77,7 @@ public class AutoPilot {
             .build());
 
     vision = new DynamicObject() {
-      private double visionRadius = 120;
+      private double visionRadius = 150;
 
       @Override
       public void start() {
@@ -126,52 +129,177 @@ public class AutoPilot {
     return map;
   }
 
-  private void processing() {
+  public void processing() {
     map = initialMap();
-    Action action = (Action) decisionTree.forward().getAction();
+    Action newAction = (Action) decisionTree.forward().getAction();
 
-    switch (action) {
-      case KillEnemy: {
-        Enemy enemy = (Enemy) inspector.target.get("enemy");
+    if (newAction.ordinal() < action.ordinal()) { // nhiệm vụ mới có độ ưu tiên cao hơn
+      action = newAction;
+      // hủy task đang thực hiện nếu có
+      if (taskDoing != null) {
+        taskDoing.destroy();
       }
-        break;
-      case DestroyObstacle: {
-        Brick obstacle = IterateUtils.getItem(objects, Brick.class);
-        if (obstacle != null) {
-          path = AStar.findPath(map, agent.position, obstacle.position, agent.getSpeed());
-        } else {
-          action = Action.Undefined;
+
+      switch (action) {
+        case KillEnemy: {
+          resetTask(true);
         }
+          break;
+        case DestroyObstacle: {
+          boolean hasObstacle = false;
+
+          for (GameObject obj : objects) {
+            if (obj instanceof Brick) {
+              Vector2D dst = nextTo(agent.position, obj.position);
+              path = AStar.findPath(map, agent.position, dst, Sprite.DEFAULT_SIZE).second;
+
+              if (!path.isEmpty()) {
+                taskDoing = TimeCounter.callDuring(() -> {
+                  agent.move(path.remove());
+                }, path.size()).onComplete(() -> this.resetTask(true));
+
+                hasObstacle = true;
+                break;
+              }
+            }
+          }
+
+          if (!hasObstacle) {
+            resetTask(false);
+          }
+        }
+          break;
+        case EarnItem: {
+          Item item = (Item) inspector.target.get("item");
+          var res = AStar.findPath(map, agent.position, item.position, Sprite.DEFAULT_SIZE);
+          System.out.println("Path by item");
+          path = res.second;
+          taskDoing = TimeCounter.callDuring(() -> {
+            agent.move(path.remove());
+          }, path.size()).onComplete(() -> {
+            if (res.first) {
+              this.resetTask(false);
+            } else {
+              this.resetTask(true);
+            }
+          });
+        }
+          break;
+        case GotoSafeZone: {
+          // thực hiện BFS để tìm nơi an toàn
+          Vector2D safePos = null;
+
+          Queue<Vector2D> bfs = new LinkedList<>();
+          HashMap<Vector2D, Vector2D> evaluated = new HashMap<>();
+          Vector2D previous = null;
+
+          bfs.add(agent.position);
+
+          while (!bfs.isEmpty() && safePos == null) {
+            Vector2D current = bfs.remove();
+            evaluated.put(current, previous);
+
+            previous = current;
+
+            Vector2D[] neighbors = new Vector2D[4];
+
+            for (int i = 0; i < neighbors.length; i++) {
+              neighbors[i] = Direction.valueOf(i).forward(current, Sprite.DEFAULT_SIZE);
+            }
+
+            for (Vector2D neighbor : neighbors) {
+              if (!evaluated.containsKey(neighbor)) {
+                if (map.at(neighbor) == true) {
+                  safePos = neighbor;
+                  evaluated.put(safePos, current);
+                  break;
+                } else {
+                  bfs.add(neighbor);
+                }
+              }
+            }
+          }
+
+          if (safePos != null) {
+            ArrayDeque<Vector2D> path = new ArrayDeque<>();
+            for (Vector2D i = safePos.clone(); i != null; i = evaluated.get(i)) {
+              path.addFirst(i);
+            }
+            this.path = path;
+
+            taskDoing = TimeCounter.callDuring(new VoidFunction() {
+
+              @Override
+              public void invoke() {
+                agent.move(path.remove());
+              }
+
+            }, path.size()).onComplete(() -> this.resetTask(false));
+          }
+        }
+          break;
+        case GotoTheExit: {
+
+        }
+          break;
+        case HuntEnemy: {
+          GameObject enemy = inspector.target.get("enemy");
+          Vector2D dst = nextTo(agent.position, enemy.position);
+
+          path = AStar.findPath(map, agent.position, dst, Sprite.DEFAULT_SIZE).second;
+
+          taskDoing = TimeCounter.callDuring(() -> {
+            agent.move(path.remove());
+          }, path.size()).onComplete(() -> resetTask(true));
+        }
+          break;
+        case Undefined: {
+          agent.move(Direction.valueOf(random.nextInt(4)).forward(agent.position, Sprite.DEFAULT_SIZE));
+        }
+          break;
+        default:
+          break;
       }
-        break;
-      case EarnItem:
-        break;
-      case GotoSafeZone:
-        break;
-      case GotoTheExit:
-        break;
-      default:
-        break;
+    }
+
+    System.out.println(action);
+    objects.clear();
+  }
+
+  private void resetTask(boolean plantBomb) {
+    action = Action.Undefined;
+    if (plantBomb) {
+      agent.dropBomb();
     }
   }
 
-  public void action() {
-    processing();
-    if (path.isEmpty()) {
-      // agent.position = Direction.valueOf(random.nextInt(4)).forward(agent.position, agent.getSpeed());
-    } else {
-      agent.position = path.remove();
+  private Vector2D nextTo(Vector2D src, Vector2D dst) {
+    double minDis = Double.MAX_VALUE;
+    Vector2D next = dst;
+
+    for (int i = 0; i < 4; i++) {
+      Vector2D neighbor = Direction.valueOf(i).forward(dst, Sprite.DEFAULT_SIZE);
+
+      if (map.at(neighbor) == true) {
+        double dis = Geometry.manhattanDistance(src, neighbor);
+
+        if (dis < minDis) {
+          minDis = dis;
+          next = neighbor;
+        }
+      }
     }
 
-    objects.clear();
+    return next;
   }
 
   static enum Action {
     KillEnemy,
-    EarnItem,
-    DestroyObstacle,
     GotoSafeZone,
+    EarnItem,
+    HuntEnemy,
     GotoTheExit,
+    DestroyObstacle,
     Undefined
   }
 
@@ -180,7 +308,12 @@ public class AutoPilot {
 
     /** Kiểm tra xem agent có trong vùng nổ của bomb hay không. */
     boolean isSafety() {
-      return map.at(agent.position);
+      for (GameObject obj : objects) {
+        if (obj instanceof Bomb || obj instanceof Explosion) {
+          return false;
+        }
+      }
+      return true;
     }
 
     boolean isPortalAvailable() {

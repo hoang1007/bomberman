@@ -1,42 +1,29 @@
 package uet.gryffindor.game.object.dynamics.explosion;
 
-import uet.gryffindor.game.base.GameObject;
-import uet.gryffindor.graphic.Animator;
+import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
+
+import uet.gryffindor.game.engine.TimeCounter;
+import uet.gryffindor.game.object.DynamicObject;
 import uet.gryffindor.graphic.sprite.Sprite;
-import uet.gryffindor.graphic.texture.SpriteTexture;
+import uet.gryffindor.graphic.texture.AnimateTexture;
 
-public class Explosion extends GameObject {
-
-    private SpriteTexture texture;
-    private Animator burnOut;
-
+public class Explosion extends DynamicObject {
     public static long time;// thời gian xuất hiện vụ nổ
-    private long startTime;
 
     @Override
     public void start() {
-        texture = new SpriteTexture(Sprite.explosion[0], this);
-        double rate = 1;
-        burnOut = new Animator(rate, Sprite.explosion);
+        HashMap<String, Sprite[]> anim = new HashMap<>();
+        anim.put("burnOut", Sprite.explosion);
+
+        texture = new AnimateTexture(this, 3, anim);
         time = 600;
-        startTime = System.currentTimeMillis();
+
+        TimeCounter.callAfter(this::destroy, time, TimeUnit.MILLISECONDS);
     }
 
     @Override
     public void update() {
-        texture.setSprite(burnOut.getSprite());
-        if (System.currentTimeMillis() - startTime >= time) {
-            deleteExplosion();
-        }
-    }
 
-    public void deleteExplosion() {
-        this.destroy();
     }
-
-    @Override
-    public SpriteTexture getTexture() {
-        return texture;
-    }
-
 }
