@@ -8,6 +8,7 @@ import java.util.HashMap;
 public class Sprite {
   // dynamics
   public static HashMap<String, Sprite[]> player = new HashMap<>();
+  public static HashMap<String, Sprite[]> blackPlayer = new HashMap<>();
   public static HashMap<String, Sprite[]> balloom = new HashMap<>();
   public static HashMap<String, Sprite[]> oneal = new HashMap<>();
 
@@ -44,11 +45,38 @@ public class Sprite {
 
   public static void loadSprite() {
     loadPlayer();
+    loadBlackPlayer();
     loadBomb();
     loadEnemy();
     loadExplosion();
     loadItems();
     loadObstacle();
+  }
+
+  private static void loadBlackPlayer() {
+    Sprite[] mesh = new Sprite[12];
+    final int wUnit = 17;
+    final int hUnit = 24;
+
+    for (int i = 0; i < mesh.length; i++) {
+      mesh[i] = new Sprite(i * wUnit, 0, wUnit, hUnit, SpriteSheet.blackBomber);
+    }
+
+    blackPlayer.put("up", new Sprite[] {mesh[2], mesh[1], mesh[0]});
+    blackPlayer.put("down", new Sprite[] {mesh[8], mesh[7], mesh[6]});
+    blackPlayer.put("left", new Sprite[] {mesh[5], mesh[4], mesh[3]});
+    blackPlayer.put("right", new Sprite[] {mesh[11], mesh[10], mesh[9]});
+    blackPlayer.put("dead", new Sprite[] {
+      new Sprite(289, 98, wUnit, hUnit, SpriteSheet.blackBomber),
+      new Sprite(272, 99, wUnit, hUnit, SpriteSheet.blackBomber),
+      new Sprite(255, 100, wUnit, hUnit, SpriteSheet.blackBomber),
+      new Sprite(238, 100, wUnit, hUnit, SpriteSheet.blackBomber),
+      new Sprite(216, 100, 19, 24, SpriteSheet.blackBomber),
+      new Sprite(190, 102, 22, 22, SpriteSheet.blackBomber),
+      new Sprite(164, 103, 24, 21, SpriteSheet.blackBomber),
+      new Sprite(138, 103, 25, 21, SpriteSheet.blackBomber),
+      new Sprite(114, 102, 24, 22, SpriteSheet.blackBomber)
+    });
   }
 
   private static void loadPlayer() {

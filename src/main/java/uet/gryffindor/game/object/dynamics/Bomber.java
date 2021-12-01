@@ -12,8 +12,10 @@ import uet.gryffindor.game.base.Vector2D;
 import uet.gryffindor.game.behavior.Unmovable;
 import uet.gryffindor.game.engine.Collider;
 import uet.gryffindor.game.engine.Input;
+import uet.gryffindor.game.engine.TimeCounter;
 import uet.gryffindor.game.object.DynamicObject;
 import uet.gryffindor.game.object.dynamics.enemy.Enemy;
+import uet.gryffindor.game.object.dynamics.explosion.Explosion;
 import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.graphic.texture.AnimateTexture;
 
@@ -31,7 +33,7 @@ public class Bomber extends DynamicObject {
 
   @Override
   public void start() {
-    this.setTexture(new AnimateTexture(this, 3, Sprite.player));
+    this.setTexture(new AnimateTexture(this, 3, Sprite.blackPlayer));
     Manager.INSTANCE.getGame().getCamera().setFocusOn(this);
     speed = new SimpleDoubleProperty(8f);
 
@@ -105,8 +107,16 @@ public class Bomber extends DynamicObject {
       // gắn nhãn bị chặn
       isBlocked = true;
     } else if (that.gameObject instanceof Enemy) {
-      // this.destroy();
+      dead();
+    } else if (that.gameObject instanceof Explosion) {
+      dead();
     }
+  }
+
+  public void dead() {
+    isBlocked = true;
+    texture.changeTo("dead");
+    TimeCounter.callAfter(this::destroy, texture.getDuration("dead"));
   }
 
   @Override

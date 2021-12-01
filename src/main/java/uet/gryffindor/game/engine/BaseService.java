@@ -5,6 +5,10 @@ import java.util.List;
 
 public abstract class BaseService {
   private static List<BaseService> services = new ArrayList<>();
+
+  protected BaseService() {
+    services.add(this);
+  }
    
   public abstract void update();
 
