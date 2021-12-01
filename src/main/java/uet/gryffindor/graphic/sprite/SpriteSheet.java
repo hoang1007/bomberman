@@ -21,6 +21,7 @@ public class SpriteSheet {
     public static SpriteSheet obstacle = new SpriteSheet("statics/block.png");
     public static SpriteSheet wall2D = new SpriteSheet("statics/wall.png");
     public static SpriteSheet tiles = new SpriteSheet("statics/tiles.jpg");
+    public static SpriteSheet portal = new SpriteSheet("statics/portal.png");
 
     private Image img;
 

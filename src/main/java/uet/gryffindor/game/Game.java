@@ -41,7 +41,11 @@ public class Game {
   }
 
   public void start() {
-    this.setMap(Map.getByLevel(1));
+    if (playingMap == null) {
+      this.setMap(Map.getByLevel(1));
+    } else {
+      this.setMap(Map.getByLevel(playingMap.getLevel() + 1));
+    }
 
     SortedList<GameObject> objects = playingMap.getObjects();
 
@@ -66,7 +70,7 @@ public class Game {
 
   private void update() {
     List<GameObject> objects = playingMap.getObjects();
-    
+
     int currentSize = objects.size();
     for (int i = 0; i < objects.size(); i++) {
       objects.get(i).update();

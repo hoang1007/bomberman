@@ -31,6 +31,10 @@ public class Map {
 
   }
 
+  public void setLevel(int level) {
+    this.level = level;
+  }
+
   public SortedList<GameObject> getObjects() {
     return this.objects;
   }
@@ -77,7 +81,6 @@ public class Map {
   }
 
   public static Map getByLevel(int level) {
-    level = 1;
     return MapParser.parse(GameApplication.class.getResourceAsStream("map/" + level + ".txt"));
   }
 }

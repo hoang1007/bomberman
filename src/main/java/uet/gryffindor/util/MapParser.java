@@ -13,11 +13,8 @@ import uet.gryffindor.game.object.dynamics.enemy.Balloom;
 import uet.gryffindor.game.object.dynamics.enemy.Oneal;
 import uet.gryffindor.game.object.statics.Brick;
 import uet.gryffindor.game.object.statics.Floor;
+import uet.gryffindor.game.object.statics.Portal;
 import uet.gryffindor.game.object.statics.Wall;
-import uet.gryffindor.game.object.statics.items.BombItem;
-import uet.gryffindor.game.object.statics.items.FlameItem;
-import uet.gryffindor.game.object.statics.items.Item;
-import uet.gryffindor.game.object.statics.items.SpeedItem;
 import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.graphic.texture.SpriteTexture;
 
@@ -53,7 +50,13 @@ public class MapParser {
         List<GameObject> objects = new ArrayList<>();
         for (String token : tokens.split("-")) {
             char symbol = token.charAt(0);
-            int type = Integer.parseInt(token.substring(1));
+            int type = 0;
+            try {
+                type = Integer.parseInt(token.substring(1));
+
+            } catch (NumberFormatException e) {
+                //
+            }
 
             switch (symbol) {
                 case 'w':
@@ -71,6 +74,11 @@ public class MapParser {
                     floor.setTexture(new SpriteTexture(Sprite.tiles[type], floor));
                     objects.add(floor);
                     break;
+                case 'P':
+                    Portal portal = new Portal();
+                    portal.setTexture(new SpriteTexture(Sprite.portal[0], portal));
+                    objects.add(portal);
+                    break;
                 case 'p':
                     Bomber bomber = new Bomber();
                     objects.add(bomber);
@@ -78,7 +86,6 @@ public class MapParser {
                 case 'e':
                     objects.add(type == 0 ? new Balloom() : new Oneal());
                     break;
-
                 default:
                     break;
             }
