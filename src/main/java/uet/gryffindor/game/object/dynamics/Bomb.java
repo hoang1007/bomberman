@@ -1,10 +1,13 @@
 package uet.gryffindor.game.object.dynamics;
 
 import uet.gryffindor.game.Manager;
+import uet.gryffindor.game.Map;
 import uet.gryffindor.game.base.GameObject;
 import uet.gryffindor.game.base.OrderedLayer;
 import uet.gryffindor.game.base.Vector2D;
 import uet.gryffindor.game.object.dynamics.explosion.Explosion;
+import uet.gryffindor.game.object.statics.Brick;
+import uet.gryffindor.game.object.statics.items.Item;
 import uet.gryffindor.graphic.Animator;
 import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.graphic.texture.SpriteTexture;
@@ -14,7 +17,7 @@ public class Bomb extends GameObject {
     private SpriteTexture texture;
     private Animator aboutToExplore;
     private boolean explored;
-    private long time; // giới hạn thời gian
+    public static long time; // giới hạn thời gian
     private long startTime;
     private int explosionRadius; // bán kính vụ nổ
 
@@ -60,8 +63,6 @@ public class Bomb extends GameObject {
         if (explored) {
             // thêm vụ nổ ở trung tâm.
             GameObject.instantiate(Explosion.class, this.position);
-            System.out.println("posX: " + (this.position.x / Sprite.DEFAULT_SIZE));
-            System.out.println("posY: " + (this.position.y / Sprite.DEFAULT_SIZE));
             // thêm vụ nổ các hướng sang phải
             for (int i = 1; i <= explosionRadius; i++) {
                 int x = (int) this.position.x + i * Sprite.DEFAULT_SIZE;
@@ -108,21 +109,38 @@ public class Bomb extends GameObject {
         if (entangle(coordinatesX, coordinatesY)) {
             return false;
         } else {
-            // Explosion e = new Explosion(new Vector2D(x, y));
-            // e.start();
-            // e.position.setValue(x, y);
-            // // GameObject.addObject(e);
             GameObject.instantiate(Explosion.class, new Vector2D(x, y));
+
             return true;
         }
     }
 
     public boolean entangle(int coordinatesX, int coordinatesY) {
-        int symbol = Manager.INSTANCE.getGame().getPlayingMap().getRawMapAt(coordinatesY, coordinatesX);
-        if (symbol != 07 && symbol != 01 && symbol != 25 && symbol != 04 && symbol != 26) {
-            return true;
+        Map myMap = Manager.INSTANCE.getGame().getPlayingMap();
+
+        String symbol = myMap.getRawMapAt(coordinatesY, coordinatesX);
+        if (symbol.endsWith("f7") && !symbol.startsWith("o3") || symbol.equals("w25") || symbol.equals("w1")
+                || symbol.equals("w4") || symbol.contains("f23")) {
+            for (int i = 0; i < myMap.getObjects().size(); i++) {
+                if (myMap.getObjects().get(i) instanceof Brick) {
+                    Brick b = (Brick) myMap.getObjects().get(i);
+                    if (b.position.equals(
+                            new Vector2D(coordinatesX * Sprite.DEFAULT_SIZE, coordinatesY * Sprite.DEFAULT_SIZE))) {
+
+                        Item item = b.getItem();
+                        if (item != null) {
+                            item.start();
+                            myMap.getObjects().add(item);
+                        }
+                        myMap.getObjects().remove(i);
+                        i--;
+
+                    }
+                }
+            }
+            return false;
         }
-        return false;
+        return true;
     }
 
     public void setExplored(boolean explored) {

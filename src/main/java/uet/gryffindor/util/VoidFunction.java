@@ -1,6 +1,6 @@
 package uet.gryffindor.util;
 
 @FunctionalInterface
-public interface ExecuteFunction {
+public interface VoidFunction {
   public void invoke();
 }
