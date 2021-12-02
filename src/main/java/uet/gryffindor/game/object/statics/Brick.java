@@ -2,6 +2,7 @@ package uet.gryffindor.game.object.statics;
 
 import java.util.Random;
 
+import uet.gryffindor.game.Manager;
 import uet.gryffindor.game.base.OrderedLayer;
 import uet.gryffindor.game.behavior.Unmovable;
 import uet.gryffindor.game.engine.Collider;
@@ -15,6 +16,7 @@ import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.graphic.texture.SpriteTexture;
 
 public class Brick extends StaticObject implements Unmovable {
+  public boolean canDestroy = true;
 
   @Override
   public void start() {
@@ -52,7 +54,12 @@ public class Brick extends StaticObject implements Unmovable {
 
   @Override
   public void onCollisionEnter(Collider that) {
-    if (that.gameObject instanceof Explosion) {
+    if (that.gameObject instanceof Explosion && this.canDestroy) {
+      Item item = this.getItem();
+      if (item != null) {
+        item.start();
+        Manager.INSTANCE.getGame().getPlayingMap().getObjects().add(item);
+      }
       this.destroy();
     }
   }

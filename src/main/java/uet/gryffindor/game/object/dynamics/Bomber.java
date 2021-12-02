@@ -99,7 +99,7 @@ public class Bomber extends DynamicObject {
 
   @Override
   public void onCollisionEnter(Collider that) {
-    if (that.gameObject instanceof Unmovable) {
+    if (that.gameObject instanceof Unmovable && !(that.gameObject instanceof Bomb)) {
       // ngoại lệ đặt bomb
       if (this.collider.getOverlapArea(that) < this.dimension.x * this.dimension.y) {
         // nếu bomber va chạm với vật thể tĩnh
@@ -108,11 +108,12 @@ public class Bomber extends DynamicObject {
         // gắn nhãn bị chặn
         isBlocked = true;
       }
-    } else if (that.gameObject instanceof Enemy) {
-      dead();
-    } else if (that.gameObject instanceof Explosion) {
-      dead();
     }
+    // else if (that.gameObject instanceof Enemy) {
+    // dead();
+    // } else if (that.gameObject instanceof Explosion) {
+    // dead();
+    // }
   }
 
   public void dead() {
