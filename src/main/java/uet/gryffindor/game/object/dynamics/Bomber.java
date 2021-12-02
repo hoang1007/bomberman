@@ -15,7 +15,6 @@ import uet.gryffindor.game.engine.Input;
 import uet.gryffindor.game.engine.TimeCounter;
 import uet.gryffindor.game.object.DynamicObject;
 import uet.gryffindor.game.object.dynamics.enemy.Enemy;
-import uet.gryffindor.game.object.dynamics.explosion.Explosion;
 import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.graphic.texture.AnimateTexture;
 
@@ -101,11 +100,14 @@ public class Bomber extends DynamicObject {
   @Override
   public void onCollisionEnter(Collider that) {
     if (that.gameObject instanceof Unmovable) {
-      // nếu bomber va chạm với vật thể tĩnh
-      // khôi phục vị trí trước khi va chạm
-      position = oldPosition.smooth(this.dimension.x, 0.3);
-      // gắn nhãn bị chặn
-      isBlocked = true;
+      // ngoại lệ đặt bomb
+      if (this.collider.getOverlapArea(that) < this.dimension.x * this.dimension.y) {
+        // nếu bomber va chạm với vật thể tĩnh
+        // khôi phục vị trí trước khi va chạm
+        position = oldPosition.smooth(this.dimension.x, 0.3);
+        // gắn nhãn bị chặn
+        isBlocked = true;
+      }
     } else if (that.gameObject instanceof Enemy) {
       dead();
     } else if (that.gameObject instanceof Explosion) {

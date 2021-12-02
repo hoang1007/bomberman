@@ -4,7 +4,6 @@ import java.util.concurrent.TimeUnit;
 
 import uet.gryffindor.game.Game;
 import uet.gryffindor.game.Manager;
-import uet.gryffindor.game.Map;
 import uet.gryffindor.game.base.OrderedLayer;
 import uet.gryffindor.game.engine.Collider;
 import uet.gryffindor.game.engine.TimeCounter;
@@ -12,7 +11,6 @@ import uet.gryffindor.game.object.StaticObject;
 import uet.gryffindor.game.object.dynamics.Bomber;
 import uet.gryffindor.graphic.Animator;
 import uet.gryffindor.graphic.sprite.Sprite;
-import uet.gryffindor.graphic.texture.SpriteTexture;
 
 public class Portal extends StaticObject {
   private Animator animator;
@@ -41,5 +39,4 @@ public class Portal extends StaticObject {
     Game myGame = Manager.INSTANCE.getGame();
     myGame.start();
   }
-
 }

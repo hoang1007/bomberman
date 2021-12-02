@@ -114,8 +114,6 @@ public class Collider {
     topLeft.x -= topLeft.x % Sprite.DEFAULT_SIZE;
     topLeft.y -= topLeft.y % Sprite.DEFAULT_SIZE;
 
-    assert topLeft.x % Sprite.DEFAULT_SIZE == 0 : "Is not grid value";
-    assert topLeft.y % Sprite.DEFAULT_SIZE == 0 : "Is not grid value";
     gridPs.add(topLeft);
 
     var unionDim = Geometry.unionRect(topLeft, object.position).second;
@@ -144,7 +142,6 @@ public class Collider {
     }
 
     double overlapArea = a.computeOverlapArea(b);
-    assert overlapArea > 0 : "Overlap area must be greater than zero";
 
     // Nếu danh sách va chạm của a chưa có b
     // hoặc vùng giao nhau của a và b bằng không
@@ -176,7 +173,6 @@ public class Collider {
       var value = this.collidedList.get(key);
 
       if (value.first == false) {
-        assert value.second > 0;
         exiters.add(key);
       } else {
         value.first = false;

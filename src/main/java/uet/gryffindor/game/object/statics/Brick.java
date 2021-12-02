@@ -4,7 +4,9 @@ import java.util.Random;
 
 import uet.gryffindor.game.base.OrderedLayer;
 import uet.gryffindor.game.behavior.Unmovable;
+import uet.gryffindor.game.engine.Collider;
 import uet.gryffindor.game.object.StaticObject;
+import uet.gryffindor.game.object.dynamics.Explosion;
 import uet.gryffindor.game.object.statics.items.BombItem;
 import uet.gryffindor.game.object.statics.items.FlameItem;
 import uet.gryffindor.game.object.statics.items.Item;
@@ -46,5 +48,12 @@ public class Brick extends StaticObject implements Unmovable {
       item.position.setValue(this.position);
     }
     return item;
+  }
+
+  @Override
+  public void onCollisionEnter(Collider that) {
+    if (that.gameObject instanceof Explosion) {
+      this.destroy();
+    }
   }
 }

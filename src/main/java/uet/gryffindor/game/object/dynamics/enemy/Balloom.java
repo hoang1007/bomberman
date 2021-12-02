@@ -5,6 +5,7 @@ import java.util.Random;
 import uet.gryffindor.game.behavior.Unmovable;
 import uet.gryffindor.game.engine.Collider;
 import uet.gryffindor.game.movement.Direction;
+import uet.gryffindor.game.object.dynamics.Explosion;
 import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.graphic.texture.AnimateTexture;
 
@@ -26,7 +27,7 @@ public class Balloom extends Enemy {
     @Override
     public void onCollisionEnter(Collider that) {
         if (that.gameObject instanceof Unmovable) {
-            this.position.smooth(Sprite.DEFAULT_SIZE, 1);
+            this.position = this.position.smooth(Sprite.DEFAULT_SIZE, 1);
 
             int dirCode = 0;
             do {
@@ -34,6 +35,8 @@ public class Balloom extends Enemy {
             } while (dirCode == direction.ordinal());
 
             direction = Direction.valueOf(dirCode);
+        } else if (that.gameObject instanceof Explosion) {
+            this.destroy();
         }
     }
 

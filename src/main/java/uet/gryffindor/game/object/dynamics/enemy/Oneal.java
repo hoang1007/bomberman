@@ -14,6 +14,7 @@ import uet.gryffindor.game.movement.AStar;
 import uet.gryffindor.game.movement.Direction;
 import uet.gryffindor.game.movement.MovableMap;
 import uet.gryffindor.game.object.dynamics.Bomber;
+import uet.gryffindor.game.object.dynamics.Explosion;
 import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.graphic.texture.AnimateTexture;
 import uet.gryffindor.graphic.texture.OutlineTexture;
@@ -21,7 +22,7 @@ import uet.gryffindor.graphic.texture.Texture;
 import uet.gryffindor.util.Geometry;
 
 public class Oneal extends Enemy {
-    private int attackRadius = 50;
+    private int attackRadius = 20;
     private Direction direction = Direction.UP;
     private double speed = 3.0;
     private Random random = new Random();
@@ -110,6 +111,8 @@ public class Oneal extends Enemy {
             } while (dirCode == direction.ordinal());
 
             direction = Direction.valueOf(dirCode);
+        } else if (that.gameObject instanceof Explosion) {
+            this.destroy();
         }
     }
 
