@@ -102,7 +102,7 @@ public class Game {
     camera.setRange(new Vector2D(map.getWidth(), map.getHeight()).multiply(Sprite.DEFAULT_SIZE));
     GameObject.setMap(map);
 
-    System.out.println("New map");
+    System.out.println("New map " + this.getClass());
   }
 
   public Camera getCamera() {
@@ -112,6 +112,8 @@ public class Game {
   public Map getPlayingMap() {
     return this.playingMap;
   }
+
+  public AnimationTimer getTime() { return this.timer; }
 
   public void nextLevel() {
     int level = playingMap != null ? playingMap.getLevel() : 1;

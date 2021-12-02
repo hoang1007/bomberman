@@ -2,6 +2,7 @@ package uet.gryffindor.game.object.dynamics;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import uet.gryffindor.GameApplication;
 import uet.gryffindor.game.Manager;
 import uet.gryffindor.game.base.OrderedLayer;
 import uet.gryffindor.game.base.Vector2D;
@@ -70,6 +71,7 @@ public class Bomber extends DynamicObject {
       // gắn nhãn bị chặn
       isBlocked = true;
     } else if (that.gameObject instanceof Enemy) {
+      // GameApplication.setRoot("menuOver");
       // this.destroy();
     }
   }

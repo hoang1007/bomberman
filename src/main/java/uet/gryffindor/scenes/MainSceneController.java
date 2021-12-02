@@ -9,8 +9,10 @@ import uet.gryffindor.game.Game;
 import uet.gryffindor.game.Manager;
 import uet.gryffindor.game.engine.Input;
 import uet.gryffindor.graphic.sprite.Sprite;
+import uet.gryffindor.sound.SoundController;
 
 public class MainSceneController {
+
   @FXML private Canvas canvas;
   private Game game;
 
@@ -20,6 +22,7 @@ public class MainSceneController {
 
   /** Hàm khởi tạo được gọi bởi fxml. */
   public void initialize() {
+    this.setInfoInGame();
     canvas.addEventHandler(KeyEvent.ANY, Input.INSTANCE);
     Sprite.loadSprite();
 
@@ -33,11 +36,12 @@ public class MainSceneController {
 
     //    GameApplication.setRoot("start");
     GameApplication.setRoot("menu");
+    SoundController.stop("soundtrack");
   }
 
-  public void setInfofInGame() {
-    scoreLabel.setText("hi");
-    timeLabel.setText("");
-    levelLabel.setText("");
+  public void setInfoInGame() {
+    scoreLabel.setText("25");
+    timeLabel.setText("102002");
+    levelLabel.setText("oo");
   }
 }

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
@@ -16,49 +15,37 @@
 
 <AnchorPane prefHeight="630.0" prefWidth="800.0" styleClass="menuMain" stylesheets="@style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uet.gryffindor.scenes.StartSceneController">
     <children>
-        <Button fx:id="startButton" layoutX="306.0" layoutY="295.0" mnemonicParsing="false" onAction="#startGame" prefHeight="40.0" prefWidth="210.0" style="-fx-background-position: center;" stylesheets="@style.css" text="PLAY" textAlignment="CENTER">
+        <Button fx:id="startButton" layoutX="306.0" layoutY="295.0" mnemonicParsing="false" onAction="#startGame" prefHeight="40.0" prefWidth="210.0" style="-fx-background-position: center;" stylesheets="@style.css" text="PLAY">
             <font>
                 <Font name="UTM Nokia" size="16.0" />
             </font>
-         <cursor>
-            <Cursor fx:constant="OPEN_HAND" />
-         </cursor>
         </Button>
-        <Button fx:id="scoreButton" layoutX="306.0" layoutY="361.0" mnemonicParsing="false" onAction="#hightScore" prefHeight="40.0" prefWidth="210.0" style="-fx-background-position: center;" stylesheets="@style.css" text="HIGHT SCORE">
+        <Button fx:id="scoreButton" layoutX="306.0" layoutY="361.0" mnemonicParsing="false" onAction="#hightScore" prefHeight="40.0" prefWidth="210.0" style="-fx-background-position: center;" stylesheets="@style.css" text="HIGHT SCORES">
             <font>
                 <Font name="UTM Nokia" size="16.0" />
             </font>
-         <cursor>
-            <Cursor fx:constant="OPEN_HAND" />
-         </cursor>
         </Button>
         <MenuButton alignment="CENTER" layoutX="306.0" layoutY="427.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="210.0" styleClass="button" stylesheets="@style.css" text="  BOMBER" textAlignment="JUSTIFY">
             <items>
-                <MenuItem text="Bomber 1" />
-                <MenuItem mnemonicParsing="false" text="Bomber 2" />
+                <MenuItem fx:id="bomButton" onAction="#selectionBomber1" text="Bomber 1" />
+                <MenuItem fx:id="bomberButton" mnemonicParsing="false" onAction="#selectionBomber2" text="Bomber 2" />
             </items>
             <font>
                 <Font name="UTM Nokia" size="16.0" />
             </font>
-         <cursor>
-            <Cursor fx:constant="OPEN_HAND" />
-         </cursor>
         </MenuButton>
         <Button fx:id="quitButton" layoutX="306.0" layoutY="492.0" mnemonicParsing="false" onAction="#quitGame" prefHeight="40.0" prefWidth="210.0" stylesheets="@style.css" text="QUIT">
             <font>
                 <Font name="UTM Nokia" size="16.0" />
             </font>
-         <cursor>
-            <Cursor fx:constant="OPEN_HAND" />
-         </cursor>
         </Button>
         <Separator layoutX="28.0" layoutY="605.0" prefHeight="11.0" prefWidth="744.0" stylesheets="@style.css" />
-        <Label layoutX="681.0" layoutY="585.0" prefHeight="20.0" prefWidth="91.0" text="Gryffindor">
+        <Label layoutX="682.0" layoutY="579.0" prefHeight="20.0" prefWidth="89.0" text="by Gryffindor">
             <font>
                 <Font name="System Italic" size="14.0" />
             </font>
             <textFill>
-                <LinearGradient endX="0.32196968342318677" endY="0.8106060425440471" startX="0.3143939392810518" startY="0.26515151515151514">
+                <LinearGradient endX="1.0">
                     <stops>
                         <Stop>
                             <color>
@@ -67,27 +54,32 @@
                         </Stop>
                         <Stop offset="0.007680491551459294">
                             <color>
-                                <Color red="0.9800000190734863" green="0.9740068912506104" blue="0.009800000116229057" />
+                                <Color red="1.0" green="0.820555567741394" blue="0.4333333373069763" />
                             </color>
                         </Stop>
-                        <Stop offset="1.0">
-                            <color>
-                                <Color red="1.0" green="0.013888888992369175" blue="0.013888888992369175" opacity="0.7699999809265137" />
-                            </color>
-                        </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color green="0.6951723098754883" blue="0.9599999785423279" />
+                     </color>
+                  </Stop>
                     </stops>
                 </LinearGradient>
             </textFill>
         </Label>
-        <ImageView fitHeight="288.0" fitWidth="330.0" layoutX="14.0" layoutY="237.0" pickOnBounds="true" preserveRatio="true">
+        <ImageView fitHeight="322.0" fitWidth="278.0" layoutX="14.0" layoutY="230.0" pickOnBounds="true" preserveRatio="true">
             <image>
-                <Image url="@img/menu/bomber.png" />
+                <Image url="@img/menu/bomber1.png" />
             </image>
         </ImageView>
-        <ImageView fitHeight="248.0" fitWidth="616.0" layoutX="251.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+        <ImageView fitHeight="248.0" fitWidth="616.0" layoutX="204.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
             <image>
                 <Image url="@img/menu/logoGame.png" />
             </image>
         </ImageView>
+      <ImageView fitHeight="296.0" fitWidth="234.0" layoutX="540.0" layoutY="253.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@img/menu/bomber2.png" />
+         </image>
+      </ImageView>
     </children>
 </AnchorPane>
