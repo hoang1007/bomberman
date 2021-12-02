@@ -9,7 +9,6 @@ public class SpeedItem extends Item {
     super.start();
     double rate = 1;
     animator = new Animator(rate, Sprite.speedPotion);
-    effectDuration = 100;
   }
 
   @Override

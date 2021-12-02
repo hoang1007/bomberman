@@ -17,6 +17,7 @@ public class Sprite {
   public static Sprite[] explosionPotion;
   public static Sprite[] heart;
   public static Sprite[] speedPotion;
+  public static Sprite[] flamePotion;
 
   // public static Sprite[] balloom;
   // public static Sprite[] oneal;
@@ -181,6 +182,11 @@ public class Sprite {
     speedPotion = new Sprite[8];
     for (int i = 0; i <= 7; i++) {
       speedPotion[i] = new Sprite(i * 135, 0, 135, 174, SpriteSheet.speedPotion);
+    }
+
+    flamePotion = new Sprite[12];
+    for (int i = 0; i <= 11; i++) {
+      flamePotion[i] = new Sprite(i * 530, 0, 530, 600, SpriteSheet.flamePotion);
     }
   }
 

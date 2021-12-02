@@ -15,7 +15,7 @@ import uet.gryffindor.graphic.texture.AnimateTexture;
 
 public class Bomb extends DynamicObject implements Unmovable {
     public static long time = 2000; // giới hạn thời gian
-    private int explosionRadius; // bán kính vụ nổ
+    public static int explosionRadius = 1; // bán kính vụ nổ
 
     @Override
     public void start() {
@@ -24,8 +24,6 @@ public class Bomb extends DynamicObject implements Unmovable {
         texture = new AnimateTexture(this, 2, anim);
 
         orderedLayer = OrderedLayer.MIDGROUND;
-
-        explosionRadius = 1;
 
         TimeCounter.callAfter(this::explore, time, TimeUnit.MILLISECONDS);
     }

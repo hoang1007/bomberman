@@ -5,7 +5,7 @@ import uet.gryffindor.game.object.StaticObject;
 import uet.gryffindor.graphic.Animator;
 
 public abstract class Item extends StaticObject {
-  protected long effectDuration;
+  public static long effectDuration = 10000;
   protected Animator animator;
 
   @Override
@@ -13,11 +13,11 @@ public abstract class Item extends StaticObject {
     orderedLayer = OrderedLayer.MIDGROUND;
   }
 
-  public void setEffectDuration(long effectDuration) {
-    this.effectDuration = effectDuration;
-  }
+  // public void setEffectDuration(long effectDuration) {
+  // this.effectDuration = effectDuration;
+  // }
 
-  public long getEffectDuration() {
-    return this.effectDuration;
-  }
+  // public long getEffectDuration() {
+  // return this.effectDuration;
+  // }
 }

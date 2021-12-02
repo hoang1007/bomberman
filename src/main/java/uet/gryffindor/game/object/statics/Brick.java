@@ -10,6 +10,7 @@ import uet.gryffindor.game.object.StaticObject;
 import uet.gryffindor.game.object.dynamics.Explosion;
 import uet.gryffindor.game.object.statics.items.BombItem;
 import uet.gryffindor.game.object.statics.items.FlameItem;
+import uet.gryffindor.game.object.statics.items.HeartItem;
 import uet.gryffindor.game.object.statics.items.Item;
 import uet.gryffindor.game.object.statics.items.SpeedItem;
 import uet.gryffindor.graphic.sprite.Sprite;
@@ -31,13 +32,17 @@ public class Brick extends StaticObject implements Unmovable {
     Item item = null;
     int type = new Random().nextInt(10);
     switch (type) {
+      case 0:
+        item = new HeartItem();
+        item.setTexture(new SpriteTexture(Sprite.heart[0], item));
+        break;
       case 1:
         item = new BombItem();
         item.setTexture(new SpriteTexture(Sprite.explosionPotion[0], item));
         break;
       case 2:
         item = new FlameItem();
-        item.setTexture(new SpriteTexture(Sprite.heart[0], item));
+        item.setTexture(new SpriteTexture(Sprite.flamePotion[0], item));
         break;
       case 3:
         item = new SpeedItem();
