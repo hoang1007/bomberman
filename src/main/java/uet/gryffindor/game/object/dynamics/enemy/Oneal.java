@@ -59,8 +59,8 @@ public class Oneal extends Enemy {
 
                     if (isInside && chasePath.isEmpty()) {
                         speed = 5.0;
-                        var rect = Geometry.unionRect(that.gameObject.position.clone().smooth(Sprite.DEFAULT_SIZE, 1),
-                            Oneal.this.position.clone().smooth(Sprite.DEFAULT_SIZE, 1));
+                        var rect = Geometry.unionRect(that.gameObject.position.smooth(Sprite.DEFAULT_SIZE, 1),
+                            Oneal.this.position.smooth(Sprite.DEFAULT_SIZE, 1));
 
                         // MovableMap map = new MovableMap(Vector2D.zero(), new Vector2D(getMap().getWidth(), getMap().getHeight()));
                         MovableMap map = new MovableMap(rect.first, rect.second);
