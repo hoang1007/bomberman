@@ -101,7 +101,7 @@ public class Bomber extends DynamicObject {
   public void onCollisionEnter(Collider that) {
     if (that.gameObject instanceof Unmovable) {
       // ngoại lệ đặt bomb
-      if (this.collider.getOverlapArea(that) < this.dimension.x * this.dimension.y) {
+      if (this.collider.getOverlapArea(that) < .5 * this.dimension.x * this.dimension.y) {
         // nếu bomber va chạm với vật thể tĩnh
         // khôi phục vị trí trước khi va chạm
         position = oldPosition.smooth(this.dimension.x, 0.3);

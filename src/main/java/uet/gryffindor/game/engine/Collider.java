@@ -7,7 +7,6 @@ import java.util.List;
 import uet.gryffindor.game.base.GameObject;
 import uet.gryffindor.game.base.Vector2D;
 import uet.gryffindor.graphic.sprite.Sprite;
-import uet.gryffindor.util.Geometry;
 import uet.gryffindor.util.Pair;
 
 /**
@@ -102,35 +101,27 @@ public class Collider {
   }
 
   /**
-   * Tìm tất cả các vị trí lưới theo vị trí của object
+   * Tìm tất cả các vị trí lưới theo vị trí cho trước
    * 
    * @param object
    * @return list grid position
    */
-  private static List<Vector2D> getGridPositions(GameObject object) {
+  private static List<Vector2D> getGridPositions(GameObject obj) {
     List<Vector2D> gridPs = new ArrayList<>();
-    Vector2D topLeft = object.position.clone();
-
+    Vector2D topLeft = obj.position.clone();
+    Vector2D bottomRight = obj.position.add(obj.dimension);
+    // Tìm grid pos của top left và bottom right
+    // duyệt từng ô trong khoảng hai đầu mút
+    // rồi thêm vào danh sách
     topLeft.x -= topLeft.x % Sprite.DEFAULT_SIZE;
     topLeft.y -= topLeft.y % Sprite.DEFAULT_SIZE;
+    // bottomRight.x -= bottomRight.x % Sprite.DEFAULT_SIZE;
+    // bottomRight.y -= bottomRight.y % Sprite.DEFAULT_SIZE;
 
-    gridPs.add(topLeft);
-
-    var unionDim = Geometry.unionRect(topLeft, object.position).second;
-
-    if (unionDim.x != 0) {
-      Vector2D right = topLeft.add(new Vector2D(Sprite.DEFAULT_SIZE, 0));
-      gridPs.add(right);
-    }
-
-    if (unionDim.y != 0) {
-      Vector2D down = topLeft.add(new Vector2D(0, Sprite.DEFAULT_SIZE));
-      gridPs.add(down);
-    }
-
-    if (unionDim.x != 0 && unionDim.y != 0) {
-      Vector2D rightDown = topLeft.add(new Vector2D(Sprite.DEFAULT_SIZE, Sprite.DEFAULT_SIZE));
-      gridPs.add(rightDown);
+    for (int i = (int) topLeft.x; i < bottomRight.x; i += Sprite.DEFAULT_SIZE) {
+      for (int j = (int) topLeft.y; j < bottomRight.y; j += Sprite.DEFAULT_SIZE) {
+        gridPs.add(new Vector2D(i, j));
+      }
     }
 
     return gridPs;
@@ -141,12 +132,19 @@ public class Collider {
       return;
     }
 
-    double overlapArea = a.computeOverlapArea(b);
+    var pair = a.collidedList.get(b);
+
+    // nếu danh sách va chạm của a đã cập nhật b
+    // bỏ qua kiểm tra lặp
+    if (pair != null && pair.first == true) {
+      return;
+    }
 
     // Nếu danh sách va chạm của a chưa có b
     // hoặc vùng giao nhau của a và b bằng không
     // thì gọi onCollsionEnter
-    boolean isEnter = !a.collidedList.containsKey(b) || a.collidedList.get(b).second == 0;
+    boolean isEnter = pair == null || pair.second == 0;
+    double overlapArea = a.computeOverlapArea(b);
 
     // cập nhật diện tích giao nhau
     a.collidedList.put(b, Pair.of(true, overlapArea));
@@ -172,9 +170,13 @@ public class Collider {
     for (var key : this.collidedList.keySet()) {
       var value = this.collidedList.get(key);
 
+      // nếu không được cập nhật 
+      // thì hai object không còn va chạm
       if (value.first == false) {
         exiters.add(key);
       } else {
+        // đặt dirty bit thành false
+        // cho lần cập nhật tới
         value.first = false;
       }
     }
