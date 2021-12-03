@@ -35,6 +35,7 @@ public class Camera {
 
   /**
    * Chiếu cảnh với game object là trung tâm.
+   * 
    * @param object game object muốn camera tập trung vào
    */
   public void setFocusOn(GameObject object) {
@@ -42,7 +43,7 @@ public class Camera {
   }
 
   /**
-   * Điều chỉnh vị trí của camera 
+   * Điều chỉnh vị trí của camera
    * để focus object ở giữa khung render.
    */
   public Camera fitFocus() {
@@ -73,11 +74,11 @@ public class Camera {
    * Kiểm tra xem một đối tượng có ở trong khung render hay không.
    */
   public boolean validate(Vector2D position, Vector2D dimension) {
-    boolean condition1 = 0 <= position.x + dimension.x 
-                        && position.x <= canvasDims.x;
+    boolean condition1 = 0 <= position.x + dimension.x
+        && position.x <= canvasDims.x;
 
-    boolean condition2 = 0 <= position.y + dimension.y 
-                        && position.y <= canvasDims.y;
+    boolean condition2 = 0 <= position.y + dimension.y
+        && position.y <= canvasDims.y;
 
     return condition1 && condition2;
   }

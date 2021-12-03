@@ -1,9 +1,7 @@
 package uet.gryffindor.game.object.dynamics;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -36,7 +34,7 @@ public class Bomber extends DynamicObject {
   private long delay;
 
   private List<Long> sinceDropping;
-  private HashMap<String, Long> itemsTime;
+  private List<Item> effectItems;
 
   @Override
   public void start() {
@@ -51,11 +49,8 @@ public class Bomber extends DynamicObject {
     numberOfBombs = 1;
     bombDropped = 0;
     sinceDropping = new ArrayList<>();
+    effectItems = new ArrayList<>();
 
-    itemsTime = new HashMap<>();
-    itemsTime.put("SpeedItem", (long) 0);
-    itemsTime.put("FlameItem", (long) 0);
-    itemsTime.put("BombItem", (long) 0);
   }
 
   @Override
@@ -72,20 +67,20 @@ public class Bomber extends DynamicObject {
       }
     }
 
-    for (Map.Entry<String, Long> e : itemsTime.entrySet()) {
-      if (e.getValue() != 0) {
-        if (System.currentTimeMillis() - e.getValue() >= Item.effectDuration) {
-          System.out.println("RESET<" + e.getKey() + ">");
-          itemsTime.replace(e.getKey(), (long) 0);
-          if (e.getKey().equals("SpeedItem")) {
-            speed.setValue(8.f);
-          } else if (e.getKey().equals("FlameItem")) {
-            Bomb.explosionRadius = 1;
-          } else if (e.getKey().equals("BombItem")) {
-            numberOfBombs = 1;
-          }
+    for (int i = 0; i < effectItems.size(); i++) {
+      Item item = effectItems.get(i);
+      if (item.timeOut()) {
+        if (item instanceof BombItem) {
+          numberOfBombs -= BombItem.power;
+        } else if (item instanceof SpeedItem) {
+          speed.setValue(speed.getValue() - SpeedItem.power);
+        } else if (item instanceof FlameItem) {
+          Bomb.explosionRadius -= FlameItem.power;
         }
+        effectItems.remove(item);
+        i--;
       }
+
     }
 
     if (sinceDropping.isEmpty()) {
@@ -145,18 +140,19 @@ public class Bomber extends DynamicObject {
       }
     } else if (that.gameObject instanceof Item) {
       if (that.gameObject instanceof BombItem) {
-        numberOfBombs++;
-        itemsTime.replace("BombItem", System.currentTimeMillis());
+        numberOfBombs += BombItem.power;
       } else if (that.gameObject instanceof SpeedItem) {
-        speed.setValue(speed.getValue() + 4.f);
-        itemsTime.replace("SpeedItem", System.currentTimeMillis());
+        speed.setValue(speed.getValue() + SpeedItem.power);
       } else if (that.gameObject instanceof FlameItem) {
-        Bomb.explosionRadius *= 2;
-        itemsTime.replace("FlameItem", System.currentTimeMillis());
+        Bomb.explosionRadius += FlameItem.power;
       } else if (that.gameObject instanceof HeartItem) {
-        System.out.println("EAT HEART");
-        heart++;
+        heart += HeartItem.power;
       }
+
+      if (!(that.gameObject instanceof HeartItem)) {
+        effectItems.add((Item) that.gameObject);
+      }
+      ((Item) that.gameObject).startedCounting();
       that.gameObject.destroy();
     }
     // else if (that.gameObject instanceof Enemy) {

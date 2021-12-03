@@ -48,11 +48,11 @@ public class Bomb extends DynamicObject implements Unmovable {
         this.destroy();
     }
 
-    public void setExploredRadius(int radius) {
-        this.explosionRadius = radius;
-    }
+    // public void setExploredRadius(int radius) {
+    // this.explosionRadius = radius;
+    // }
 
-    public int getExplosionRadius() {
-        return this.explosionRadius;
-    }
+    // public int getExplosionRadius() {
+    // return this.explosionRadius;
+    // }
 }
