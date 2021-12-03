@@ -18,7 +18,7 @@ public class GameApplication extends Application {
   public void start(Stage stage) throws IOException {
     // scene = new Scene(loadFXML("main"));
     scene = new Scene(loadFXML("menu"));
-    //SoundController.startWav("soundtrack.wav");
+    SoundController.INSTANCE.getSound(SoundController.MENU).loop();
     stage.setScene(scene);
     stage.show();
   }

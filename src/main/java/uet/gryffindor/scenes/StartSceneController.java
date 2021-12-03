@@ -6,21 +6,21 @@ import javafx.fxml.FXML;
 import uet.gryffindor.GameApplication;
 import uet.gryffindor.sound.SoundController;
 
-
 public class StartSceneController {
-  //  private static SoundInGame soundInGame;
+
   @FXML
   private void startGame() {
     // GameApplication.setRoot("main");
     GameApplication.setRoot("ingame");
-
-    SoundController.play("soundtrack");
+    SoundController.INSTANCE.stopAll();
+    SoundController.INSTANCE.getSound(SoundController.PLAYGAME).loop();
   }
 
   @FXML
   public void hightScore() {
     System.out.println(this.getClass());
     System.out.println("ẤN ĐÚNG RỒI ĐẤY. CHOI NGU MÀ CÒN DOI XEM ĐIỂM CAO.");
+    SoundController.INSTANCE.stopAll();
   }
 
   public void selectionBomber1(ActionEvent actionEvent) {

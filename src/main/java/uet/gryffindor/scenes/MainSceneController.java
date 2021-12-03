@@ -36,7 +36,8 @@ public class MainSceneController {
 
     //    GameApplication.setRoot("start");
     GameApplication.setRoot("menu");
-    SoundController.stop("soundtrack");
+    SoundController.INSTANCE.stopAll();
+    SoundController.INSTANCE.getSound(SoundController.MENU).loop();
   }
 
   public void setInfoInGame() {
