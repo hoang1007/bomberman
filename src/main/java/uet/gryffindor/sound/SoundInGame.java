@@ -1,6 +1,8 @@
 //GameSound.getIstance().stop();
 //    GameSound.getIstance().getAudio(GameSound.LOSE).play();
 package uet.gryffindor.sound;
+import uet.gryffindor.GameApplication;
+/*
 import java.applet.Applet;
 import java.applet.AudioClip;
 import java.util.HashMap;
@@ -8,7 +10,7 @@ import java.util.HashMap;
 public class SoundInGame {
   public static SoundInGame instance;
 
-  public static final String MENU = "menu.wav";
+  public static final String MENU = "soundtrack.wav";
   public static final String PLAYGAME = "playgame.wav";
   public static final String BOMB = "newbomb.wav";
   public static final String BOMBER_DIE = "bomber_die.wav";
@@ -35,33 +37,33 @@ public class SoundInGame {
 
   public void loadAllAudio() {
     putAudio(MENU);
-    putAudio(PLAYGAME);
-    putAudio(BOMB);
-    putAudio(MONSTER_DIE);
-    putAudio(BOMBER_DieDRINK);
-    putAudio(BOMBER_DIE);
-    putAudio(BONG_BANG);
-    putAudio(ITEM);
-    putAudio(WIN);
-    putAudio(LOSE);
-    putAudio(FOOT);
+//    putAudio(PLAYGAME);
+//    putAudio(BOMB);
+//    putAudio(MONSTER_DIE);
+//    putAudio(BOMBER_DieDRINK);
+//    putAudio(BOMBER_DIE);
+//    putAudio(BONG_BANG);
+//    putAudio(ITEM);
+//    putAudio(WIN);
+//    putAudio(LOSE);
+//    putAudio(FOOT);
   }
 
   public void stop() {
     getAudio(MENU).stop();
-    getAudio(PLAYGAME).stop();
-    getAudio(BOMB).stop();
-    getAudio(MONSTER_DIE).stop();
-    getAudio(BOMBER_DieDRINK).stop();
-    getAudio(BOMBER_DIE).stop();
-    getAudio(BONG_BANG).stop();
-    getAudio(ITEM).stop();
-    getAudio(WIN).stop();
-    getAudio(LOSE).stop();
+//    getAudio(PLAYGAME).stop();
+//    getAudio(BOMB).stop();
+//    getAudio(MONSTER_DIE).stop();
+//    getAudio(BOMBER_DieDRINK).stop();
+//    getAudio(BOMBER_DIE).stop();
+//    getAudio(BONG_BANG).stop();
+//    getAudio(ITEM).stop();
+//    getAudio(WIN).stop();
+//    getAudio(LOSE).stop();
   }
 
   public void putAudio(String name) {
-    AudioClip auClip = Applet.newAudioClip(SoundInGame.class.getResource(name));
+    AudioClip auClip = Applet.newAudioClip(GameApplication.class.getResource("./src/main/resources/uet/gryffindor/sound/" + name));
     audioMap.put(name, auClip);
   }
 
@@ -69,23 +71,16 @@ public class SoundInGame {
     return audioMap.get(name);
   }
 }
+*/
 
-/*
 import javax.sound.sampled.*;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import static uet.oop.bomberman.audio.MyAudioPlayer.Loopable.NONELOOP;
+import static uet.gryffindor.sound.SoundInGame.Loopable.NONELOOP;
 
-public class MyAudioPlayer implements Runnable {
-
-    // Tên file các audio
-    public static final String BACKGROUND_MUSIC = "bg";
-    public static final String PLACE_BOMB = "place_bomb";
-    public static final String POWER_UP = "power_up";
-    public static final String EXPLOSION = "explosion";
-    public static final String DEAD = "dead";
+public class SoundInGame implements Runnable {
 
     private Clip clip;
 
@@ -97,12 +92,13 @@ public class MyAudioPlayer implements Runnable {
     // Mặc định không phát lại
     private Loopable loopable = NONELOOP;
 
-    public MyAudioPlayer(String fileName) {
-        String path = "/audio/" + fileName + ".wav";
+    public SoundInGame(String fileName) {
+        String path = "sound/" + fileName + ".wav";
 
         try {
-            URL defaultSound = getClass().getResource(path);
-            AudioInputStream sound = AudioSystem.getAudioInputStream(defaultSound);
+            URL defaultSound = GameApplication.class.getResource(path);
+          //assert defaultSound != null;
+          AudioInputStream sound = AudioSystem.getAudioInputStream(defaultSound);
             // load the sound into memory (a Clip)
             clip = AudioSystem.getClip();
             clip.open(sound);
@@ -139,6 +135,10 @@ public class MyAudioPlayer implements Runnable {
         clip.stop();
     }
 
+    public void close() {
+        clip.close();
+    }
+
     @Override
     public void run() {
         switch (loopable) {
@@ -151,5 +151,3 @@ public class MyAudioPlayer implements Runnable {
         }
     }
 }
-
- */

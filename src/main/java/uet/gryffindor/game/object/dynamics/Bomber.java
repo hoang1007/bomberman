@@ -5,6 +5,7 @@ import java.util.List;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import uet.gryffindor.GameApplication;
 import uet.gryffindor.game.Manager;
 import uet.gryffindor.game.base.GameObject;
 import uet.gryffindor.game.base.OrderedLayer;
@@ -21,6 +22,7 @@ import uet.gryffindor.game.object.statics.items.Item;
 import uet.gryffindor.game.object.statics.items.SpeedItem;
 import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.graphic.texture.AnimateTexture;
+import uet.gryffindor.sound.SoundController;
 
 public class Bomber extends DynamicObject {
   private int heart;
@@ -96,23 +98,28 @@ public class Bomber extends DynamicObject {
   private void move() {
     switch (Input.INSTANCE.getCode()) {
       case UP:
+        SoundController.INSTANCE.getSound(SoundController.FOOT).play();
         this.position.y -= speed.get();
         texture.changeTo("up");
         break;
       case DOWN:
+        SoundController.INSTANCE.getSound(SoundController.FOOT).play();
         this.position.y += speed.get();
         texture.changeTo("down");
         break;
       case RIGHT:
+        SoundController.INSTANCE.getSound(SoundController.FOOT).play();
         this.position.x += speed.get();
         texture.changeTo("right");
         break;
       case LEFT:
+        SoundController.INSTANCE.getSound(SoundController.FOOT).play();
         this.position.x -= speed.get();
         texture.changeTo("left");
         break;
       case SPACE:
         if (bombDropped < numberOfBombs && System.currentTimeMillis() - delay >= 100) {
+          SoundController.INSTANCE.getSound(SoundController.BOMB_NEW).play(); // âm thanh đặt bom.
           bombDropped++;
           Bomb bomb = new Bomb();
           bomb.position.setValue(this.position.clone().smooth(Sprite.DEFAULT_SIZE, 1));
@@ -167,6 +174,7 @@ public class Bomber extends DynamicObject {
     texture.changeTo("dead");
     heart--;
     TimeCounter.callAfter(this::destroy, texture.getDuration("dead"));
+    //GameApplication.setRoot("menuOver");
   }
 
   @Override
