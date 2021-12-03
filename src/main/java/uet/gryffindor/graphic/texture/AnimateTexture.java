@@ -60,6 +60,19 @@ public class AnimateTexture extends Texture {
     return this.rate;
   }
 
+  /**
+   * Thời gian chạy một animation theo đơn vị global frame.
+   * @param type
+   * @return
+   */
+  public long getDuration(String type) {
+    return this.sprites.get(type).length * Math.round(rate);
+  }
+
+  public Sprite[] getSprites(String type) {
+    return this.sprites.get(type);
+  }
+
   @Override
   public void render(GraphicsContext context, Camera camera) {
     Vector2D posInCanvas = gameObject.position.subtract(camera.fitFocus().getPosition());

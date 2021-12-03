@@ -8,7 +8,7 @@ import uet.gryffindor.util.MapParser;
 import uet.gryffindor.util.SortedList;
 
 public class Map {
-  private int[][] rawMap;
+  private String[][] rawMap;
   private SortedList<GameObject> objects;
   private int level;
   private int score;
@@ -17,29 +17,34 @@ public class Map {
 
   /**
    * Màn chơi của game.
-   *
-   * @param rawMap bản đồ thô sơ
+   * 
+   * @param rawMap  bản đồ thô sơ
    * @param objects các game object có trong map
-   * @param level level của map
+   * @param level   level của map
    */
-  public Map(int[][] rawMap, SortedList<GameObject> objects, int level) {
+  public Map(String[][] rawMap, SortedList<GameObject> objects, int level) {
     this.rawMap = rawMap;
     this.objects = objects;
     this.level = level;
     this.score = 0;
     height = rawMap.length * Sprite.DEFAULT_SIZE;
     width = rawMap[0].length * Sprite.DEFAULT_SIZE;
+
+  }
+
+  public void setLevel(int level) {
+    this.level = level;
   }
 
   public SortedList<GameObject> getObjects() {
     return this.objects;
   }
 
-  public int[][] getRawMap() {
+  public String[][] getRawMap() {
     return this.rawMap;
   }
 
-  public int getRawMapAt(int x, int y) {
+  public String getRawMapAt(int x, int y) {
     return rawMap[x][y];
   }
 
@@ -61,9 +66,9 @@ public class Map {
 
   /**
    * Tìm object với loại mong muốn theo position.
-   *
+   * 
    * @param position
-   * @param type class của object
+   * @param type     class của object
    * @return object
    */
   public <T> T getObject(Vector2D position, Class<T> type) {
@@ -77,7 +82,6 @@ public class Map {
   }
 
   public static Map getByLevel(int level) {
-    level = 2;
     return MapParser.parse(GameApplication.class.getResourceAsStream("map/" + level + ".txt"));
   }
 }
