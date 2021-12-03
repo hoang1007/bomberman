@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 import uet.gryffindor.game.engine.Collider;
 import uet.gryffindor.game.engine.TimeCounter;
 import uet.gryffindor.game.object.DynamicObject;
+import uet.gryffindor.game.object.statics.Brick;
 import uet.gryffindor.game.object.statics.Wall;
 import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.graphic.texture.AnimateTexture;
@@ -29,7 +30,8 @@ public class Explosion extends DynamicObject {
 
     @Override
     public void onCollisionEnter(Collider that) {
-        if (that.gameObject instanceof Wall) {
+        if (that.gameObject instanceof Wall
+                || that.gameObject instanceof Brick && !((Brick) (that.gameObject)).canDestroy) {
             this.destroy();
         }
     }

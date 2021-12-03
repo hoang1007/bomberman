@@ -14,11 +14,16 @@ import uet.gryffindor.game.engine.Collider;
 import uet.gryffindor.game.engine.Input;
 import uet.gryffindor.game.engine.TimeCounter;
 import uet.gryffindor.game.object.DynamicObject;
-import uet.gryffindor.game.object.dynamics.enemy.Enemy;
+import uet.gryffindor.game.object.statics.items.BombItem;
+import uet.gryffindor.game.object.statics.items.FlameItem;
+import uet.gryffindor.game.object.statics.items.HeartItem;
+import uet.gryffindor.game.object.statics.items.Item;
+import uet.gryffindor.game.object.statics.items.SpeedItem;
 import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.graphic.texture.AnimateTexture;
 
 public class Bomber extends DynamicObject {
+  private int heart;
   private DoubleProperty speed;
 
   private boolean isBlocked = false;
@@ -29,9 +34,11 @@ public class Bomber extends DynamicObject {
   private long delay;
 
   private List<Long> sinceDropping;
+  private List<Item> effectItems;
 
   @Override
   public void start() {
+    heart = 1;
     this.setTexture(new AnimateTexture(this, 3, Sprite.blackPlayer));
     Manager.INSTANCE.getGame().getCamera().setFocusOn(this);
     speed = new SimpleDoubleProperty(8f);
@@ -42,15 +49,38 @@ public class Bomber extends DynamicObject {
     numberOfBombs = 1;
     bombDropped = 0;
     sinceDropping = new ArrayList<>();
+    effectItems = new ArrayList<>();
+
   }
 
   @Override
   public void update() {
+    System.out.println("Heart: " + heart);
+    System.out.println("Speed: " + speed);
+    System.out.println("bomb radius: " + Bomb.explosionRadius);
+    System.out.println("NUMBER of Bombs: " + numberOfBombs);
+
     for (int i = 0; i < sinceDropping.size(); i++) {
       if (System.currentTimeMillis() - sinceDropping.get(i) >= Bomb.time) {
         sinceDropping.remove(sinceDropping.get(i));
         i--;
       }
+    }
+
+    for (int i = 0; i < effectItems.size(); i++) {
+      Item item = effectItems.get(i);
+      if (item.timeOut()) {
+        if (item instanceof BombItem) {
+          numberOfBombs -= BombItem.power;
+        } else if (item instanceof SpeedItem) {
+          speed.setValue(speed.getValue() - SpeedItem.power);
+        } else if (item instanceof FlameItem) {
+          Bomb.explosionRadius -= FlameItem.power;
+        }
+        effectItems.remove(item);
+        i--;
+      }
+
     }
 
     if (sinceDropping.isEmpty()) {
@@ -99,7 +129,7 @@ public class Bomber extends DynamicObject {
 
   @Override
   public void onCollisionEnter(Collider that) {
-    if (that.gameObject instanceof Unmovable) {
+    if (that.gameObject instanceof Unmovable && !(that.gameObject instanceof Bomb)) {
       // ngoại lệ đặt bomb
       if (this.collider.getOverlapArea(that) < .5 * this.dimension.x * this.dimension.y) {
         // nếu bomber va chạm với vật thể tĩnh
@@ -108,16 +138,34 @@ public class Bomber extends DynamicObject {
         // gắn nhãn bị chặn
         isBlocked = true;
       }
-    } else if (that.gameObject instanceof Enemy) {
-      dead();
-    } else if (that.gameObject instanceof Explosion) {
-      dead();
+    } else if (that.gameObject instanceof Item) {
+      if (that.gameObject instanceof BombItem) {
+        numberOfBombs += BombItem.power;
+      } else if (that.gameObject instanceof SpeedItem) {
+        speed.setValue(speed.getValue() + SpeedItem.power);
+      } else if (that.gameObject instanceof FlameItem) {
+        Bomb.explosionRadius += FlameItem.power;
+      } else if (that.gameObject instanceof HeartItem) {
+        heart += HeartItem.power;
+      }
+
+      if (!(that.gameObject instanceof HeartItem)) {
+        effectItems.add((Item) that.gameObject);
+      }
+      ((Item) that.gameObject).startedCounting();
+      that.gameObject.destroy();
     }
+    // else if (that.gameObject instanceof Enemy) {
+    // dead();
+    // } else if (that.gameObject instanceof Explosion) {
+    // dead();
+    // }
   }
 
   public void dead() {
     isBlocked = true;
     texture.changeTo("dead");
+    heart--;
     TimeCounter.callAfter(this::destroy, texture.getDuration("dead"));
   }
 

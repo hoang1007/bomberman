@@ -20,4 +20,15 @@ public abstract class Item extends StaticObject {
   public long getEffectDuration() {
     return this.effectDuration;
   }
+
+  public void startedCounting() {
+    effectDuration += System.currentTimeMillis();
+  }
+
+  public boolean timeOut() {
+    if (System.currentTimeMillis() >= effectDuration) {
+      return true;
+    }
+    return false;
+  }
 }

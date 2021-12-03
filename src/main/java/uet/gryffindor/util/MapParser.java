@@ -66,6 +66,9 @@ public class MapParser {
                     break;
                 case 'o':
                     Brick obstacle = new Brick();
+                    if (type == 3) {
+                        obstacle.canDestroy = false;
+                    }
                     obstacle.setTexture(new SpriteTexture(Sprite.obstacle[type], obstacle));
                     objects.add(obstacle);
                     break;
