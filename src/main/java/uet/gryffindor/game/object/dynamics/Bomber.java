@@ -56,11 +56,6 @@ public class Bomber extends DynamicObject {
 
   @Override
   public void update() {
-    System.out.println("Heart: " + heart);
-    System.out.println("Speed: " + speed);
-    System.out.println("bomb radius: " + Bomb.explosionRadius);
-    System.out.println("NUMBER of Bombs: " + numberOfBombs);
-
     for (int i = 0; i < sinceDropping.size(); i++) {
       if (System.currentTimeMillis() - sinceDropping.get(i) >= Bomb.time + Explosion.time * 2) {
         sinceDropping.remove(sinceDropping.get(i));

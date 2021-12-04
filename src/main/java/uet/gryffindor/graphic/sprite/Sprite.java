@@ -181,10 +181,7 @@ public class Sprite {
         magmaSprite[i * 4 + j] = new Sprite(j * 144, i * 144, 115, 120, SpriteSheet.magma);
       }
     }
-    magma.put("up", new Sprite[] { magmaSprite[2], magmaSprite[5] });
-    magma.put("down", new Sprite[] { magmaSprite[2], magmaSprite[5] });
-    magma.put("left", new Sprite[] { magmaSprite[0], magmaSprite[1], magmaSprite[2] });
-    magma.put("right", new Sprite[] { magmaSprite[5], magmaSprite[6], magmaSprite[7] });
+    magma.put("up", magmaSprite);
 
   }
 
