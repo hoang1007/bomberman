@@ -9,14 +9,14 @@ import uet.gryffindor.game.object.dynamics.Explosion;
 import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.graphic.texture.AnimateTexture;
 
-public class Balloom extends Enemy {
+public class CircleEnemy extends Enemy {
     private Direction direction = Direction.UP;
     private double speed = 2.0;
     private Random random = new Random();
 
     @Override
     public void start() {
-        this.texture = new AnimateTexture(this, 6, Sprite.balloom);
+        this.texture = new AnimateTexture(this, 6, Sprite.circleEnemy);
     }
 
     @Override

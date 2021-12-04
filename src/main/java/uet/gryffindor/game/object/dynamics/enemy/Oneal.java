@@ -55,14 +55,16 @@ public class Oneal extends Enemy {
             @Override
             public void onCollisionStay(Collider that) {
                 if (that.gameObject instanceof Bomber) {
-                    boolean isInside = this.collider.getOverlapArea(that) == that.gameObject.dimension.x * that.gameObject.dimension.y;
+                    boolean isInside = this.collider.getOverlapArea(that) == that.gameObject.dimension.x
+                            * that.gameObject.dimension.y;
 
                     if (isInside && chasePath.isEmpty()) {
                         speed = 5.0;
                         var rect = Geometry.unionRect(that.gameObject.position.clone().smooth(Sprite.DEFAULT_SIZE, 1),
-                            Oneal.this.position.clone().smooth(Sprite.DEFAULT_SIZE, 1));
+                                Oneal.this.position.clone().smooth(Sprite.DEFAULT_SIZE, 1));
 
-                        // MovableMap map = new MovableMap(Vector2D.zero(), new Vector2D(getMap().getWidth(), getMap().getHeight()));
+                        // MovableMap map = new MovableMap(Vector2D.zero(), new
+                        // Vector2D(getMap().getWidth(), getMap().getHeight()));
                         MovableMap map = new MovableMap(rect.first, rect.second);
                         for (GameObject m : getMap().getObjects()) {
                             if (m instanceof Unmovable) {
@@ -102,7 +104,7 @@ public class Oneal extends Enemy {
 
     @Override
     public void onCollisionEnter(Collider that) {
-        if (that.gameObject instanceof Unmovable) {
+        if (that.gameObject instanceof Unmovable || that.gameObject instanceof Magma) {
             position = oldPosition.smooth(Sprite.DEFAULT_SIZE, 1);
 
             int dirCode = 0;

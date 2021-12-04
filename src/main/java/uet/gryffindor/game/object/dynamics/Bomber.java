@@ -14,6 +14,7 @@ import uet.gryffindor.game.engine.Collider;
 import uet.gryffindor.game.engine.Input;
 import uet.gryffindor.game.engine.TimeCounter;
 import uet.gryffindor.game.object.DynamicObject;
+import uet.gryffindor.game.object.dynamics.enemy.Enemy;
 import uet.gryffindor.game.object.statics.items.BombItem;
 import uet.gryffindor.game.object.statics.items.FlameItem;
 import uet.gryffindor.game.object.statics.items.HeartItem;
@@ -61,7 +62,7 @@ public class Bomber extends DynamicObject {
     System.out.println("NUMBER of Bombs: " + numberOfBombs);
 
     for (int i = 0; i < sinceDropping.size(); i++) {
-      if (System.currentTimeMillis() - sinceDropping.get(i) >= Bomb.time) {
+      if (System.currentTimeMillis() - sinceDropping.get(i) >= Bomb.time + Explosion.time * 2) {
         sinceDropping.remove(sinceDropping.get(i));
         i--;
       }

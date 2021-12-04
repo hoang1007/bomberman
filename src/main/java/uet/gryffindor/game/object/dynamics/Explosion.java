@@ -12,7 +12,7 @@ import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.graphic.texture.AnimateTexture;
 
 public class Explosion extends DynamicObject {
-    public static long time = 600;// thời gian xuất hiện vụ nổ
+    public static long time = 300;// thời gian xuất hiện vụ nổ
 
     @Override
     public void start() {

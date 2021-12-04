@@ -99,7 +99,7 @@ public class Game {
 
   public void setMap(Map map) {
     playingMap = map;
-    camera.setRange(new Vector2D(map.getWidth(), map.getHeight()).multiply(Sprite.DEFAULT_SIZE));
+    camera.setRange(new Vector2D(map.getWidth(), map.getHeight()));
     GameObject.setMap(map);
 
     System.out.println("New map");
