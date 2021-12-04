@@ -1,7 +1,5 @@
 package uet.gryffindor.game;
 
-import java.util.List;
-
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -15,6 +13,8 @@ import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.graphic.texture.Texture;
 import uet.gryffindor.util.SortedList;
 
+import java.util.List;
+
 public class Game {
   private AnimationTimer timer;
   private Map playingMap;
@@ -26,18 +26,19 @@ public class Game {
     context = canvas.getGraphicsContext2D();
     camera = new Camera(canvas);
 
-    timer = new AnimationTimer() {
+    timer =
+        new AnimationTimer() {
 
-      @Override
-      public void handle(long now) {
-        if (FpsTracker.isNextFrame(now)) {
-          BaseService.run();
-          update();
-          Collider.checkCollision(playingMap.getObjects());
-          render();
-        }
-      }
-    };
+          @Override
+          public void handle(long now) {
+            if (FpsTracker.isNextFrame(now)) {
+              BaseService.run();
+              update();
+              Collider.checkCollision(playingMap.getObjects());
+              render();
+            }
+          }
+        };
   }
 
   public void start() {
@@ -88,13 +89,16 @@ public class Game {
   private void render() {
     context.clearRect(0, 0, context.getCanvas().getWidth(), context.getCanvas().getHeight());
 
-    playingMap.getObjects().forEach(obj -> {
-      Texture t = obj.getTexture();
+    playingMap
+        .getObjects()
+        .forEach(
+            obj -> {
+              Texture t = obj.getTexture();
 
-      if (t != null) {
-        t.render(context, camera);
-      }
-    });
+              if (t != null) {
+                t.render(context, camera);
+              }
+            });
   }
 
   public void setMap(Map map) {
@@ -102,7 +106,7 @@ public class Game {
     camera.setRange(new Vector2D(map.getWidth(), map.getHeight()));
     GameObject.setMap(map);
 
-    System.out.println("New map");
+    System.out.println("New map " + this.getClass());
   }
 
   public Camera getCamera() {
@@ -112,6 +116,8 @@ public class Game {
   public Map getPlayingMap() {
     return this.playingMap;
   }
+
+  public AnimationTimer getTime() { return this.timer; }
 
   public void nextLevel() {
     int level = playingMap != null ? playingMap.getLevel() : 1;

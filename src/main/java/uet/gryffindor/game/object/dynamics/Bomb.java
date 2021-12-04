@@ -15,6 +15,7 @@ import uet.gryffindor.game.object.statics.Brick;
 import uet.gryffindor.game.object.statics.Wall;
 import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.graphic.texture.AnimateTexture;
+import uet.gryffindor.sound.SoundController;
 
 public class Bomb extends DynamicObject {
     public static long time = 2000; // giới hạn thời gian
@@ -38,6 +39,8 @@ public class Bomb extends DynamicObject {
 
     /** hiệu ứng nổ. */
     public void explore() {
+        // Âm thanh cho vụ nổ.
+        SoundController.INSTANCE.getSound(SoundController.BOMB_BROKEN).play();
         // thêm vụ nổ ở trung tâm.
         GameObject.instantiate(Explosion.class, this.position);
         // thêm vụ nổ các hướng

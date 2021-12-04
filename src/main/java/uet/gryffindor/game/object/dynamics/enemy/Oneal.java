@@ -19,6 +19,7 @@ import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.graphic.texture.AnimateTexture;
 import uet.gryffindor.graphic.texture.OutlineTexture;
 import uet.gryffindor.graphic.texture.Texture;
+import uet.gryffindor.sound.SoundController;
 import uet.gryffindor.util.Geometry;
 
 public class Oneal extends Enemy {
@@ -114,6 +115,7 @@ public class Oneal extends Enemy {
 
             direction = Direction.valueOf(dirCode);
         } else if (that.gameObject instanceof Explosion) {
+            SoundController.INSTANCE.getSound(SoundController.ENEMY_DIE).play(); // âm thanh khi enemy chết.
             this.destroy();
         }
     }

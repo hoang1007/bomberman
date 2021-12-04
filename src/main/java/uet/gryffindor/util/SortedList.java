@@ -48,8 +48,8 @@ public class SortedList<T extends Comparable<T>> extends ArrayList<T> {
   }
 
   /**
-   * Thêm phần tử vào cuối danh sách.
-   * Sử dụng khi không muốn thêm phần tử theo thứ tự.
+   * Thêm phần tử vào cuối danh sách. Sử dụng khi không muốn thêm phần tử theo thứ tự.
+   *
    * @param value
    * @return boolean
    */
@@ -64,9 +64,7 @@ public class SortedList<T extends Comparable<T>> extends ArrayList<T> {
     return true;
   }
 
-  /**
-   * Trả về phần tử cuối cùng được thêm vào trong danh sách.
-   */
+  /** Trả về phần tử cuối cùng được thêm vào trong danh sách. */
   public Pair<Integer, T> getLastElement() {
     return this.lastElement;
   }

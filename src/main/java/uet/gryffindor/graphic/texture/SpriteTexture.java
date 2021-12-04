@@ -27,8 +27,16 @@ public class SpriteTexture extends Texture {
     Vector2D posInCanvas = gameObject.position.subtract(camera.fitFocus().getPosition());
 
     if (camera.validate(posInCanvas, gameObject.dimension)) {
-      context.drawImage(sprite.getSpriteSheet().getImage(), sprite.getX(), sprite.getY(), sprite.getWidth(),
-          sprite.getHeight(), posInCanvas.x, posInCanvas.y, gameObject.dimension.x, gameObject.dimension.y);
+      context.drawImage(
+          sprite.getSpriteSheet().getImage(),
+          sprite.getX(),
+          sprite.getY(),
+          sprite.getWidth(),
+          sprite.getHeight(),
+          posInCanvas.x,
+          posInCanvas.y,
+          gameObject.dimension.x,
+          gameObject.dimension.y);
     }
   }
 }

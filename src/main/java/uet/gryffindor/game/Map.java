@@ -8,6 +8,7 @@ import uet.gryffindor.util.MapParser;
 import uet.gryffindor.util.SortedList;
 
 public class Map {
+  public Map Instance = this;
   private String[][] rawMap;
   private SortedList<GameObject> objects;
   private int level;

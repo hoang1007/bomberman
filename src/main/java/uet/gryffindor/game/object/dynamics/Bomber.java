@@ -2,9 +2,11 @@ package uet.gryffindor.game.object.dynamics;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import uet.gryffindor.GameApplication;
 import uet.gryffindor.game.Manager;
 import uet.gryffindor.game.base.GameObject;
 import uet.gryffindor.game.base.OrderedLayer;
@@ -22,6 +24,7 @@ import uet.gryffindor.game.object.statics.items.Item;
 import uet.gryffindor.game.object.statics.items.SpeedItem;
 import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.graphic.texture.AnimateTexture;
+import uet.gryffindor.sound.SoundController;
 
 public class Bomber extends DynamicObject {
   private int heart;
@@ -92,23 +95,28 @@ public class Bomber extends DynamicObject {
   private void move() {
     switch (Input.INSTANCE.getCode()) {
       case UP:
+        SoundController.INSTANCE.getSound(SoundController.FOOT).play();
         this.position.y -= speed.get();
         texture.changeTo("up");
         break;
       case DOWN:
+        SoundController.INSTANCE.getSound(SoundController.FOOT).play();
         this.position.y += speed.get();
         texture.changeTo("down");
         break;
       case RIGHT:
+        SoundController.INSTANCE.getSound(SoundController.FOOT).play();
         this.position.x += speed.get();
         texture.changeTo("right");
         break;
       case LEFT:
+        SoundController.INSTANCE.getSound(SoundController.FOOT).play();
         this.position.x -= speed.get();
         texture.changeTo("left");
         break;
       case SPACE:
         if (bombDropped < numberOfBombs && System.currentTimeMillis() - delay >= 100) {
+          SoundController.INSTANCE.getSound(SoundController.BOMB_NEW).play(); // âm thanh đặt bom.
           bombDropped++;
           Bomb bomb = new Bomb();
           bomb.position.setValue(this.position.clone().smooth(Sprite.DEFAULT_SIZE, 1));
@@ -127,7 +135,7 @@ public class Bomber extends DynamicObject {
   public void onCollisionEnter(Collider that) {
     if (that.gameObject instanceof Unmovable && !(that.gameObject instanceof Bomb)) {
       // ngoại lệ đặt bomb
-      if (this.collider.getOverlapArea(that) < this.dimension.x * this.dimension.y) {
+      if (this.collider.getOverlapArea(that) < .5 * this.dimension.x * this.dimension.y) {
         // nếu bomber va chạm với vật thể tĩnh
         // khôi phục vị trí trước khi va chạm
         position = oldPosition.smooth(this.dimension.x, 0.3);
@@ -135,6 +143,7 @@ public class Bomber extends DynamicObject {
         isBlocked = true;
       }
     } else if (that.gameObject instanceof Item) {
+      SoundController.INSTANCE.getSound(SoundController.ITEM).play(); // âm thanh ăn item.
       if (that.gameObject instanceof BombItem) {
         numberOfBombs += BombItem.power;
       } else if (that.gameObject instanceof SpeedItem) {
@@ -150,19 +159,23 @@ public class Bomber extends DynamicObject {
       }
       ((Item) that.gameObject).startedCounting();
       that.gameObject.destroy();
+    } else if (that.gameObject instanceof Enemy) {
+      dead();
+    } else if (that.gameObject instanceof Explosion) {
+      dead();
     }
-    // else if (that.gameObject instanceof Enemy) {
-    // dead();
-    // } else if (that.gameObject instanceof Explosion) {
-    // dead();
-    // }
   }
 
   public void dead() {
     isBlocked = true;
     texture.changeTo("dead");
     heart--;
+    SoundController.INSTANCE.stopAll();
+    SoundController.INSTANCE.getSound(SoundController.BOMBER_DIE).play(); // âm thanh chết.
     TimeCounter.callAfter(this::destroy, texture.getDuration("dead"));
+    TimeCounter.callAfter(() -> {
+      GameApplication.setRoot("MenuOver");
+    }, 3, TimeUnit.SECONDS);
   }
 
   @Override
