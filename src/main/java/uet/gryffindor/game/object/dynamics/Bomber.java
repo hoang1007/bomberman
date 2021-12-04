@@ -2,6 +2,7 @@ package uet.gryffindor.game.object.dynamics;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -15,6 +16,7 @@ import uet.gryffindor.game.engine.Collider;
 import uet.gryffindor.game.engine.Input;
 import uet.gryffindor.game.engine.TimeCounter;
 import uet.gryffindor.game.object.DynamicObject;
+import uet.gryffindor.game.object.dynamics.enemy.Enemy;
 import uet.gryffindor.game.object.statics.items.BombItem;
 import uet.gryffindor.game.object.statics.items.FlameItem;
 import uet.gryffindor.game.object.statics.items.HeartItem;
@@ -146,6 +148,7 @@ public class Bomber extends DynamicObject {
         isBlocked = true;
       }
     } else if (that.gameObject instanceof Item) {
+      SoundController.INSTANCE.getSound(SoundController.ITEM).play(); // âm thanh ăn item.
       if (that.gameObject instanceof BombItem) {
         numberOfBombs += BombItem.power;
       } else if (that.gameObject instanceof SpeedItem) {
@@ -162,19 +165,21 @@ public class Bomber extends DynamicObject {
       ((Item) that.gameObject).startedCounting();
       that.gameObject.destroy();
     }
-    // else if (that.gameObject instanceof Enemy) {
-    // dead();
-    // } else if (that.gameObject instanceof Explosion) {
-    // dead();
-    // }
+    else if (that.gameObject instanceof Enemy) {
+      dead();
+    } else if (that.gameObject instanceof Explosion) {
+      dead();
+    }
   }
 
   public void dead() {
     isBlocked = true;
     texture.changeTo("dead");
     heart--;
+    SoundController.INSTANCE.stopAll();
+    SoundController.INSTANCE.getSound(SoundController.BOMBER_DIE).play(); // âm thanh chết.
     TimeCounter.callAfter(this::destroy, texture.getDuration("dead"));
-    //GameApplication.setRoot("menuOver");
+    //TimeCounter.callAfter(GameApplication.setRoot("MenuOver"), 1000, TimeUnit.SECONDS);
   }
 
   @Override

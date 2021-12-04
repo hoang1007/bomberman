@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import uet.gryffindor.sound.SoundController;
+import uet.gryffindor.util.VoidFunction;
 
 import java.io.IOException;
 
@@ -23,12 +24,14 @@ public class GameApplication extends Application {
     stage.show();
   }
 
-  public static void setRoot(String fxml) {
+  public static VoidFunction setRoot(String fxml) {
     try {
       scene.setRoot(loadFXML(fxml));
     } catch (IOException e) {
       System.out.println("Can not load resource from fxml: " + e.getMessage());
     }
+
+    return null;
   }
 
   private static Parent loadFXML(String fxml) throws IOException {
