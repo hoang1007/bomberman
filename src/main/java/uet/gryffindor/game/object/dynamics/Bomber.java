@@ -109,9 +109,9 @@ public class Bomber extends DynamicObject {
         isBlocked = true;
       }
     } else if (that.gameObject instanceof Enemy) {
-      dead();
+      // dead();
     } else if (that.gameObject instanceof Explosion) {
-      dead();
+      // dead();
     }
   }
 

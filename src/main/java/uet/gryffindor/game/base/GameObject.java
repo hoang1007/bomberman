@@ -3,8 +3,8 @@ package uet.gryffindor.game.base;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
-import uet.gryffindor.game.Map;
 import uet.gryffindor.game.engine.Collider;
+import uet.gryffindor.game.map.Map;
 import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.graphic.texture.Texture;
 

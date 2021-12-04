@@ -1,13 +1,15 @@
-package uet.gryffindor.game;
+package uet.gryffindor.game.map;
 
-import uet.gryffindor.GameApplication;
+import java.io.InputStream;
+import java.util.List;
+import java.util.Scanner;
+
 import uet.gryffindor.game.base.GameObject;
 import uet.gryffindor.game.base.Vector2D;
 import uet.gryffindor.graphic.sprite.Sprite;
-import uet.gryffindor.util.MapParser;
 import uet.gryffindor.util.SortedList;
 
-public class Map {
+public abstract class Map {
   private String[][] rawMap;
   private SortedList<GameObject> objects;
   private int level;
@@ -15,22 +17,32 @@ public class Map {
   private int height;
   private int width;
 
-  /**
-   * Màn chơi của game.
-   * 
-   * @param rawMap  bản đồ thô sơ
-   * @param objects các game object có trong map
-   * @param level   level của map
-   */
-  public Map(String[][] rawMap, SortedList<GameObject> objects, int level) {
-    this.rawMap = rawMap;
-    this.objects = objects;
-    this.level = level;
-    this.score = 0;
-    height = rawMap.length * Sprite.DEFAULT_SIZE;
-    width = rawMap[0].length * Sprite.DEFAULT_SIZE;
+  protected Map(InputStream config) {
+    try (Scanner sc = new Scanner(config)) {
+      level = sc.nextInt();
+      height = sc.nextInt();
+      width = sc.nextInt();
 
+      rawMap = new String[height][width];
+      objects = new SortedList<>();
+
+      for (int i = 0; i < height; i++) {
+        for (int j = 0; j < width; j++) {
+          Vector2D position = new Vector2D(j, i);
+
+          String tokens = sc.next();
+          rawMap[i][j] = tokens;
+
+          for (GameObject obj : decode(tokens)) {
+            obj.position = position.multiply(Sprite.DEFAULT_SIZE);
+            objects.add(obj);
+          }
+        }
+      }
+    }
   }
+
+  protected abstract List<GameObject> decode(String tokens);
 
   public void setLevel(int level) {
     this.level = level;
@@ -79,9 +91,5 @@ public class Map {
     }
 
     return null;
-  }
-
-  public static Map getByLevel(int level) {
-    return MapParser.parse(GameApplication.class.getResourceAsStream("map/" + level + ".txt"));
   }
 }

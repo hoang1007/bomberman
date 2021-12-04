@@ -4,7 +4,6 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
 
-import javafx.scene.paint.Color;
 import uet.gryffindor.game.base.GameObject;
 import uet.gryffindor.game.base.OrderedLayer;
 import uet.gryffindor.game.base.Vector2D;
@@ -17,8 +16,6 @@ import uet.gryffindor.game.object.dynamics.Bomber;
 import uet.gryffindor.game.object.dynamics.Explosion;
 import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.graphic.texture.AnimateTexture;
-import uet.gryffindor.graphic.texture.OutlineTexture;
-import uet.gryffindor.graphic.texture.Texture;
 import uet.gryffindor.util.Geometry;
 
 public class Oneal extends Enemy {
@@ -35,11 +32,8 @@ public class Oneal extends Enemy {
 
         // Object giúp phát hiện bomber có vào vùng tấn công hay không
         GameObject.addObject(new GameObject() {
-            private OutlineTexture texture;
-
             @Override
             public void start() {
-                this.texture = new OutlineTexture(this, Color.RED);
                 this.orderedLayer = OrderedLayer.FOREGROUND;
                 this.position = Oneal.this.position;
                 // d = 2*r + 1
@@ -80,11 +74,6 @@ public class Oneal extends Enemy {
                 if (that.gameObject instanceof Bomber) {
                     speed = 3.0;
                 }
-            }
-
-            @Override
-            public Texture getTexture() {
-                return this.texture;
             }
         });
     }

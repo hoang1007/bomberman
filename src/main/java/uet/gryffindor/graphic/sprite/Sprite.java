@@ -24,6 +24,7 @@ public class Sprite {
   // statics
   public static Sprite[] obstacle;
   public static Sprite[] portal;
+  public static Sprite[] iceMap;
   // public static Sprite rock;
   public static Sprite wall2D;
   public static Sprite[] tiles;
@@ -53,6 +54,21 @@ public class Sprite {
     loadItems();
     loadObstacle();
     loadPortal();
+    loadIceMap();
+  }
+
+  private static void loadIceMap() {
+    iceMap = new Sprite[30];
+    int id = 0;
+    for (int i = 0; i < 5; i++) {
+      for (int j = 0; j < 6; j++) {
+        iceMap[id++] = new Sprite(j * 100, i * 100, 100, 100, SpriteSheet.iceCastle);
+
+        if (id == iceMap.length) {
+          break;
+        }
+      }
+    }
   }
 
   private static void loadBlackPlayer() {
