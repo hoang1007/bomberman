@@ -27,6 +27,7 @@ public class Oneal extends Enemy {
     private Vector2D oldPosition;
     private boolean isBlocked = false;
 
+    // Đếm mốc thời điểm gọi hai hàm để đồng bộ
     private int handleStamp = 0;
     private int updateStamp = 0;
 
@@ -48,6 +49,8 @@ public class Oneal extends Enemy {
             public void update() {
                 Vector2D center = Oneal.this.position.add(Oneal.this.dimension.multiply(0.5));
                 this.position = center.subtract(this.dimension.multiply(0.5));
+
+                handleStamp += 1;
             }
 
             @Override
@@ -77,6 +80,7 @@ public class Oneal extends Enemy {
             public void onCollisionExit(Collider that) {
                 if (that.gameObject instanceof Bomber) {
                     speed = 3.0;
+                    chasePath.clear();
                 }
             }
         });
@@ -84,6 +88,12 @@ public class Oneal extends Enemy {
 
     @Override
     public void update() {
+        updateStamp += 1;
+        if (updateStamp != handleStamp) {
+            updateStamp = handleStamp;
+            return;
+        }
+
         if (!isBlocked) {
             oldPosition = position.smooth(Sprite.DEFAULT_SIZE, 1);
 
