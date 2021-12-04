@@ -46,7 +46,7 @@ public class Game {
 
   public void start() {
     if (playingMap == null) {
-      this.setMap(new TinyDungeon());
+      this.setMap(new Frozen());
     } else {
       // this.setMap(Map.getByLevel(playingMap.getLevel() + 1));
     }

@@ -6,6 +6,9 @@ import java.util.List;
 import uet.gryffindor.GameApplication;
 import uet.gryffindor.game.base.GameObject;
 import uet.gryffindor.game.object.dynamics.Bomber;
+import uet.gryffindor.game.object.dynamics.enemy.Balloom;
+import uet.gryffindor.game.object.dynamics.enemy.Enemy;
+import uet.gryffindor.game.object.dynamics.enemy.Oneal;
 import uet.gryffindor.game.object.statics.Brick;
 import uet.gryffindor.game.object.statics.Floor;
 import uet.gryffindor.game.object.statics.Wall;
@@ -44,6 +47,15 @@ public class Frozen extends Map {
                 case 'p':
                     objects.addAll(List.of(new Bomber(), createBackground()));
                     break;
+                case 'e':
+                    Enemy enemy;
+                    if (id == 1) {
+                        enemy = new Oneal();
+                    } else {
+                        enemy = new Balloom();
+                    }
+
+                    objects.addAll(List.of(enemy, createBackground()));
                 default:
                     break;
             }

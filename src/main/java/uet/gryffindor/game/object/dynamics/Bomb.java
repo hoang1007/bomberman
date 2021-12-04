@@ -15,7 +15,7 @@ import uet.gryffindor.graphic.texture.AnimateTexture;
 
 public class Bomb extends DynamicObject implements Unmovable {
     public static long time = 2000; // giới hạn thời gian
-    private int explosionRadius; // bán kính vụ nổ
+    private static int explosionRadius = 1; // bán kính vụ nổ
 
     @Override
     public void start() {
@@ -24,8 +24,6 @@ public class Bomb extends DynamicObject implements Unmovable {
         texture = new AnimateTexture(this, 2, anim);
 
         orderedLayer = OrderedLayer.MIDGROUND;
-
-        explosionRadius = 1;
 
         TimeCounter.callAfter(this::explore, time, TimeUnit.MILLISECONDS);
     }
@@ -40,21 +38,24 @@ public class Bomb extends DynamicObject implements Unmovable {
         // thêm vụ nổ ở trung tâm.
         GameObject.instantiate(Explosion.class, this.position);
         // thêm vụ nổ các hướng
-        for (int i = 1; i <= explosionRadius; i++) {
-            for (int j = 0; j < 4; j++) {
-                Vector2D neighbor = Direction.valueOf(j).forward(this.position, Sprite.DEFAULT_SIZE * i);
-                GameObject.instantiate(Explosion.class, neighbor);
+        for (int i = 0; i < 4; i++) {
+            Explosion next = null;
+            for (int j = explosionRadius; j > 0; j--) {
+                Vector2D neighbor = Direction.valueOf(i).forward(this.position, Sprite.DEFAULT_SIZE * j);
+                Explosion current = (Explosion) GameObject.instantiate(Explosion.class, neighbor);
+                current.setNextExplosion(next);
+                next = current;
             }
         }
 
         this.destroy();
     }
 
-    public void setExploredRadius(int radius) {
-        this.explosionRadius = radius;
+    public static void setExploredRadius(int radius) {
+        explosionRadius = radius;
     }
 
-    public int getExplosionRadius() {
-        return this.explosionRadius;
+    public static int getExplosionRadius() {
+        return explosionRadius;
     }
 }

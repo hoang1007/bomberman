@@ -25,6 +25,10 @@ public class Oneal extends Enemy {
     private Random random = new Random();
     private Queue<Vector2D> chasePath = new LinkedList<>();
     private Vector2D oldPosition;
+    private boolean isBlocked = false;
+
+    private int handleStamp = 0;
+    private int updateStamp = 0;
 
     @Override
     public void start() {
@@ -49,14 +53,14 @@ public class Oneal extends Enemy {
             @Override
             public void onCollisionStay(Collider that) {
                 if (that.gameObject instanceof Bomber) {
-                    boolean isInside = this.collider.getOverlapArea(that) == that.gameObject.dimension.x * that.gameObject.dimension.y;
+                    boolean isInside = this.collider.getOverlapArea(that) == that.gameObject.dimension.x
+                            * that.gameObject.dimension.y;
 
                     if (isInside && chasePath.isEmpty()) {
                         speed = 5.0;
                         var rect = Geometry.unionRect(that.gameObject.position.smooth(Sprite.DEFAULT_SIZE, 1),
-                            Oneal.this.position.smooth(Sprite.DEFAULT_SIZE, 1));
+                                Oneal.this.position.smooth(Sprite.DEFAULT_SIZE, 1));
 
-                        // MovableMap map = new MovableMap(Vector2D.zero(), new Vector2D(getMap().getWidth(), getMap().getHeight()));
                         MovableMap map = new MovableMap(rect.first, rect.second);
                         for (GameObject m : getMap().getObjects()) {
                             if (m instanceof Unmovable) {
@@ -80,18 +84,22 @@ public class Oneal extends Enemy {
 
     @Override
     public void update() {
-        oldPosition = position.clone();
+        if (!isBlocked) {
+            oldPosition = position.smooth(Sprite.DEFAULT_SIZE, 1);
 
-        if (!chasePath.isEmpty()) {
-            chase();
-        } else {
-            move();
+            if (!chasePath.isEmpty()) {
+                chase();
+            } else {
+                move();
+            }
         }
     }
 
     @Override
     public void onCollisionEnter(Collider that) {
         if (that.gameObject instanceof Unmovable) {
+            isBlocked = true;
+            chasePath.clear();
             position = oldPosition.smooth(Sprite.DEFAULT_SIZE, 1);
 
             int dirCode = 0;
@@ -102,6 +110,13 @@ public class Oneal extends Enemy {
             direction = Direction.valueOf(dirCode);
         } else if (that.gameObject instanceof Explosion) {
             this.destroy();
+        }
+    }
+
+    @Override
+    public void onCollisionExit(Collider that) {
+        if (that.gameObject instanceof Unmovable) {
+            isBlocked = false;
         }
     }
 

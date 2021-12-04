@@ -115,16 +115,32 @@ public class Bomber extends DynamicObject {
     }
   }
 
+  @Override
+  public void onCollisionExit(Collider that) {
+    if (that.gameObject instanceof Unmovable) {
+      isBlocked = false;
+    }
+  }
+
   public void dead() {
     isBlocked = true;
     texture.changeTo("dead");
     TimeCounter.callAfter(this::destroy, texture.getDuration("dead"));
   }
 
-  @Override
-  public void onCollisionExit(Collider that) {
-    if (that.gameObject instanceof Unmovable) {
-      isBlocked = false;
-    }
+  public double getSpeed() {
+    return speed.get();
+  }
+
+  public void setSpeed(double speed) {
+    this.speed.set(speed);
+  }
+
+  public int getBombCount() {
+    return this.numberOfBombs;
+  }
+
+  public void setBombsCount(int bombCount) {
+    this.numberOfBombs = bombCount;
   }
 }
