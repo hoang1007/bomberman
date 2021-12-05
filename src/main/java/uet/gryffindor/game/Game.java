@@ -135,4 +135,9 @@ public class Game {
 
     this.setMap(nextMap);
   }
+
+  public void destroy() {
+    timer.stop();
+    this.playingMap = null;
+  }
 }

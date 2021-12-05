@@ -27,6 +27,7 @@ public class MainSceneController {
 
   @FXML
   private void backToMenu() {
+    game.destroy();
     GameApplication.setRoot("start");
   }
 }
