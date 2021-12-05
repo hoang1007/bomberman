@@ -11,6 +11,7 @@ import uet.gryffindor.game.engine.Collider;
 import uet.gryffindor.game.engine.FpsTracker;
 import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.graphic.texture.Texture;
+import uet.gryffindor.scenes.MainSceneController;
 import uet.gryffindor.util.SortedList;
 
 import java.util.List;
@@ -21,25 +22,25 @@ public class Game {
   private Camera camera;
   private GraphicsContext context;
   private Config config;
+  public static boolean pause = false;
 
   public Game(Canvas canvas) {
     FpsTracker.setFps(30);
     context = canvas.getGraphicsContext2D();
     camera = new Camera(canvas);
 
-    timer =
-        new AnimationTimer() {
+    timer = new AnimationTimer() {
 
-          @Override
-          public void handle(long now) {
-            if (FpsTracker.isNextFrame(now)) {
-              BaseService.run();
-              update();
-              Collider.checkCollision(playingMap.getObjects());
-              render();
-            }
-          }
-        };
+      @Override
+      public void handle(long now) {
+        if (FpsTracker.isNextFrame(now)) {
+          BaseService.run();
+          update();
+          Collider.checkCollision(playingMap.getObjects());
+          render();
+        }
+      }
+    };
   }
 
   public Game(Canvas canvas, Config config) {
@@ -48,19 +49,20 @@ public class Game {
     camera = new Camera(canvas);
     this.config = config;
 
-    timer =
-        new AnimationTimer() {
+    timer = new AnimationTimer() {
 
-          @Override
-          public void handle(long now) {
-            if (FpsTracker.isNextFrame(now)) {
-              BaseService.run();
-              update();
-              Collider.checkCollision(playingMap.getObjects());
-              render();
-            }
+      @Override
+      public void handle(long now) {
+        if (FpsTracker.isNextFrame(now)) {
+          BaseService.run();
+          if (!pause) {
+            update();
+            Collider.checkCollision(playingMap.getObjects());
           }
-        };
+          render();
+        }
+      }
+    };
   }
 
   public void start() {
@@ -69,7 +71,8 @@ public class Game {
     } else {
       this.setMap(Map.getByLevel(playingMap.getLevel() + 1));
     }
-
+    MainSceneController.level = playingMap.getLevel();
+    pause = false;
     SortedList<GameObject> objects = playingMap.getObjects();
 
     // Gọi phương thức khởi tạo thuộc tính
@@ -139,7 +142,9 @@ public class Game {
     return this.playingMap;
   }
 
-  public AnimationTimer getTime() { return this.timer; }
+  public AnimationTimer getTime() {
+    return this.timer;
+  }
 
   public void nextLevel() {
     int level = playingMap != null ? playingMap.getLevel() : 1;

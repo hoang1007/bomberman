@@ -115,10 +115,14 @@ public class Sprite {
     player_down[4] = new Sprite(25, 4, 18, 28, SpriteSheet.player);
     player_down[5] = new Sprite(4, 4, 18, 28, SpriteSheet.player);
 
+    Sprite[] player_dead = new Sprite[1];
+    player_dead[0] = new Sprite(2, 135, 18, 28, SpriteSheet.player);
+
     player.put("up", player_up);
     player.put("down", player_down);
     player.put("left", player_left);
     player.put("right", player_right);
+    player.put("dead", player_dead);
   }
 
   private static void loadBomb() {
@@ -220,13 +224,12 @@ public class Sprite {
     obstacle[2] = new Sprite(271, 28, 112, 146, SpriteSheet.obstacle);
     obstacle[3] = new Sprite(513, 20, 188, 163, SpriteSheet.obstacle);
 
-    wall2D =
-        new Sprite(
-            0,
-            0,
-            SpriteSheet.wall2D.getWidth(),
-            SpriteSheet.wall2D.getHeight(),
-            SpriteSheet.wall2D);
+    wall2D = new Sprite(
+        0,
+        0,
+        SpriteSheet.wall2D.getWidth(),
+        SpriteSheet.wall2D.getHeight(),
+        SpriteSheet.wall2D);
 
     tiles = new Sprite[28];
     int x = 0;

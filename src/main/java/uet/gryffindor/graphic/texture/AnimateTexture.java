@@ -2,6 +2,7 @@ package uet.gryffindor.graphic.texture;
 
 import javafx.beans.value.ObservableValue;
 import javafx.scene.canvas.GraphicsContext;
+import uet.gryffindor.game.Game;
 import uet.gryffindor.game.base.GameObject;
 import uet.gryffindor.game.base.Vector2D;
 import uet.gryffindor.game.engine.Camera;
@@ -49,8 +50,9 @@ public class AnimateTexture extends Texture {
   /**
    * Đặt rate cho animation.
    *
-   * @param rate thuộc tính xác định xem cứ bao nhiêu frame gốc của chương trình thì một frame của
-   *     animation sẽ được gọi.
+   * @param rate thuộc tính xác định xem cứ bao nhiêu frame gốc của chương trình
+   *             thì một frame của
+   *             animation sẽ được gọi.
    */
   public void setRate(double rate) {
     this.rate = rate;
@@ -62,6 +64,7 @@ public class AnimateTexture extends Texture {
 
   /**
    * Thời gian chạy một animation theo đơn vị global frame.
+   * 
    * @param type
    * @return
    */

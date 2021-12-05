@@ -10,6 +10,7 @@ import uet.gryffindor.game.object.statics.Brick;
 import uet.gryffindor.game.object.statics.Wall;
 import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.graphic.texture.AnimateTexture;
+import uet.gryffindor.scenes.MainSceneController;
 
 public class Explosion extends DynamicObject {
     public static long time = 300;// thời gian xuất hiện vụ nổ

@@ -15,6 +15,7 @@ import uet.gryffindor.game.object.statics.items.Item;
 import uet.gryffindor.game.object.statics.items.SpeedItem;
 import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.graphic.texture.SpriteTexture;
+import uet.gryffindor.scenes.MainSceneController;
 
 public class Brick extends StaticObject implements Unmovable {
   public boolean canDestroy = true;
@@ -65,6 +66,7 @@ public class Brick extends StaticObject implements Unmovable {
         item.start();
         Manager.INSTANCE.getGame().getPlayingMap().getObjects().add(item);
       }
+      MainSceneController.score += 2;
       this.destroy();
     }
   }

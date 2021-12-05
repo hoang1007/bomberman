@@ -7,4 +7,5 @@ public abstract class Enemy extends DynamicObject {
   protected Enemy() {
     this.orderedLayer = OrderedLayer.MIDGROUND;
   }
+
 }

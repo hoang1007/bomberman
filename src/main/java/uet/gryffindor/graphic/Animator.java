@@ -17,8 +17,9 @@ public class Animator {
   /**
    * Khởi tạo animator.
    *
-   * @param rate thuộc tính xác định xem cứ bao nhiêu frame gốc của chương trình thì một frame của
-   *     animation sẽ được gọi.
+   * @param rate    thuộc tính xác định xem cứ bao nhiêu frame gốc của chương
+   *                trình thì một frame của
+   *                animation sẽ được gọi.
    * @param sprites các frame của một animation.
    */
   public Animator(double rate, Sprite... sprites) {
@@ -43,8 +44,9 @@ public class Animator {
   /**
    * Đặt rate cho animation.
    *
-   * @param rate thuộc tính xác định xem cứ bao nhiêu frame gốc của chương trình thì một frame của
-   *     animation sẽ được gọi.
+   * @param rate thuộc tính xác định xem cứ bao nhiêu frame gốc của chương trình
+   *             thì một frame của
+   *             animation sẽ được gọi.
    */
   public void setRate(double rate) {
     this.rate = rate;
