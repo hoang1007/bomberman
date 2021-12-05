@@ -19,13 +19,11 @@ import uet.gryffindor.util.Transporter;
 
 public class MainSceneController {
 
-  public static int heart = 0;
-  public static int level = 0;
-  public static int score = 0;
-
-  @FXML
-  private Canvas canvas;
-  private Game game;
+  public static int level;
+  public static int score;
+  public static int heart;
+  @FXML private Canvas canvas;
+  public static Game game;
 
   @FXML
   private Label heartLabel;
@@ -55,11 +53,11 @@ public class MainSceneController {
 
   @FXML
   private void backToMenu() {
-
-    // GameApplication.setRoot("start");
-    GameApplication.setRoot("menu");
+    game.destroy();
     SoundController.INSTANCE.stopAll();
+    SoundController.INSTANCE.getSound(SoundController.CLICK).play();
     SoundController.INSTANCE.getSound(SoundController.MENU).loop();
+    GameApplication.setRoot("menu");
   }
 
   public void setInfoInGame() {

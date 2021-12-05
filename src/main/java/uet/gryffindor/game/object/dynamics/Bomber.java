@@ -196,7 +196,7 @@ public class Bomber extends DynamicObject {
     TimeCounter.callAfter(this::destroy, texture.getDuration("dead"));
     TimeCounter.callAfter(() -> {
       GameApplication.setRoot("MenuOver");
-    }, 3, TimeUnit.SECONDS);
+    }, 1, TimeUnit.SECONDS);
   }
 
   @Override

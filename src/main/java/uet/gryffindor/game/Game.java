@@ -158,4 +158,9 @@ public class Game {
   public void setConfig(Config config) {
     this.config = config;
   }
+
+  public void destroy() {
+    timer.stop();
+    this.playingMap = null;
+  }
 }
