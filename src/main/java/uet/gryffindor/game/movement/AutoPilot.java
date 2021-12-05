@@ -16,11 +16,10 @@ import uet.gryffindor.game.base.Vector2D;
 import uet.gryffindor.game.behavior.Unmovable;
 import uet.gryffindor.game.engine.Collider;
 import uet.gryffindor.game.engine.TimeCounter;
-import uet.gryffindor.game.object.DynamicObject;
 import uet.gryffindor.game.object.dynamics.Bomb;
 import uet.gryffindor.game.object.dynamics.Bomber;
 import uet.gryffindor.game.object.dynamics.enemy.Enemy;
-import uet.gryffindor.game.object.dynamics.explosion.Explosion;
+import uet.gryffindor.game.object.dynamics.Explosion;
 import uet.gryffindor.game.object.statics.Brick;
 import uet.gryffindor.game.object.statics.Floor;
 import uet.gryffindor.game.object.statics.items.Item;
@@ -30,7 +29,7 @@ import uet.gryffindor.util.VoidFunction;
 
 public class AutoPilot {
   private Bomber agent;
-  private DynamicObject vision;
+  private GameObject vision;
   private List<GameObject> objects = new ArrayList<>();
   private Queue<Vector2D> path = new LinkedList<>();
   private Action action = Action.Undefined;
@@ -76,7 +75,7 @@ public class AutoPilot {
             .setNegative(new ActionNode<Action>().setAction(Action.GotoSafeZone))
             .build());
 
-    vision = new DynamicObject() {
+    vision = new GameObject() {
       private double visionRadius = 150;
 
       @Override
