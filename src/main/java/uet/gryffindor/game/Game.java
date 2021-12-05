@@ -20,11 +20,33 @@ public class Game {
   private Map playingMap;
   private Camera camera;
   private GraphicsContext context;
+  private Config config;
 
   public Game(Canvas canvas) {
     FpsTracker.setFps(30);
     context = canvas.getGraphicsContext2D();
     camera = new Camera(canvas);
+
+    timer =
+        new AnimationTimer() {
+
+          @Override
+          public void handle(long now) {
+            if (FpsTracker.isNextFrame(now)) {
+              BaseService.run();
+              update();
+              Collider.checkCollision(playingMap.getObjects());
+              render();
+            }
+          }
+        };
+  }
+
+  public Game(Canvas canvas, Config config) {
+    FpsTracker.setFps(30);
+    context = canvas.getGraphicsContext2D();
+    camera = new Camera(canvas);
+    this.config = config;
 
     timer =
         new AnimationTimer() {
@@ -122,5 +144,13 @@ public class Game {
   public void nextLevel() {
     int level = playingMap != null ? playingMap.getLevel() : 1;
     setMap(Map.getByLevel(level));
+  }
+
+  public Config getConfig() {
+    return this.config;
+  }
+
+  public void setConfig(Config config) {
+    this.config = config;
   }
 }

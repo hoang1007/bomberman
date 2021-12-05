@@ -43,7 +43,9 @@ public class Bomber extends DynamicObject {
   @Override
   public void start() {
     heart = 1;
-    this.setTexture(new AnimateTexture(this, 3, Sprite.blackPlayer));
+    int bomberId = Manager.INSTANCE.getGame().getConfig().getBomberId();
+    var sprites = bomberId == 1 ? Sprite.player : Sprite.blackPlayer;
+    this.setTexture(new AnimateTexture(this, 3, sprites));
     Manager.INSTANCE.getGame().getCamera().setFocusOn(this);
     speed = new SimpleDoubleProperty(8f);
 

@@ -2,12 +2,11 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.paint.LinearGradient?>
 <?import javafx.scene.paint.Stop?>
@@ -25,15 +24,6 @@
                 <Font name="UTM Nokia" size="16.0" />
             </font>
         </Button>
-        <MenuButton alignment="CENTER" layoutX="306.0" layoutY="427.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="210.0" styleClass="button" stylesheets="@style.css" text="  BOMBER" textAlignment="JUSTIFY">
-            <items>
-                <MenuItem fx:id="bomButton" onAction="#selectionBomber1" text="Bomber 1" />
-                <MenuItem fx:id="bomberButton" mnemonicParsing="false" onAction="#selectionBomber2" text="Bomber 2" />
-            </items>
-            <font>
-                <Font name="UTM Nokia" size="16.0" />
-            </font>
-        </MenuButton>
         <Button fx:id="quitButton" layoutX="306.0" layoutY="492.0" mnemonicParsing="false" onAction="#quitGame" prefHeight="40.0" prefWidth="210.0" stylesheets="@style.css" text="QUIT">
             <font>
                 <Font name="UTM Nokia" size="16.0" />
@@ -81,5 +71,24 @@
             <Image url="@img/menu/bomber2.png" />
          </image>
       </ImageView>
+      <Button fx:id="bomberButton" layoutX="306.0" layoutY="428.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="210.0" stylesheets="@style.css" text="BOMBER">
+         <font>
+            <Font name="UTM Nokia" size="16.0" />
+         </font>
+      </Button>
+      <HBox fx:id="selectionBar" layoutX="311.0" layoutY="468.0" prefHeight="100.0" prefWidth="200.0" visible="false">
+         <children>
+            <ImageView fitHeight="100.0" fitWidth="100.0" onMouseClicked="#selectionBomber1" onMouseEntered="#zoomInOnHover" onMouseExited="#zoomOutOnHover" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@img/menu/bomber/1-blackbkg.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="100.0" fitWidth="100.0" onMouseClicked="#selectionBomber2" onMouseEntered="#zoomInOnHover" onMouseExited="#zoomOutOnHover" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@img/menu/bomber/2-blackbkg.png" />
+               </image>
+            </ImageView>
+         </children>
+      </HBox>
     </children>
 </AnchorPane>
