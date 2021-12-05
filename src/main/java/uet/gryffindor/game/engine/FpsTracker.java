@@ -47,4 +47,8 @@ public class FpsTracker {
   public static long getLastFrameStamp() {
     return lastFrameStamp;
   }
+
+  public double fixedDeltaTime() {
+    return 1f / fps;
+  }
 }

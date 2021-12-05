@@ -1,82 +1,61 @@
 package uet.gryffindor.game.object.dynamics;
 
+import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
+
 import uet.gryffindor.game.base.GameObject;
 import uet.gryffindor.game.base.OrderedLayer;
 import uet.gryffindor.game.base.Vector2D;
+import uet.gryffindor.game.behavior.Unmovable;
+import uet.gryffindor.game.engine.TimeCounter;
 import uet.gryffindor.game.movement.Direction;
-import uet.gryffindor.game.object.dynamics.explosion.Explosion;
-import uet.gryffindor.graphic.Animator;
+import uet.gryffindor.game.object.DynamicObject;
 import uet.gryffindor.graphic.sprite.Sprite;
-import uet.gryffindor.graphic.texture.SpriteTexture;
-import uet.gryffindor.graphic.texture.Texture;
+import uet.gryffindor.graphic.texture.AnimateTexture;
 
-public class Bomb extends GameObject {
-    private SpriteTexture texture;
-    private Animator aboutToExplore;
-    private boolean explored;
-    public static long time; // giới hạn thời gian
-    private long startTime;
-    private int explosionRadius; // bán kính vụ nổ
+public class Bomb extends DynamicObject implements Unmovable {
+    public static long time = 2000; // giới hạn thời gian
+    private static int explosionRadius = 1; // bán kính vụ nổ
 
     @Override
     public void start() {
-        texture = new SpriteTexture(Sprite.bomb[2], this);
-        explored = false;
+        HashMap<String, Sprite[]> anim = new HashMap<>();
+        anim.put("anim", Sprite.bomb);
+        texture = new AnimateTexture(this, 2, anim);
 
-        double rate = 2;
-        aboutToExplore = new Animator(rate, Sprite.bomb);
         orderedLayer = OrderedLayer.MIDGROUND;
 
-        startTime = System.currentTimeMillis();
-        time = 2000; // giới hạn 2 giây
-        explosionRadius = 1;
+        TimeCounter.callAfter(this::explore, time, TimeUnit.MILLISECONDS);
     }
 
     @Override
     public void update() {
-        if (!explored) {
-            texture.setSprite(aboutToExplore.getSprite());
-            // khi quá thời gian,xuất hiện vụ nổ và xóa bomb
-            if (System.currentTimeMillis() - startTime >= time) {
-                explored = true;
-                explore();
-                deleteBomb();
-            }
-        }
-    }
 
-    @Override
-    public Texture getTexture() {
-        return this.texture;
-    }
-
-    public void deleteBomb() {
-        this.destroy();
     }
 
     /** hiệu ứng nổ. */
     public void explore() {
-        if (explored) {
-            // thêm vụ nổ ở trung tâm.
-            GameObject.instantiate(Explosion.class, this.position);
-            for (int i = 1; i <= explosionRadius; i++) {
-                for (int j = 0; j < 4; j++) {
-                    Vector2D neighbor = Direction.valueOf(j).forward(position, Sprite.DEFAULT_SIZE * i);
-                    GameObject.instantiate(Explosion.class, neighbor);
-                }
+        // thêm vụ nổ ở trung tâm.
+        GameObject.instantiate(Explosion.class, this.position);
+        // thêm vụ nổ các hướng
+        for (int i = 0; i < 4; i++) {
+            Explosion next = null;
+            for (int j = explosionRadius; j > 0; j--) {
+                Vector2D neighbor = Direction.valueOf(i).forward(this.position, Sprite.DEFAULT_SIZE * j);
+                Explosion current = (Explosion) GameObject.instantiate(Explosion.class, neighbor);
+                current.setNextExplosion(next);
+                next = current;
             }
         }
+
+        this.destroy();
     }
 
-    public void setExplored(boolean explored) {
-        this.explored = explored;
+    public static void setExploredRadius(int radius) {
+        explosionRadius = radius;
     }
 
-    public boolean isExplored() {
-        return this.explored;
-    }
-
-    public int getExplosionRadius() {
-        return this.explosionRadius;
+    public static int getExplosionRadius() {
+        return explosionRadius;
     }
 }

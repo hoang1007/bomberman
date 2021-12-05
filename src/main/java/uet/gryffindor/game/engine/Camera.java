@@ -1,9 +1,9 @@
 package uet.gryffindor.game.engine;
 
 import javafx.scene.canvas.Canvas;
-import uet.gryffindor.game.Map;
 import uet.gryffindor.game.base.GameObject;
 import uet.gryffindor.game.base.Vector2D;
+import uet.gryffindor.game.map.Map;
 import uet.gryffindor.graphic.sprite.Sprite;
 
 public class Camera {
@@ -45,23 +45,26 @@ public class Camera {
    * Điều chỉnh vị trí của camera 
    * để focus object ở giữa khung render.
    */
-  public Camera fitFocus() {
+  private Camera fitFocus() {
     if (focusObject != null) {
       // đặt focus object tại tâm của canvas
       // nhưng nếu khung render của camera ngoài khung canvas
       // thì chỉnh lại
       position = focusObject.position.subtract(canvasDims.multiply(0.5));
-      Vector2D downRight = position.add(canvasDims);
-
+      
       if (position.x < 0) {
         position.x = 0;
-      } else if (downRight.x > mapDims.x) {
-        position.x = mapDims.x - canvasDims.x;
       }
 
       if (position.y < 0) {
         position.y = 0;
-      } else if (downRight.y > mapDims.y) {
+      }
+
+      if (position.x > mapDims.x - canvasDims.x) {
+        position.x = mapDims.x - canvasDims.x;
+      }
+
+      if (position.y > mapDims.y - canvasDims.y) {
         position.y = mapDims.y - canvasDims.y;
       }
     }
@@ -69,20 +72,25 @@ public class Camera {
     return this;
   }
 
-  /**
-   * Kiểm tra xem một đối tượng có ở trong khung render hay không.
-   */
-  public boolean validate(Vector2D position, Vector2D dimension) {
-    boolean condition1 = 0 <= position.x + dimension.x 
-                        && position.x <= canvasDims.x;
-
-    boolean condition2 = 0 <= position.y + dimension.y 
-                        && position.y <= canvasDims.y;
-
-    return condition1 && condition2;
-  }
-
   public Vector2D getPosition() {
     return position;
+  }
+
+  /**
+   * Vị trí của object trong canvas.
+   * @param obj
+   * @return vị trí của object trong canvas. 
+   * null nếu object không nằm trong canvas.
+   */
+  public Vector2D getRelativeposition(GameObject obj) {
+    Vector2D posInCanvas = obj.position.subtract(fitFocus().position);
+
+    if (posInCanvas.x + obj.dimension.x < 0 
+        || posInCanvas.y + obj.dimension.y < 0 
+        ||  posInCanvas.x > canvasDims.x || posInCanvas.y > canvasDims.y) {
+      return null;
+    } else {
+      return posInCanvas;
+    }
   }
 }

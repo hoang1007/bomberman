@@ -59,12 +59,25 @@ public class AnimateTexture extends Texture {
     return this.rate;
   }
 
+  /**
+   * Thời gian chạy một animation theo đơn vị global frame.
+   * @param type
+   * @return
+   */
+  public long getDuration(String type) {
+    return this.sprites.get(type).length * Math.round(rate);
+  }
+
+  public Sprite[] getSprites(String type) {
+    return this.sprites.get(type);
+  }
+
   @Override
   public void render(GraphicsContext context, Camera camera) {
-    Vector2D posInCanvas = gameObject.position.subtract(camera.fitFocus().getPosition());
+    Vector2D posInCanvas = camera.getRelativeposition(this.gameObject);
     Sprite sprite = getSprite();
 
-    if (camera.validate(posInCanvas, gameObject.dimension)) {
+    if (posInCanvas != null) {
       context.drawImage(sprite.getSpriteSheet().getImage(), 
         sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight(), 
         posInCanvas.x, posInCanvas.y, gameObject.dimension.x, gameObject.dimension.y);

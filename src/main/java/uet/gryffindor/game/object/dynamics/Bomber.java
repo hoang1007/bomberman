@@ -12,6 +12,7 @@ import uet.gryffindor.game.base.Vector2D;
 import uet.gryffindor.game.behavior.Unmovable;
 import uet.gryffindor.game.engine.Collider;
 import uet.gryffindor.game.engine.Input;
+import uet.gryffindor.game.engine.TimeCounter;
 import uet.gryffindor.game.movement.AutoPilot;
 import uet.gryffindor.game.movement.Direction;
 import uet.gryffindor.game.object.DynamicObject;
@@ -24,17 +25,17 @@ public class Bomber extends DynamicObject {
 
   private boolean isBlocked = false;
   private Vector2D oldPosition;
-  private AutoPilot pilot;
 
   private int numberOfBombs;
   private int bombDropped;
   private long delay;
 
   private List<Long> sinceDropping;
+  private AutoPilot pilot;
 
   @Override
   public void start() {
-    this.setTexture(new AnimateTexture(this, 3, Sprite.player));
+    this.setTexture(new AnimateTexture(this, 3, Sprite.blackPlayer));
     Manager.INSTANCE.getGame().getCamera().setFocusOn(this);
     speed = new SimpleDoubleProperty(8f);
     pilot = new AutoPilot(this);
@@ -119,13 +120,18 @@ public class Bomber extends DynamicObject {
   @Override
   public void onCollisionEnter(Collider that) {
     if (that.gameObject instanceof Unmovable) {
-      // nếu bomber va chạm với vật thể tĩnh
-      // khôi phục vị trí trước khi va chạm
-      position = oldPosition.smooth(this.dimension.x, 0.3);
-      // gắn nhãn bị chặn
-      isBlocked = true;
+      // ngoại lệ đặt bomb
+      if (this.collider.getOverlapArea(that) < .5 * this.dimension.x * this.dimension.y) {
+        // nếu bomber va chạm với vật thể tĩnh
+        // khôi phục vị trí trước khi va chạm
+        position = oldPosition.smooth(this.dimension.x, 0.3);
+        // gắn nhãn bị chặn
+        isBlocked = true;
+      }
     } else if (that.gameObject instanceof Enemy) {
-      // this.destroy();
+      // dead();
+    } else if (that.gameObject instanceof Explosion) {
+      // dead();
     }
   }
 
@@ -136,11 +142,25 @@ public class Bomber extends DynamicObject {
     }
   }
 
-  public double getSpeed() {
-    return this.speed.get();
+  public void dead() {
+    isBlocked = true;
+    texture.changeTo("dead");
+    TimeCounter.callAfter(this::destroy, texture.getDuration("dead"));
   }
 
-  public static enum Action {
-    UP, DOWN, LEFT, RIGHT, BOMB, STAND;
+  public double getSpeed() {
+    return speed.get();
+  }
+
+  public void setSpeed(double speed) {
+    this.speed.set(speed);
+  }
+
+  public int getBombCount() {
+    return this.numberOfBombs;
+  }
+
+  public void setBombsCount(int bombCount) {
+    this.numberOfBombs = bombCount;
   }
 }

@@ -112,7 +112,7 @@ public class AutoPilot {
       } else if (obj instanceof Bomb) {
         // nếu gặp bom thì đánh dấu là vùng không thể tới
         map.addObstacle(obj.position);
-        int explosionRadius = ((Bomb) obj).getExplosionRadius();
+        int explosionRadius = Bomb.getExplosionRadius();
 
         for (int i = 1; i <= explosionRadius; i++) {
           map.addObstacles(

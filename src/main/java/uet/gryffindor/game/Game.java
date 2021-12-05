@@ -11,6 +11,10 @@ import uet.gryffindor.game.engine.BaseService;
 import uet.gryffindor.game.engine.Camera;
 import uet.gryffindor.game.engine.Collider;
 import uet.gryffindor.game.engine.FpsTracker;
+import uet.gryffindor.game.map.LargeDungeon;
+import uet.gryffindor.game.map.TinyDungeon;
+import uet.gryffindor.game.map.Frozen;
+import uet.gryffindor.game.map.Map;
 import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.graphic.texture.Texture;
 import uet.gryffindor.util.SortedList;
@@ -41,7 +45,11 @@ public class Game {
   }
 
   public void start() {
-    this.setMap(Map.getByLevel(1));
+    if (playingMap == null) {
+      this.setMap(new Frozen());
+    } else {
+      // this.setMap(Map.getByLevel(playingMap.getLevel() + 1));
+    }
 
     SortedList<GameObject> objects = playingMap.getObjects();
 
@@ -66,7 +74,7 @@ public class Game {
 
   private void update() {
     List<GameObject> objects = playingMap.getObjects();
-    
+
     int currentSize = objects.size();
     for (int i = 0; i < objects.size(); i++) {
       objects.get(i).update();
@@ -83,7 +91,7 @@ public class Game {
 
   private void render() {
     context.clearRect(0, 0, context.getCanvas().getWidth(), context.getCanvas().getHeight());
-
+    
     playingMap.getObjects().forEach(obj -> {
       Texture t = obj.getTexture();
 
@@ -110,7 +118,21 @@ public class Game {
   }
 
   public void nextLevel() {
-    int level = playingMap != null ? playingMap.getLevel() : 1;
-    setMap(Map.getByLevel(level));
+    int level = (playingMap != null ? playingMap.getLevel() : 1) + 1;
+    Map nextMap = null;
+
+    switch (level) {
+      case 1:
+        nextMap = new TinyDungeon();
+        break;
+      case 2:
+        nextMap = new LargeDungeon();
+        break;
+      case 3:
+        nextMap = new Frozen();
+        break;
+    }
+
+    this.setMap(nextMap);
   }
 }

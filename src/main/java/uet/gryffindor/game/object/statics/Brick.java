@@ -7,7 +7,7 @@ import uet.gryffindor.game.base.OrderedLayer;
 import uet.gryffindor.game.behavior.Unmovable;
 import uet.gryffindor.game.engine.Collider;
 import uet.gryffindor.game.object.StaticObject;
-import uet.gryffindor.game.object.dynamics.explosion.Explosion;
+import uet.gryffindor.game.object.dynamics.Explosion;
 import uet.gryffindor.game.object.statics.items.BombItem;
 import uet.gryffindor.game.object.statics.items.FlameItem;
 import uet.gryffindor.game.object.statics.items.Item;

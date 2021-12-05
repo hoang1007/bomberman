@@ -32,13 +32,12 @@ public class TimeCounter extends BaseService {
       if (callBack != null) {
         callBack.invoke();
       }
-      
       this.destroy();
     }
   }
 
-  public TimeCounter onComplete(VoidFunction callback) {
-    this.callBack = callback;
+  public TimeCounter onComplete(VoidFunction func) {
+    this.callBack = func;
     return this;
   }
 

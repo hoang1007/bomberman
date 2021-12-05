@@ -3,8 +3,8 @@ package uet.gryffindor.game.base;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
-import uet.gryffindor.game.Map;
 import uet.gryffindor.game.engine.Collider;
+import uet.gryffindor.game.map.Map;
 import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.graphic.texture.Texture;
 
@@ -32,16 +32,18 @@ public abstract class GameObject implements Comparable<GameObject> {
    * 
    * @param clazz class của game object
    */
-  public static void instantiate(Class<? extends GameObject> clazz) {
+  public static GameObject instantiate(Class<? extends GameObject> clazz) {
     try {
       Constructor<? extends GameObject> constructor = clazz.getDeclaredConstructor();
       constructor.setAccessible(true);
       GameObject obj = constructor.newInstance();
 
       GameObject.addObject(obj);
+      return obj;
     } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
         | NoSuchMethodException | SecurityException e) {
       e.printStackTrace();
+      return null;
     }
   }
 
@@ -51,7 +53,7 @@ public abstract class GameObject implements Comparable<GameObject> {
    * @param clazz    class của game object
    * @param position vị trí của game object
    */
-  public static void instantiate(Class<? extends GameObject> clazz, Vector2D position) {
+  public static GameObject instantiate(Class<? extends GameObject> clazz, Vector2D position) {
     try {
       Constructor<? extends GameObject> constructor = clazz.getDeclaredConstructor();
       constructor.setAccessible(true);
@@ -59,9 +61,12 @@ public abstract class GameObject implements Comparable<GameObject> {
       obj.position = position;
 
       GameObject.addObject(obj);
+
+      return obj;
     } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
         | NoSuchMethodException | SecurityException e) {
       e.printStackTrace();
+      return null;
     }
   }
 
