@@ -16,6 +16,9 @@ public abstract class BaseService {
     services.remove(this);
   }
 
+  /**
+   * Run all services.
+   */
   public static void run() {
     int oldSize = services.size();
 
@@ -29,5 +32,12 @@ public abstract class BaseService {
         oldSize = currentSize;
       }
     }
+  }
+
+  /**
+   * Clear all running services.
+   */
+  public static void clear() {
+    services.clear();
   }
 }

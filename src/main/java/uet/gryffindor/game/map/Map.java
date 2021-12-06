@@ -13,13 +13,10 @@ public abstract class Map {
   private String[][] rawMap;
   private SortedList<GameObject> objects;
   private int level;
-  private int score;
   private int height;
   private int width;
 
   protected Map(InputStream config) {
-    score = 0;
-
     try (Scanner sc = new Scanner(config)) {
       level = sc.nextInt();
       height = sc.nextInt();
@@ -85,10 +82,6 @@ public abstract class Map {
     return this.level;
   }
 
-  public int getScore() {
-    return this.score;
-  }
-
   public int getWidth() {
     return this.width;
   }
@@ -108,6 +101,16 @@ public abstract class Map {
     for (GameObject object : this.objects) {
       if (type.isInstance(object) && object.position.equals(position)) {
         return type.cast(object);
+      }
+    }
+
+    return null;
+  }
+
+  public <T extends GameObject> T getObject(Class<T> type) {
+    for (GameObject obj : this.objects) {
+      if (type.isInstance(obj)) {
+        return type.cast(obj);
       }
     }
 

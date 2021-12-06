@@ -1,8 +1,11 @@
 package uet.gryffindor.game;
 
 import javafx.animation.AnimationTimer;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Label;
 import uet.gryffindor.game.base.GameObject;
 import uet.gryffindor.game.engine.BaseService;
 import uet.gryffindor.game.engine.Camera;
@@ -10,10 +13,10 @@ import uet.gryffindor.game.engine.Collider;
 import uet.gryffindor.game.engine.FpsTracker;
 import uet.gryffindor.game.map.LargeDungeon;
 import uet.gryffindor.game.map.TinyDungeon;
+import uet.gryffindor.game.object.dynamics.Bomber;
 import uet.gryffindor.game.map.Frozen;
 import uet.gryffindor.game.map.Map;
 import uet.gryffindor.graphic.texture.Texture;
-import uet.gryffindor.scenes.MainSceneController;
 
 import java.util.List;
 
@@ -25,10 +28,16 @@ public class Game {
   private Config config;
   public static boolean pause = false;
 
+  private IntegerProperty score;
+  private Label scoreLabel;
+  private Label levelLabel;
+  private Label heartLabel;
+
   public Game(Canvas canvas) {
     FpsTracker.setFps(30);
     context = canvas.getGraphicsContext2D();
     camera = new Camera(canvas);
+    score = new SimpleIntegerProperty();
     
     timer = new AnimationTimer() {
 
@@ -48,7 +57,9 @@ public class Game {
     FpsTracker.setFps(30);
     context = canvas.getGraphicsContext2D();
     camera = new Camera(canvas);
+    score = new SimpleIntegerProperty();
     this.config = config;
+    
     timer = new AnimationTimer() {
 
       @Override
@@ -71,10 +82,12 @@ public class Game {
     } else {
       this.setMap(nextLevel());
     }
-    MainSceneController.level = playingMap.getLevel();
+
     pause = false;
+    BaseService.clear();
     playingMap.init();
     timer.start();
+    refeshDisplayInfo();
   }
 
   private void update() {
@@ -150,6 +163,7 @@ public class Game {
 
   public void destroy() {
     timer.stop();
+    Manager.INSTANCE.scoreLogging(score.get());
   }
 
   public Config getConfig() {
@@ -158,5 +172,30 @@ public class Game {
 
   public void setConfig(Config config) {
     this.config = config;
+  }
+
+  public void addScore(int reward) {
+    score.set(score.get() + reward);
+  }
+
+  public int getScore() {
+    return score.get();
+  }
+
+  public void bindDisplayInfo(Label score, Label level, Label heart) {
+    this.scoreLabel = score;
+    this.levelLabel = level;
+    this.heartLabel = heart;
+  }
+
+  public void refeshDisplayInfo() {
+    try {
+      scoreLabel.textProperty().bind(score.asString());
+      levelLabel.setText(Integer.toString(playingMap.getLevel()));
+      heartLabel.textProperty().bind(
+          playingMap.getObject(Bomber.class).getHeartProperty().asString());
+    } catch (NullPointerException e) {
+      System.out.println("Labels must not be null.");
+    }
   }
 }

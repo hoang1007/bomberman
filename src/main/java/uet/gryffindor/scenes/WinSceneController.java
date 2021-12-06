@@ -3,6 +3,7 @@ package uet.gryffindor.scenes;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import uet.gryffindor.GameApplication;
+import uet.gryffindor.game.Manager;
 import uet.gryffindor.sound.SoundController;
 import javafx.scene.control.Label;
 
@@ -18,7 +19,7 @@ public class WinSceneController {
   }
 
   public void setScore() {
-    outScore.setText(String.valueOf(MainSceneController.score));
+    outScore.setText(Integer.toString(Manager.INSTANCE.getGame().getScore()));
   }
 
   public void backToMenu() {
