@@ -99,10 +99,12 @@ public class Bomber extends DynamicObject {
   }
 
   public void move(Vector2D newPos) {
-    Direction dir = Direction.of(position, newPos);
-    this.position = newPos;
-    if (dir != Direction.NONE) {
-      texture.changeTo(dir.toString());
+    if (!isBlocked) {
+      Direction dir = Direction.of(position, newPos);
+      this.position = newPos;
+      if (dir != Direction.NONE) {
+        texture.changeTo(dir.toString());
+      }
     }
   }
 
@@ -162,5 +164,9 @@ public class Bomber extends DynamicObject {
 
   public void setBombsCount(int bombCount) {
     this.numberOfBombs = bombCount;
+  }
+
+  public boolean isBlocked() {
+    return this.isBlocked;
   }
 }

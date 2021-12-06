@@ -83,8 +83,8 @@ public class AStar {
                 }
 
                 if (src.x > gridPos.x) {
-                    src = gridPos.clone();
-                    result.add(src);
+                    src.x = gridPos.x;
+                    result.add(src.clone());
                 }
             } else if (src.x < gridPos.x) {
                 while (gridPos.x - src.x >= step) {
@@ -93,8 +93,8 @@ public class AStar {
                 }
 
                 if (src.x < gridPos.x) {
-                    src = gridPos.clone();
-                    result.add(src);
+                    src.x = gridPos.x;
+                    result.add(src.clone());
                 }
             }
 
@@ -229,7 +229,7 @@ public class AStar {
             for (var pos : evaluated.keySet()) {
                 double dis = Geometry.manhattanDistance(pos, dstGridPos);
 
-                if (dis < minDis) {
+                if (dis < minDis && canMove.at(pos) == true) {
                     minDis = dis;
                     newDstGridPos = pos;
                 }

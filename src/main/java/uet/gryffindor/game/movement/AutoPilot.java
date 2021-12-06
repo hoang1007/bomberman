@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-import java.util.Random;
 
 import uet.gryffindor.decision.ActionNode;
 import uet.gryffindor.decision.ConditionNode;
@@ -24,6 +23,8 @@ import uet.gryffindor.game.object.statics.Brick;
 import uet.gryffindor.game.object.statics.Floor;
 import uet.gryffindor.game.object.statics.items.Item;
 import uet.gryffindor.graphic.sprite.Sprite;
+import uet.gryffindor.graphic.texture.Texture;
+import uet.gryffindor.graphic.texture.StrokeTexture;
 import uet.gryffindor.util.Geometry;
 import uet.gryffindor.util.VoidFunction;
 
@@ -34,9 +35,7 @@ public class AutoPilot {
   private Queue<Vector2D> path = new LinkedList<>();
   private Action action = Action.Undefined;
   private DecisionTree decisionTree;
-  private MovableMap map;
   private Inspector inspector;
-  private Random random = new Random();
   private TimeCounter taskDoing;
 
   public AutoPilot(Bomber agent) {
@@ -76,11 +75,15 @@ public class AutoPilot {
             .build());
 
     vision = new GameObject() {
-      private double visionRadius = 150;
+      private double visionRadius = 105;
+
+      private Texture texture = new StrokeTexture(this);
 
       @Override
       public void start() {
-        this.dimension = new Vector2D(visionRadius, visionRadius).multiply(2);
+        this.dimension = new Vector2D(visionRadius, visionRadius)
+            .multiply(2)
+            .add(new Vector2D(Sprite.DEFAULT_SIZE, Sprite.DEFAULT_SIZE));
       }
 
       @Override
@@ -95,6 +98,11 @@ public class AutoPilot {
           objects.add(that.gameObject);
         }
       }
+
+      @Override
+      public Texture getTexture() {
+        return texture;
+      }
     };
 
     GameObject.addObject(vision);
@@ -106,9 +114,7 @@ public class AutoPilot {
     MovableMap map = new MovableMap(pos, dim);
 
     for (var obj : objects) {
-      if (obj instanceof Unmovable) {
-        map.addObstacle(obj.position);
-      } else if (obj instanceof Bomb) {
+      if (obj instanceof Bomb) {
         // nếu gặp bom thì đánh dấu là vùng không thể tới
         map.addObstacle(obj.position);
         int explosionRadius = Bomb.getExplosionRadius();
@@ -120,7 +126,13 @@ public class AutoPilot {
               Direction.LEFT.forward(obj.position, i * Sprite.DEFAULT_SIZE),
               Direction.RIGHT.forward(obj.position, i * Sprite.DEFAULT_SIZE));
         }
-      } else if (obj instanceof Explosion) {
+      }
+
+      if (obj instanceof Explosion) {
+        map.addObstacle(obj.position);
+      }
+
+      if (obj instanceof Unmovable) {
         map.addObstacle(obj.position);
       }
     }
@@ -129,7 +141,11 @@ public class AutoPilot {
   }
 
   public void processing() {
-    map = initialMap();
+    if (agent.isBlocked()) {
+      resetTask(false);
+    }
+
+    var map = initialMap();
     Action newAction = (Action) decisionTree.forward().getAction();
 
     if (newAction.ordinal() < action.ordinal()) { // nhiệm vụ mới có độ ưu tiên cao hơn
@@ -149,7 +165,7 @@ public class AutoPilot {
 
           for (GameObject obj : objects) {
             if (obj instanceof Brick) {
-              Vector2D dst = nextTo(agent.position, obj.position);
+              Vector2D dst = nextTo(map, agent.position, obj.position);
               path = AStar.findPath(map, agent.position, dst, Sprite.DEFAULT_SIZE).second;
 
               if (!path.isEmpty()) {
@@ -165,6 +181,7 @@ public class AutoPilot {
 
           if (!hasObstacle) {
             resetTask(false);
+            explore(map);
           }
         }
           break;
@@ -243,7 +260,7 @@ public class AutoPilot {
           break;
         case HuntEnemy: {
           GameObject enemy = inspector.target.get("enemy");
-          Vector2D dst = nextTo(agent.position, enemy.position);
+          Vector2D dst = nextTo(map, agent.position, enemy.position);
 
           path = AStar.findPath(map, agent.position, dst, Sprite.DEFAULT_SIZE).second;
 
@@ -253,7 +270,7 @@ public class AutoPilot {
         }
           break;
         case Undefined: {
-          agent.move(Direction.valueOf(random.nextInt(4)).forward(agent.position, Sprite.DEFAULT_SIZE));
+          explore(map);
         }
           break;
         default:
@@ -265,14 +282,30 @@ public class AutoPilot {
     objects.clear();
   }
 
+  private void explore(MovableMap map) {
+    Vector2D[] neighbors = new Vector2D[4];
+
+    for (int i = 0; i < 4; i++) {
+      neighbors[i] = Direction.valueOf(i).forward(agent.position, Sprite.DEFAULT_SIZE);
+    }
+
+    for (Vector2D neighbor : neighbors) {
+      if (map.at(neighbor) == true) {
+        agent.move(neighbor);
+        break;
+      }
+    }
+  }
+
   private void resetTask(boolean plantBomb) {
+    path.clear();
     action = Action.Undefined;
     if (plantBomb) {
       agent.dropBomb();
     }
   }
 
-  private Vector2D nextTo(Vector2D src, Vector2D dst) {
+  private Vector2D nextTo(MovableMap map, Vector2D src, Vector2D dst) {
     double minDis = Double.MAX_VALUE;
     Vector2D next = dst;
 

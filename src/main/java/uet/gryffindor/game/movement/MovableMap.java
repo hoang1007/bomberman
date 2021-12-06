@@ -22,7 +22,11 @@ public class MovableMap {
 
             for (int i = (int) position.x; i <= position.x + dimension.x; i += Sprite.DEFAULT_SIZE) {
                 for (int j = (int) position.y; j <= position.y + dimension.y; j += Sprite.DEFAULT_SIZE) {
-                    map.put(new Vector2D(i, j), true);
+                    Vector2D p = new Vector2D(i, j);
+
+                    if (isInside(p)) {
+                      map.put(p, true);
+                    }
                 }
             }
         } else {
