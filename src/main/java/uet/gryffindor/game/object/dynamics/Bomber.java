@@ -131,15 +131,16 @@ public class Bomber extends DynamicObject {
         // gắn nhãn bị chặn
         blockedBy.add(that.gameObject);
       }
-    } else if (that.gameObject instanceof Enemy) {
-      if (!shieldAvail) {
-        dead();
-      }
-    } else if (that.gameObject instanceof Explosion) {
-      if (!shieldAvail) {
-        dead();
-      }
     }
+//    else if (that.gameObject instanceof Enemy) {
+//      if (!shieldAvail) {
+//        dead();
+//      }
+//    } else if (that.gameObject instanceof Explosion) {
+//      if (!shieldAvail) {
+//        dead();
+//      }
+//    }
   }
 
   @Override
