@@ -18,9 +18,12 @@ import uet.gryffindor.graphic.texture.SpriteTexture;
 import uet.gryffindor.scenes.MainSceneController;
 
 public class Brick extends StaticObject implements Unmovable {
+  public boolean canDestroy;
+
   @Override
   public void start() {
     orderedLayer = OrderedLayer.MIDGROUND;
+    canDestroy = true;
   }
 
   @Override

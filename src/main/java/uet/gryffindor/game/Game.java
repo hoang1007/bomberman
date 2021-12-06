@@ -29,7 +29,7 @@ public class Game {
     FpsTracker.setFps(30);
     context = canvas.getGraphicsContext2D();
     camera = new Camera(canvas);
-    
+
     timer = new AnimationTimer() {
 
       @Override
@@ -132,7 +132,6 @@ public class Game {
   public Map nextLevel() {
     int level = (playingMap != null ? playingMap.getLevel() : 1) + 1;
     Map nextMap = null;
-
     switch (level) {
       case 1:
         nextMap = new TinyDungeon();

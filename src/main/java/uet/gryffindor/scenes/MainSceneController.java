@@ -22,7 +22,8 @@ public class MainSceneController {
   public static int level;
   public static int score;
   public static int heart;
-  @FXML private Canvas canvas;
+  @FXML
+  private Canvas canvas;
   public static Game game;
 
   @FXML
@@ -45,7 +46,7 @@ public class MainSceneController {
     }));
     timeLine.setCycleCount(Animation.INDEFINITE);
     timeLine.play();
-    
+
     game = new Game(canvas, config);
     Manager.INSTANCE.setGame(game);
     game.start();

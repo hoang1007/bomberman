@@ -5,6 +5,7 @@ import java.util.List;
 
 import uet.gryffindor.GameApplication;
 import uet.gryffindor.game.base.GameObject;
+import uet.gryffindor.game.base.OrderedLayer;
 import uet.gryffindor.game.object.dynamics.Bomber;
 import uet.gryffindor.game.object.dynamics.enemy.Balloom;
 import uet.gryffindor.game.object.dynamics.enemy.CircleEnemy;
@@ -40,6 +41,12 @@ public class LargeDungeon extends Map {
                     Wall wall = new Wall();
                     wall.setTexture(new SpriteTexture(Sprite.tiles[type], wall));
                     objects.add(wall);
+                    break;
+                case 'R':
+                    Wall rock = new Wall();
+                    rock.setOrder(OrderedLayer.MIDGROUND);
+                    rock.setTexture(new SpriteTexture(Sprite.obstacle[3], rock));
+                    objects.add(rock);
                     break;
                 case 'o':
                     Brick obstacle = new Brick();

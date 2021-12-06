@@ -53,7 +53,7 @@ public abstract class GameObject implements Comparable<GameObject> {
   /**
    * Khởi tạo game object thông qua class
    *
-   * @param clazz class của game object
+   * @param clazz    class của game object
    * @param position vị trí của game object
    */
   public static GameObject instantiate(Class<? extends GameObject> clazz, Vector2D position) {
@@ -87,21 +87,24 @@ public abstract class GameObject implements Comparable<GameObject> {
    *
    * @param that collider bị va chạm
    */
-  public void onCollisionEnter(Collider that) {}
+  public void onCollisionEnter(Collider that) {
+  }
 
   /**
    * Hàm được gọi mỗi frame khi hai {@link Collider} chồng lên nhau.
    *
    * @param that collider bị chồng.
    */
-  public void onCollisionStay(Collider that) {}
+  public void onCollisionStay(Collider that) {
+  }
 
   /**
    * Hàm được gọi khi hai {@link Collider} rời khỏi va chạm.
    *
    * @param that collider bị va chạm
    */
-  public void onCollisionExit(Collider that) {}
+  public void onCollisionExit(Collider that) {
+  }
 
   public Texture getTexture() {
     return null;
@@ -132,5 +135,9 @@ public abstract class GameObject implements Comparable<GameObject> {
   public static void addObject(GameObject object) {
     object.start();
     map.getObjects().add(object);
+  }
+
+  public void setOrder(OrderedLayer order) {
+    this.orderedLayer = order;
   }
 }

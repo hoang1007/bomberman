@@ -56,6 +56,7 @@ public class Frozen extends Map {
                     }
 
                     objects.addAll(List.of(enemy, createBackground()));
+                    break;
                 default:
                     break;
             }
