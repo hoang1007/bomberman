@@ -5,10 +5,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import uet.gryffindor.game.engine.TimeCounter;
 import uet.gryffindor.sound.SoundController;
-import uet.gryffindor.util.VoidFunction;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 /** JavaFX App. */
 public class GameApplication extends Application {
@@ -16,7 +17,7 @@ public class GameApplication extends Application {
 
   @Override
   public void start(Stage stage) throws IOException {
-    // scene = new Scene(loadFXML("main"));
+    //scene = new Scene(loadFXML("WinScene"));
     scene = new Scene(loadFXML("menu"));
     SoundController.INSTANCE.getSound(SoundController.MENU).loop();
     stage.setScene(scene);

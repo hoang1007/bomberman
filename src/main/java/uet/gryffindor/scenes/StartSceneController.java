@@ -43,6 +43,7 @@ public class StartSceneController {
     System.out.println(this.getClass());
     System.out.println("ẤN ĐÚNG RỒI ĐẤY. CHOI NGU MÀ CÒN DOI XEM ĐIỂM CAO.");
     SoundController.INSTANCE.stopAll();
+    GameApplication.setRoot("HighScoreScene");
   }
 
   @FXML

@@ -55,5 +55,6 @@ public class SoundController {
     soundList.get(BOMB_NEW).stop();
     soundList.get(BOMB_BROKEN).stop();
     soundList.get(WIN_BG).stop();
+    soundList.get(WIN_EFFECT).stop();
   }
 }
