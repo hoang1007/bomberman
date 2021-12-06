@@ -21,6 +21,7 @@ public class StartSceneController {
 
   /** This method is called by fxml. */
   public void initialize() {
+    WinSceneController.level = 1;
     selectionBar.managedProperty().bind(selectionBar.visibleProperty());
 
     bomberButton.setOnAction(e -> {

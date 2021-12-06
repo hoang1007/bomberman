@@ -118,6 +118,15 @@ public class Bomber extends DynamicObject {
         texture.pause();
         break;
     }
+//    else if (that.gameObject instanceof Enemy) {
+//      if (!shieldAvail) {
+//        dead();
+//      }
+//    } else if (that.gameObject instanceof Explosion) {
+//      if (!shieldAvail) {
+//        dead();
+//      }
+//    }
   }
 
   @Override

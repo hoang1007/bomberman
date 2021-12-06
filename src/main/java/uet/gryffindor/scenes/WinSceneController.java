@@ -10,7 +10,7 @@ import uet.gryffindor.game.object.statics.Portal;
 import uet.gryffindor.sound.SoundController;
 
 public class WinSceneController {
-
+  public static int level = 1;
   @FXML private Label outScore;
 
   @FXML
@@ -25,8 +25,15 @@ public class WinSceneController {
   }
 
   public void nextMap() {
+    level++;
     GameApplication.setRoot("ingame");
-    Portal.nextLevel();
+    if (level % 3 == 2) {
+      Portal.nextLevel();
+    }
+    if (level % 3 == 0) {
+      Portal.nextLevel();
+      Portal.nextLevel();
+    }
     //Game.pause = true;
     SoundController.INSTANCE.stopAll();
     SoundController.INSTANCE.getSound(SoundController.CLICK).play();
