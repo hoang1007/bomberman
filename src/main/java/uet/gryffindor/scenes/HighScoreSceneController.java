@@ -3,10 +3,10 @@ package uet.gryffindor.scenes;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import uet.gryffindor.GameApplication;
+import uet.gryffindor.game.Manager;
 import uet.gryffindor.sound.SoundController;
 
 public class HighScoreSceneController {
-  public static int highestScore = 0;
   @FXML private Label hightScore;
   @FXML private Label nameHight;
 
@@ -16,7 +16,7 @@ public class HighScoreSceneController {
   }
 
   public void setTop1() {
-    hightScore.setText(String.valueOf(highestScore));
+    hightScore.setText(String.valueOf(Manager.INSTANCE.getHighestScore()));
     nameHight.setText("Gryffindor");
   }
 

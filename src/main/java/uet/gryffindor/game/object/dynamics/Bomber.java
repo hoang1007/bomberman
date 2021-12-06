@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import uet.gryffindor.GameApplication;
 import uet.gryffindor.game.Game;
 import uet.gryffindor.game.Manager;
@@ -21,11 +23,10 @@ import uet.gryffindor.game.object.DynamicObject;
 import uet.gryffindor.game.object.dynamics.enemy.Enemy;
 import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.graphic.texture.AnimateTexture;
-import uet.gryffindor.scenes.MainSceneController;
 import uet.gryffindor.sound.SoundController;
 
 public class Bomber extends DynamicObject {
-  private int heart;
+  private IntegerProperty heart;
   private DoubleProperty speed;
 
   private Vector2D firstPosition;
@@ -41,7 +42,7 @@ public class Bomber extends DynamicObject {
 
   @Override
   public void start() {
-    heart = 3;
+    heart = new SimpleIntegerProperty(3);
     int bomberId = Manager.INSTANCE.getGame().getConfig().getBomberId();
     var sprites = bomberId == 1 ? Sprite.player : Sprite.blackPlayer;
     this.setTexture(new AnimateTexture(this, 3, sprites));
@@ -78,8 +79,6 @@ public class Bomber extends DynamicObject {
       oldPosition = position.clone();
       move();
     }
-
-    MainSceneController.heart = this.heart;
   }
 
   private void move() {
@@ -151,14 +150,13 @@ public class Bomber extends DynamicObject {
   }
 
   public void dead() {
-    heart--;
-    MainSceneController.heart = this.heart;
+    heart.set(heart.get() - 1);
     SoundController.INSTANCE.stopAll();
     SoundController.INSTANCE.getSound(SoundController.BOMBER_DIE).play(); // âm thanh chết.
     Game.pause = true;
     texture.changeTo("dead");
 
-    if (heart > 0) {
+    if (heart.get() > 0) {
       TimeCounter.callAfter(() -> {
         SoundController.INSTANCE.stopAll();
         SoundController.INSTANCE.getSound(SoundController.PLAYGAME).play(); // âm thanh chết.
@@ -188,8 +186,11 @@ public class Bomber extends DynamicObject {
   }
 
   public void addHeart() {
-    this.heart += 1;
-    MainSceneController.heart = this.heart;
+    heart.set(heart.get() + 1);
+  }
+
+  public IntegerProperty getHeartProperty() {
+    return this.heart;
   }
 
   public void setBombsCount(int bombCount) {

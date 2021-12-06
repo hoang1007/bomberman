@@ -2,13 +2,13 @@ package uet.gryffindor.game.object.dynamics.enemy;
 
 import java.util.Random;
 
+import uet.gryffindor.game.Manager;
 import uet.gryffindor.game.behavior.Unmovable;
 import uet.gryffindor.game.engine.Collider;
 import uet.gryffindor.game.movement.Direction;
 import uet.gryffindor.game.object.dynamics.Explosion;
 import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.graphic.texture.AnimateTexture;
-import uet.gryffindor.scenes.MainSceneController;
 import uet.gryffindor.sound.SoundController;
 
 public class Balloom extends Enemy {
@@ -39,7 +39,7 @@ public class Balloom extends Enemy {
             direction = Direction.valueOf(dirCode);
         } else if (that.gameObject instanceof Explosion) {
             SoundController.INSTANCE.getSound(SoundController.ENEMY_DIE).play(); // âm thanh khi enemy chết.
-            MainSceneController.score += 5;
+            Manager.INSTANCE.getGame().addScore(5);
             this.destroy();
         }
     }
