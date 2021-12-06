@@ -97,7 +97,7 @@ public class Oneal extends Enemy {
         }
 
         if (!isBlocked) {
-            oldPosition = position.smooth(Sprite.DEFAULT_SIZE, 1);
+            oldPosition = position.clone();
 
             if (!chasePath.isEmpty()) {
                 chase();

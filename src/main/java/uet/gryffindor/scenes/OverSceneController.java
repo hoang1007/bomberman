@@ -4,7 +4,6 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import uet.gryffindor.GameApplication;
 import uet.gryffindor.sound.SoundController;
-import uet.gryffindor.sound.SoundInGame;
 
 public class OverSceneController {
   @FXML

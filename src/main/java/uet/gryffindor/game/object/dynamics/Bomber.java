@@ -30,6 +30,7 @@ public class Bomber extends DynamicObject {
 
   private Vector2D firstPosition;
   private Vector2D oldPosition;
+  private boolean shieldAvail = true;
 
   private int numberOfBombs;
   private int bombDropped;
@@ -55,6 +56,9 @@ public class Bomber extends DynamicObject {
     bombDropped = 0;
     sinceDropping = new ArrayList<>();
     blockedBy = new ArrayList<>();
+
+    shieldAvail = true;
+    TimeCounter.callAfter(() -> shieldAvail = false, 2, TimeUnit.SECONDS);
   }
 
   @Override
@@ -129,9 +133,13 @@ public class Bomber extends DynamicObject {
         blockedBy.add(that.gameObject);
       }
     } else if (that.gameObject instanceof Enemy) {
-      dead();
+      if (!shieldAvail) {
+        dead();
+      }
     } else if (that.gameObject instanceof Explosion) {
-      dead();
+      if (!shieldAvail) {
+        dead();
+      }
     }
   }
 
@@ -162,6 +170,7 @@ public class Bomber extends DynamicObject {
 
     TimeCounter.callAfter(this::destroy, texture.getDuration("dead"));
     TimeCounter.callAfter(() -> {
+      Manager.INSTANCE.getGame().destroy();
       GameApplication.setRoot("MenuOver");
     }, 3, TimeUnit.SECONDS);
   }

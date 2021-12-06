@@ -9,6 +9,7 @@ import uet.gryffindor.game.object.dynamics.Explosion;
 import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.graphic.texture.AnimateTexture;
 import uet.gryffindor.scenes.MainSceneController;
+import uet.gryffindor.sound.SoundController;
 
 public class CircleEnemy extends Enemy {
     private Direction direction = Direction.UP;
@@ -38,6 +39,7 @@ public class CircleEnemy extends Enemy {
             direction = Direction.valueOf(dirCode);
         } else if (that.gameObject instanceof Explosion) {
             MainSceneController.score += 5;
+            SoundController.INSTANCE.getSound(SoundController.ENEMY_DIE).play(); // âm thanh khi enemy chết.
             this.destroy();
         }
     }

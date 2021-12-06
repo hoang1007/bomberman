@@ -67,7 +67,7 @@ public class Game {
 
   public void start() {
     if (playingMap == null) {
-      this.setMap(new Frozen());
+      this.setMap(new TinyDungeon());
     } else {
       this.setMap(nextLevel());
     }
@@ -150,7 +150,6 @@ public class Game {
 
   public void destroy() {
     timer.stop();
-    this.playingMap = null;
   }
 
   public Config getConfig() {

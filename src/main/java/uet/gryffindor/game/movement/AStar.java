@@ -65,7 +65,7 @@ public class AStar {
    * @return
    */
   private static Queue<Vector2D> adjustPath(
-      Stack<MoveStep> path, Vector2D src, Vector2D dst, double step) {
+    Stack<MoveStep> path, Vector2D src, Vector2D dst, double step) {
     Queue<Vector2D> result = new LinkedList<>();
 
     while (!path.isEmpty()) {
@@ -78,7 +78,7 @@ public class AStar {
         }
 
         if (src.x > gridPos.x) {
-          src = gridPos.clone();
+          src.x = gridPos.x;
           result.add(src);
         }
       } else if (src.x < gridPos.x) {
@@ -88,7 +88,7 @@ public class AStar {
         }
 
         if (src.x < gridPos.x) {
-          src = gridPos.clone();
+          src.x = gridPos.x;
           result.add(src);
         }
       }
@@ -120,13 +120,13 @@ public class AStar {
   }
 
   public static Queue<Vector2D> findPath(
-      MovableMap canMove, Vector2D srcPosition, Vector2D dstPosition, double step) {
+    MovableMap canMove, Vector2D srcPosition, Vector2D dstPosition, double step) {
     Stack<MoveStep> path = new Stack<>();
     Queue<MoveStep> queue = new PriorityQueue<>();
     Map<Vector2D, MoveStep> evaluated = new HashMap<>();
 
-    Vector2D srcGridPos = srcPosition.clone().smooth(Sprite.DEFAULT_SIZE, 1);
-    Vector2D dstGridPos = dstPosition.clone().smooth(Sprite.DEFAULT_SIZE, 1);
+    Vector2D srcGridPos = srcPosition.smooth(Sprite.DEFAULT_SIZE, 1);
+    Vector2D dstGridPos = dstPosition.smooth(Sprite.DEFAULT_SIZE, 1);
 
     queue.add(new MoveStep(srcGridPos, null, null, Double.MAX_VALUE));
 
