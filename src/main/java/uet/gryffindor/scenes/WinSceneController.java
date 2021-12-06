@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import uet.gryffindor.GameApplication;
+import uet.gryffindor.game.Game;
 import uet.gryffindor.game.Manager;
 import uet.gryffindor.game.engine.TimeCounter;
 import uet.gryffindor.game.object.statics.Portal;
@@ -36,7 +37,7 @@ public class WinSceneController {
   public void nextMap() {
     GameApplication.setRoot("ingame");
     Portal.nextLevel();
-    //Game.pause = true;
+    Game.pause = false;
     SoundController.INSTANCE.stopAll();
     SoundController.INSTANCE.getSound(SoundController.CLICK).play();
     SoundController.INSTANCE.getSound(SoundController.PLAYGAME).loop();

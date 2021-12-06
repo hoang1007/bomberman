@@ -40,7 +40,7 @@ public class Portal extends StaticObject {
         GameApplication.setRoot("WinScene");
       }, 3, TimeUnit.SECONDS);
 //      TimeCounter.callAfter(this::nextLevel, 2, TimeUnit.SECONDS);
-//      Game.pause = true;
+      Game.pause = true;
     }
   }
 
