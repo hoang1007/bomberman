@@ -150,7 +150,6 @@ public class Game {
 
   public void destroy() {
     timer.stop();
-    this.playingMap = null;
   }
 
   public Config getConfig() {
