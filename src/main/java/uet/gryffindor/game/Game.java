@@ -206,4 +206,8 @@ public class Game {
       }
     };
   }
+
+  public void stopTime() {
+    timer.stop();
+  }
 }
