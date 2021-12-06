@@ -35,6 +35,7 @@ public class Camera {
 
   /**
    * Chiếu cảnh với game object là trung tâm.
+   * 
    * @param object game object muốn camera tập trung vào
    */
   public void setFocusOn(GameObject object) {
@@ -42,7 +43,7 @@ public class Camera {
   }
 
   /**
-   * Điều chỉnh vị trí của camera 
+   * Điều chỉnh vị trí của camera
    * để focus object ở giữa khung render.
    */
   private Camera fitFocus() {

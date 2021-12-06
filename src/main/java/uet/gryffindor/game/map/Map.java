@@ -18,6 +18,8 @@ public abstract class Map {
   private int width;
 
   protected Map(InputStream config) {
+    score = 0;
+
     try (Scanner sc = new Scanner(config)) {
       level = sc.nextInt();
       height = sc.nextInt();
@@ -40,6 +42,25 @@ public abstract class Map {
         }
       }
     }
+  }
+
+  public void init() {
+    // Gọi phương thức khởi tạo thuộc tính
+    // Bao gồm cả trường hợp kích thước của list thay đổi
+    for (int i = 0; i < objects.size(); i++) {
+      int oldSize = objects.size();
+      objects.get(i).start();
+      int curSize = objects.size();
+
+      if (curSize > oldSize) {
+        var obj = objects.getLastElement();
+        if (obj.first <= i) {
+          i += 1;
+        }
+      }
+    }
+
+    objects.sort();
   }
 
   protected abstract List<GameObject> decode(String tokens);

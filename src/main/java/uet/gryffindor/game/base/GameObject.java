@@ -8,9 +8,7 @@ import uet.gryffindor.game.map.Map;
 import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.graphic.texture.Texture;
 
-/**
- * Lớp cơ bản của game. Mọi đối tượng của game nên kế thừa lớp này.
- */
+/** Lớp cơ bản của game. Mọi đối tượng của game nên kế thừa lớp này. */
 public abstract class GameObject implements Comparable<GameObject> {
   private static Map map; // bản đồ chứa các game object
   public Vector2D position; // Vị trí của đối tượng.
@@ -29,7 +27,7 @@ public abstract class GameObject implements Comparable<GameObject> {
 
   /**
    * Khởi tạo game object thông qua class
-   * 
+   *
    * @param clazz class của game object
    */
   public static GameObject instantiate(Class<? extends GameObject> clazz) {
@@ -39,9 +37,14 @@ public abstract class GameObject implements Comparable<GameObject> {
       GameObject obj = constructor.newInstance();
 
       GameObject.addObject(obj);
+
       return obj;
-    } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
-        | NoSuchMethodException | SecurityException e) {
+    } catch (InstantiationException
+        | IllegalAccessException
+        | IllegalArgumentException
+        | InvocationTargetException
+        | NoSuchMethodException
+        | SecurityException e) {
       e.printStackTrace();
       return null;
     }
@@ -49,8 +52,8 @@ public abstract class GameObject implements Comparable<GameObject> {
 
   /**
    * Khởi tạo game object thông qua class
-   * 
-   * @param clazz    class của game object
+   *
+   * @param clazz class của game object
    * @param position vị trí của game object
    */
   public static GameObject instantiate(Class<? extends GameObject> clazz, Vector2D position) {
@@ -61,48 +64,44 @@ public abstract class GameObject implements Comparable<GameObject> {
       obj.position = position;
 
       GameObject.addObject(obj);
-
       return obj;
-    } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
-        | NoSuchMethodException | SecurityException e) {
+    } catch (InstantiationException
+        | IllegalAccessException
+        | IllegalArgumentException
+        | InvocationTargetException
+        | NoSuchMethodException
+        | SecurityException e) {
       e.printStackTrace();
       return null;
     }
   }
 
-  /**
-   * Khởi tạo các thuộc tính (thay thế cho contructor).
-   */
+  /** Khởi tạo các thuộc tính (thay thế cho contructor). */
   public abstract void start();
 
-  /**
-   * Cập nhật mỗi frame.
-   */
+  /** Cập nhật mỗi frame. */
   public abstract void update();
 
   /**
    * Hàm được gọi khi hai {@link Collider} bắt đầu va chạm.
-   * 
+   *
    * @param that collider bị va chạm
    */
-  public void onCollisionEnter(Collider that) {
-  }
+  public void onCollisionEnter(Collider that) {}
 
   /**
    * Hàm được gọi mỗi frame khi hai {@link Collider} chồng lên nhau.
-   * 
+   *
    * @param that collider bị chồng.
    */
-  public void onCollisionStay(Collider that) {
-  }
+  public void onCollisionStay(Collider that) {}
 
   /**
    * Hàm được gọi khi hai {@link Collider} rời khỏi va chạm.
-   * 
+   *
    * @param that collider bị va chạm
    */
-  public void onCollisionExit(Collider that) {
-  }
+  public void onCollisionExit(Collider that) {}
 
   public Texture getTexture() {
     return null;
@@ -112,9 +111,7 @@ public abstract class GameObject implements Comparable<GameObject> {
     return GameObject.map;
   }
 
-  /**
-   * Hủy game object.
-   */
+  /** Hủy game object. */
   public void destroy() {
     map.getObjects().remove(this);
   }

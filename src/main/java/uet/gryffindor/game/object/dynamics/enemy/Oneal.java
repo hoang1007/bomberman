@@ -16,6 +16,8 @@ import uet.gryffindor.game.object.dynamics.Bomber;
 import uet.gryffindor.game.object.dynamics.Explosion;
 import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.graphic.texture.AnimateTexture;
+import uet.gryffindor.scenes.MainSceneController;
+import uet.gryffindor.sound.SoundController;
 import uet.gryffindor.util.Geometry;
 
 public class Oneal extends Enemy {
@@ -60,7 +62,7 @@ public class Oneal extends Enemy {
                             * that.gameObject.dimension.y;
 
                     if (isInside && chasePath.isEmpty()) {
-                        speed = 5.0;
+                        speed = 4.0;
                         var rect = Geometry.unionRect(that.gameObject.position.smooth(Sprite.DEFAULT_SIZE, 1),
                                 Oneal.this.position.smooth(Sprite.DEFAULT_SIZE, 1));
 
@@ -107,9 +109,7 @@ public class Oneal extends Enemy {
 
     @Override
     public void onCollisionEnter(Collider that) {
-        if (that.gameObject instanceof Unmovable) {
-            isBlocked = true;
-            chasePath.clear();
+        if (that.gameObject instanceof Unmovable || that.gameObject instanceof Magma) {
             position = oldPosition.smooth(Sprite.DEFAULT_SIZE, 1);
 
             int dirCode = 0;
@@ -118,7 +118,11 @@ public class Oneal extends Enemy {
             } while (dirCode == direction.ordinal());
 
             direction = Direction.valueOf(dirCode);
+
+            chasePath.clear();
         } else if (that.gameObject instanceof Explosion) {
+            SoundController.INSTANCE.getSound(SoundController.ENEMY_DIE).play(); // âm thanh khi enemy chết.
+            MainSceneController.score += 10;
             this.destroy();
         }
     }

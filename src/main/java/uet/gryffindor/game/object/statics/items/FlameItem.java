@@ -14,9 +14,9 @@ public class FlameItem extends Item {
   @Override
   public void start() {
     super.start();
+    effectDuration = 10_000;
     double rate = 1;
-    animator = new Animator(rate, Sprite.heart);
-    effectDuration = 100;
+    animator = new Animator(rate, Sprite.flamePotion);
   }
 
   @Override
@@ -27,13 +27,13 @@ public class FlameItem extends Item {
   @Override
   public void onCollisionEnter(Collider that) {
     if (that.gameObject instanceof Bomber) {
-      int backupExplosionRadius = Bomb.getExplosionRadius();
-      Bomb.setExploredRadius(backupExplosionRadius + 1);
+      Bomb.setExploredRadius(Bomb.getExplosionRadius() + 1);
+
+      TimeCounter.callAfter(() -> {
+        Bomb.setExploredRadius(Bomb.getExplosionRadius() - 1);
+      }, effectDuration, TimeUnit.MILLISECONDS);
 
       this.destroy();
-
-      TimeCounter.callAfter(() -> Bomb.setExploredRadius(backupExplosionRadius),
-          effectDuration, TimeUnit.SECONDS);
     }
   }
 }

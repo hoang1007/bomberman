@@ -1,5 +1,6 @@
 package uet.gryffindor.game.object.statics.items;
 
+import java.util.Stack;
 import java.util.concurrent.TimeUnit;
 
 import uet.gryffindor.game.engine.Collider;
@@ -9,17 +10,22 @@ import uet.gryffindor.graphic.Animator;
 import uet.gryffindor.graphic.sprite.Sprite;
 
 public class SpeedItem extends Item {
+  private static Stack<Double> boostedHistory = new Stack<Double>();
+  private static double power = 1.5;
+  private static final double speedThreshold = 400f;
+
   @Override
   public void start() {
     super.start();
+    effectDuration = 10_000;
     double rate = 1;
     animator = new Animator(rate, Sprite.speedPotion);
-    effectDuration = 100;
   }
 
   @Override
   public void update() {
     this.getTexture().setSprite(animator.getSprite());
+    
   }
 
   @Override
@@ -27,12 +33,20 @@ public class SpeedItem extends Item {
     if (that.gameObject instanceof Bomber) {
       Bomber bomber = (Bomber) that.gameObject;
       double backupSpeed = bomber.getSpeed();
+      double speedBoosted = backupSpeed * power;
+
+      boostedHistory.push(backupSpeed);
+
+      if (speedBoosted > speedThreshold) {
+        speedBoosted = speedThreshold;
+      }
+
+      bomber.setSpeed(speedBoosted);
+
+      TimeCounter.callAfter(() -> bomber.setSpeed(boostedHistory.pop()),
+          effectDuration, TimeUnit.MILLISECONDS);
+
       this.destroy();
-
-      bomber.setSpeed(backupSpeed * 1.5);
-
-      TimeCounter.callAfter(() -> bomber.setSpeed(backupSpeed),
-          effectDuration, TimeUnit.SECONDS);
     }
   }
 }

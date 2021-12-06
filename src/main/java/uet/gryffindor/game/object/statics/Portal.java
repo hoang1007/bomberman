@@ -32,6 +32,7 @@ public class Portal extends StaticObject {
     if (that.gameObject instanceof Bomber) {
       System.out.println("2s remaining...");
       TimeCounter.callAfter(this::nextLevel, 2, TimeUnit.SECONDS);
+      Game.pause = true;
     }
   }
 

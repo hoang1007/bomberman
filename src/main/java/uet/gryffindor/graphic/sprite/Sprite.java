@@ -2,21 +2,22 @@ package uet.gryffindor.graphic.sprite;
 
 import java.util.HashMap;
 
-/**
- * Class này lưu trữ thông tin pixel của 1 sprite
- */
+/** Class này lưu trữ thông tin pixel của 1 sprite */
 public class Sprite {
   // dynamics
   public static HashMap<String, Sprite[]> player = new HashMap<>();
   public static HashMap<String, Sprite[]> blackPlayer = new HashMap<>();
   public static HashMap<String, Sprite[]> balloom = new HashMap<>();
   public static HashMap<String, Sprite[]> oneal = new HashMap<>();
+  public static HashMap<String, Sprite[]> circleEnemy = new HashMap<>();
+  public static HashMap<String, Sprite[]> magma = new HashMap<>();
 
   public static Sprite[] bomb;
   public static Sprite[] explosion;
   public static Sprite[] explosionPotion;
   public static Sprite[] heart;
   public static Sprite[] speedPotion;
+  public static Sprite[] flamePotion;
 
   // public static Sprite[] balloom;
   // public static Sprite[] oneal;
@@ -34,7 +35,7 @@ public class Sprite {
   private double x; // tọa độ x so với ảnh cha
   private double y; // tọa độ y so với ảnh cha
   private double sWidth; // chiều rộng ảnh con
-  private double sHeight;// chiều cao ảnh con
+  private double sHeight; // chiều cao ảnh con
   private SpriteSheet spriteSheet; // lớp chứa ảnh cha
 
   public Sprite(double _x, double _y, double sWidth, double sHeight, SpriteSheet _spriteSheet) {
@@ -130,10 +131,14 @@ public class Sprite {
     player_down[4] = new Sprite(25, 4, 18, 28, SpriteSheet.player);
     player_down[5] = new Sprite(4, 4, 18, 28, SpriteSheet.player);
 
+    Sprite[] player_dead = new Sprite[1];
+    player_dead[0] = new Sprite(2, 135, 18, 28, SpriteSheet.player);
+
     player.put("up", player_up);
     player.put("down", player_down);
     player.put("left", player_left);
     player.put("right", player_right);
+    player.put("dead", player_dead);
   }
 
   private static void loadBomb() {
@@ -146,13 +151,13 @@ public class Sprite {
   private static void loadEnemy() {
     // Monster
     Sprite[] balloomSprites = new Sprite[7];
-    balloomSprites[0] = new Sprite(16, 5, 16, 16, SpriteSheet.balloomAndOneal);
-    balloomSprites[1] = new Sprite(32, 5, 16, 16, SpriteSheet.balloomAndOneal);
-    balloomSprites[2] = new Sprite(49, 5, 16, 16, SpriteSheet.balloomAndOneal);
-    balloomSprites[3] = new Sprite(64, 5, 16, 16, SpriteSheet.balloomAndOneal);
-    balloomSprites[4] = new Sprite(80, 5, 16, 16, SpriteSheet.balloomAndOneal);
-    balloomSprites[5] = new Sprite(96, 5, 16, 16, SpriteSheet.balloomAndOneal);
-    balloomSprites[6] = new Sprite(112, 5, 16, 16, SpriteSheet.balloomAndOneal);
+    balloomSprites[0] = new Sprite(16, 5, 16, 16, SpriteSheet.enemy);
+    balloomSprites[1] = new Sprite(32, 5, 16, 16, SpriteSheet.enemy);
+    balloomSprites[2] = new Sprite(49, 5, 16, 16, SpriteSheet.enemy);
+    balloomSprites[3] = new Sprite(64, 5, 16, 16, SpriteSheet.enemy);
+    balloomSprites[4] = new Sprite(80, 5, 16, 16, SpriteSheet.enemy);
+    balloomSprites[5] = new Sprite(96, 5, 16, 16, SpriteSheet.enemy);
+    balloomSprites[6] = new Sprite(112, 5, 16, 16, SpriteSheet.enemy);
 
     balloom.put("up", new Sprite[] { balloomSprites[2], balloomSprites[4] });
     balloom.put("down", new Sprite[] { balloomSprites[2], balloomSprites[4] });
@@ -160,19 +165,42 @@ public class Sprite {
     balloom.put("right", new Sprite[] { balloomSprites[4], balloomSprites[5], balloomSprites[6] });
 
     Sprite[] onealSprites = new Sprite[8];
-    onealSprites[0] = new Sprite(5, 88, 16, 16, SpriteSheet.balloomAndOneal);
-    onealSprites[1] = new Sprite(24, 88, 16, 16, SpriteSheet.balloomAndOneal);
-    onealSprites[2] = new Sprite(41, 88, 16, 16, SpriteSheet.balloomAndOneal);
-    onealSprites[3] = new Sprite(59, 88, 16, 16, SpriteSheet.balloomAndOneal);
-    onealSprites[4] = new Sprite(77, 88, 16, 16, SpriteSheet.balloomAndOneal);
-    onealSprites[5] = new Sprite(95, 88, 16, 16, SpriteSheet.balloomAndOneal);
-    onealSprites[6] = new Sprite(112, 88, 16, 16, SpriteSheet.balloomAndOneal);
-    onealSprites[7] = new Sprite(131, 88, 16, 16, SpriteSheet.balloomAndOneal);
+    onealSprites[0] = new Sprite(5, 88, 16, 16, SpriteSheet.enemy);
+    onealSprites[1] = new Sprite(24, 88, 16, 16, SpriteSheet.enemy);
+    onealSprites[2] = new Sprite(41, 88, 16, 16, SpriteSheet.enemy);
+    onealSprites[3] = new Sprite(59, 88, 16, 16, SpriteSheet.enemy);
+    onealSprites[4] = new Sprite(77, 88, 16, 16, SpriteSheet.enemy);
+    onealSprites[5] = new Sprite(95, 88, 16, 16, SpriteSheet.enemy);
+    onealSprites[6] = new Sprite(112, 88, 16, 16, SpriteSheet.enemy);
+    onealSprites[7] = new Sprite(131, 88, 16, 16, SpriteSheet.enemy);
 
     oneal.put("up", new Sprite[] { onealSprites[2], onealSprites[5] });
     oneal.put("down", new Sprite[] { onealSprites[2], onealSprites[5] });
     oneal.put("left", new Sprite[] { onealSprites[0], onealSprites[1], onealSprites[2] });
     oneal.put("right", new Sprite[] { onealSprites[5], onealSprites[6], onealSprites[7] });
+
+    Sprite[] circleEnemySprite = new Sprite[7];
+    circleEnemySprite[0] = new Sprite(16, 47, 16, 16, SpriteSheet.enemy);
+    circleEnemySprite[1] = new Sprite(34, 47, 16, 16, SpriteSheet.enemy);
+    circleEnemySprite[2] = new Sprite(50, 47, 16, 16, SpriteSheet.enemy);
+    circleEnemySprite[3] = new Sprite(66, 47, 16, 16, SpriteSheet.enemy);
+    circleEnemySprite[4] = new Sprite(82, 47, 16, 16, SpriteSheet.enemy);
+    circleEnemySprite[5] = new Sprite(98, 47, 16, 16, SpriteSheet.enemy);
+    circleEnemySprite[6] = new Sprite(115, 47, 16, 16, SpriteSheet.enemy);
+
+    circleEnemy.put("up", circleEnemySprite);
+    circleEnemy.put("down", circleEnemySprite);
+    circleEnemy.put("left", circleEnemySprite);
+    circleEnemy.put("right", circleEnemySprite);
+
+    Sprite[] magmaSprite = new Sprite[8];
+    for (int i = 0; i <= 1; i++) {
+      for (int j = 0; j <= 3; j++) {
+        magmaSprite[i * 4 + j] = new Sprite(j * 144, i * 144, 115, 120, SpriteSheet.magma);
+      }
+    }
+    magma.put("up", magmaSprite);
+
   }
 
   public static void loadExplosion() {
@@ -198,6 +226,11 @@ public class Sprite {
     for (int i = 0; i <= 7; i++) {
       speedPotion[i] = new Sprite(i * 135, 0, 135, 174, SpriteSheet.speedPotion);
     }
+
+    flamePotion = new Sprite[12];
+    for (int i = 0; i <= 11; i++) {
+      flamePotion[i] = new Sprite(i * 530, 0, 530, 600, SpriteSheet.flamePotion);
+    }
   }
 
   public static void loadObstacle() {
@@ -207,7 +240,12 @@ public class Sprite {
     obstacle[2] = new Sprite(271, 28, 112, 146, SpriteSheet.obstacle);
     obstacle[3] = new Sprite(513, 20, 188, 163, SpriteSheet.obstacle);
 
-    wall2D = new Sprite(0, 0, SpriteSheet.wall2D.getWidth(), SpriteSheet.wall2D.getHeight(), SpriteSheet.wall2D);
+    wall2D = new Sprite(
+        0,
+        0,
+        SpriteSheet.wall2D.getWidth(),
+        SpriteSheet.wall2D.getHeight(),
+        SpriteSheet.wall2D);
 
     tiles = new Sprite[28];
     int x = 0;

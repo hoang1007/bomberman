@@ -7,6 +7,8 @@ import uet.gryffindor.GameApplication;
 import uet.gryffindor.game.base.GameObject;
 import uet.gryffindor.game.object.dynamics.Bomber;
 import uet.gryffindor.game.object.dynamics.enemy.Balloom;
+import uet.gryffindor.game.object.dynamics.enemy.CircleEnemy;
+import uet.gryffindor.game.object.dynamics.enemy.Magma;
 import uet.gryffindor.game.object.dynamics.enemy.Oneal;
 import uet.gryffindor.game.object.statics.Brick;
 import uet.gryffindor.game.object.statics.Floor;
@@ -59,7 +61,22 @@ public class LargeDungeon extends Map {
                     objects.add(bomber);
                     break;
                 case 'e':
-                    objects.add(type == 0 ? new Balloom() : new Oneal());
+                    switch (type) {
+                        case 0:
+                            objects.add(new Balloom());
+                            break;
+                        case 1:
+                            objects.add(new Oneal());
+                            break;
+                        case 2:
+                            objects.add(new CircleEnemy());
+                            break;
+                        case 3:
+                            objects.add(new Magma());
+                            break;
+                        default:
+                            break;
+                    }
                     break;
                 default:
                     break;

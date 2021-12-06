@@ -2,26 +2,33 @@ package uet.gryffindor.game.object.dynamics;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import uet.gryffindor.GameApplication;
+import uet.gryffindor.game.Game;
 import uet.gryffindor.game.Manager;
 import uet.gryffindor.game.base.GameObject;
 import uet.gryffindor.game.base.OrderedLayer;
 import uet.gryffindor.game.base.Vector2D;
 import uet.gryffindor.game.behavior.Unmovable;
 import uet.gryffindor.game.engine.Collider;
+import uet.gryffindor.game.engine.FpsTracker;
 import uet.gryffindor.game.engine.Input;
 import uet.gryffindor.game.engine.TimeCounter;
 import uet.gryffindor.game.object.DynamicObject;
 import uet.gryffindor.game.object.dynamics.enemy.Enemy;
 import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.graphic.texture.AnimateTexture;
+import uet.gryffindor.scenes.MainSceneController;
+import uet.gryffindor.sound.SoundController;
 
 public class Bomber extends DynamicObject {
+  private int heart;
   private DoubleProperty speed;
 
-  private boolean isBlocked = false;
+  private Vector2D firstPosition;
   private Vector2D oldPosition;
 
   private int numberOfBombs;
@@ -29,25 +36,31 @@ public class Bomber extends DynamicObject {
   private long delay;
 
   private List<Long> sinceDropping;
+  private List<GameObject> blockedBy;
 
   @Override
   public void start() {
-    this.setTexture(new AnimateTexture(this, 3, Sprite.blackPlayer));
+    heart = 3;
+    int bomberId = Manager.INSTANCE.getGame().getConfig().getBomberId();
+    var sprites = bomberId == 1 ? Sprite.player : Sprite.blackPlayer;
+    this.setTexture(new AnimateTexture(this, 3, sprites));
     Manager.INSTANCE.getGame().getCamera().setFocusOn(this);
-    speed = new SimpleDoubleProperty(8f);
+    speed = new SimpleDoubleProperty(200f);
 
     orderedLayer = OrderedLayer.MIDGROUND;
     oldPosition = position.clone();
+    firstPosition = position.clone();
 
     numberOfBombs = 1;
     bombDropped = 0;
     sinceDropping = new ArrayList<>();
+    blockedBy = new ArrayList<>();
   }
 
   @Override
   public void update() {
     for (int i = 0; i < sinceDropping.size(); i++) {
-      if (System.currentTimeMillis() - sinceDropping.get(i) >= Bomb.time) {
+      if (System.currentTimeMillis() - sinceDropping.get(i) >= Bomb.time + Explosion.time * 2) {
         sinceDropping.remove(sinceDropping.get(i));
         i--;
       }
@@ -57,32 +70,39 @@ public class Bomber extends DynamicObject {
       bombDropped = 0;
     }
 
-    if (!isBlocked) {
+    if (blockedBy.isEmpty()) {
       oldPosition = position.clone();
       move();
     }
+
+    MainSceneController.heart = this.heart;
   }
 
   private void move() {
     switch (Input.INSTANCE.getCode()) {
       case UP:
-        this.position.y -= speed.get();
+        SoundController.INSTANCE.getSound(SoundController.FOOT).play();
+        this.position.y -= speed.get() * FpsTracker.fixedDeltaTime();
         texture.changeTo("up");
         break;
       case DOWN:
-        this.position.y += speed.get();
+        SoundController.INSTANCE.getSound(SoundController.FOOT).play();
+        this.position.y += speed.get() * FpsTracker.fixedDeltaTime();
         texture.changeTo("down");
         break;
       case RIGHT:
-        this.position.x += speed.get();
+        SoundController.INSTANCE.getSound(SoundController.FOOT).play();
+        this.position.x += speed.get() * FpsTracker.fixedDeltaTime();
         texture.changeTo("right");
         break;
       case LEFT:
-        this.position.x -= speed.get();
+        SoundController.INSTANCE.getSound(SoundController.FOOT).play();
+        this.position.x -= speed.get() * FpsTracker.fixedDeltaTime();
         texture.changeTo("left");
         break;
       case SPACE:
         if (bombDropped < numberOfBombs && System.currentTimeMillis() - delay >= 100) {
+          SoundController.INSTANCE.getSound(SoundController.BOMB_NEW).play(); // âm thanh đặt bom.
           bombDropped++;
           Bomb bomb = new Bomb();
           bomb.position.setValue(this.position.clone().smooth(Sprite.DEFAULT_SIZE, 1));
@@ -106,26 +126,44 @@ public class Bomber extends DynamicObject {
         // khôi phục vị trí trước khi va chạm
         position = oldPosition.smooth(this.dimension.x, 0.3);
         // gắn nhãn bị chặn
-        isBlocked = true;
+        blockedBy.add(that.gameObject);
       }
     } else if (that.gameObject instanceof Enemy) {
-      // dead();
+      dead();
     } else if (that.gameObject instanceof Explosion) {
-      // dead();
+      dead();
     }
   }
 
   @Override
   public void onCollisionExit(Collider that) {
     if (that.gameObject instanceof Unmovable) {
-      isBlocked = false;
+      blockedBy.remove(that.gameObject);
     }
   }
 
   public void dead() {
-    isBlocked = true;
+    heart--;
+    MainSceneController.heart = this.heart;
+    SoundController.INSTANCE.stopAll();
+    SoundController.INSTANCE.getSound(SoundController.BOMBER_DIE).play(); // âm thanh chết.
+    Game.pause = true;
     texture.changeTo("dead");
+
+    if (heart > 0) {
+      TimeCounter.callAfter(() -> {
+        SoundController.INSTANCE.stopAll();
+        SoundController.INSTANCE.getSound(SoundController.PLAYGAME).play(); // âm thanh chết.
+        this.position.setValue(firstPosition);
+        Game.pause = false;
+      }, 1, TimeUnit.SECONDS);
+      return;
+    }
+
     TimeCounter.callAfter(this::destroy, texture.getDuration("dead"));
+    TimeCounter.callAfter(() -> {
+      GameApplication.setRoot("MenuOver");
+    }, 3, TimeUnit.SECONDS);
   }
 
   public double getSpeed() {
@@ -138,6 +176,11 @@ public class Bomber extends DynamicObject {
 
   public int getBombCount() {
     return this.numberOfBombs;
+  }
+
+  public void addHeart() {
+    this.heart += 1;
+    MainSceneController.heart = this.heart;
   }
 
   public void setBombsCount(int bombCount) {
