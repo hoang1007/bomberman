@@ -15,7 +15,7 @@ public class GameApplication extends Application {
 
   @Override
   public void start(Stage stage) throws IOException {
-    // scene = new Scene(loadFXML("main"));
+    //scene = new Scene(loadFXML("WinScene"));
     scene = new Scene(loadFXML("menu"));
     SoundController.INSTANCE.getSound(SoundController.MENU).loop();
     stage.setScene(scene);

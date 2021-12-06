@@ -8,8 +8,8 @@ import uet.gryffindor.game.movement.Direction;
 import uet.gryffindor.game.object.dynamics.Explosion;
 import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.graphic.texture.AnimateTexture;
-import uet.gryffindor.scenes.MainSceneController;
 import uet.gryffindor.sound.SoundController;
+import uet.gryffindor.scenes.MainSceneController;
 
 public class CircleEnemy extends Enemy {
     private Direction direction = Direction.UP;

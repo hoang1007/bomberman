@@ -12,9 +12,11 @@ public class SoundController {
   public static final String ENEMY_DIE = "EnemyDie";
   public static final String BOMBER_DIE = "BomberDie";
   public static final String ITEM = "Item";
-  public static final String WIN = "LevelUp"; // chưa add
-  public static final String LOSE = "lose.mid";
+  public static final String  NEXT_LEVEL = "LevelUp"; // chưa add
+  public static final String CLICK = "Click";
+  public static final String WIN_BG = "WinBackground";//Background
   public static final String FOOT = "Foot";
+  public static final String WIN_EFFECT = "Victoria";
 
   private HashMap<String, SoundInGame> soundList;
 
@@ -24,11 +26,8 @@ public class SoundController {
       loadAll();
   }
 
-  public static SoundController getINSTANCE() {
-    if (INSTANCE == null) {
-      INSTANCE = new SoundController();
-    }
-    return INSTANCE;
+  public void playBrokenSound() {
+    new SoundInGame(BOMB_BROKEN).play();
   }
 
   public void loadAll() {
@@ -41,7 +40,10 @@ public class SoundController {
     soundList.put(BOMB_BROKEN, new SoundInGame(BOMB_BROKEN));
     soundList.put(ITEM, new SoundInGame(ITEM));
     soundList.put(FOOT, new SoundInGame(FOOT));
-    soundList.put(WIN, new SoundInGame(WIN));
+    soundList.put(CLICK, new SoundInGame(CLICK));
+    soundList.put(NEXT_LEVEL, new SoundInGame(NEXT_LEVEL));
+    soundList.put(WIN_BG, new SoundInGame(WIN_BG));
+    soundList.put(WIN_EFFECT, new SoundInGame(WIN_EFFECT));
   }
 
   public SoundInGame getSound(String type) {
@@ -56,8 +58,7 @@ public class SoundController {
     soundList.get(ENEMY_DIE).stop();
     soundList.get(BOMB_NEW).stop();
     soundList.get(BOMB_BROKEN).stop();
-    soundList.get(ITEM).stop();
-    soundList.get(FOOT).stop();
-    soundList.get(WIN).stop();
+    soundList.get(WIN_BG).stop();
+    soundList.get(WIN_EFFECT).stop();
   }
 }

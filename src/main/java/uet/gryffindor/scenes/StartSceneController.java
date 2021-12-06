@@ -33,24 +33,29 @@ public class StartSceneController {
     // GameApplication.setRoot("main");
     GameApplication.setRoot("ingame");
     SoundController.INSTANCE.stopAll();
+    SoundController.INSTANCE.getSound(SoundController.CLICK).play();
     SoundController.INSTANCE.getSound(SoundController.PLAYGAME).loop();
   }
 
   @FXML
   public void hightScore() {
+    SoundController.INSTANCE.getSound(SoundController.CLICK).play();
     System.out.println(this.getClass());
     System.out.println("ẤN ĐÚNG RỒI ĐẤY. CHOI NGU MÀ CÒN DOI XEM ĐIỂM CAO.");
     SoundController.INSTANCE.stopAll();
+    GameApplication.setRoot("HighScoreScene");
   }
 
   @FXML
   public void selectionBomber1() {
+    SoundController.INSTANCE.getSound(SoundController.CLICK).play();
     config.setBomberId(1);
     selectionBar.setVisible(false);
   }
 
   @FXML
   public void selectionBomber2 () {
+    SoundController.INSTANCE.getSound(SoundController.CLICK).play();
     config.setBomberId(2);
     selectionBar.setVisible(false);
   }
@@ -79,6 +84,7 @@ public class StartSceneController {
 
   @FXML
   public void quitGame() {
+    SoundController.INSTANCE.getSound(SoundController.CLICK).play();
     Platform.exit();
     System.exit(0);
   }

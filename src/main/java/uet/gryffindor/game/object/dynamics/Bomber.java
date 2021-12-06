@@ -172,7 +172,7 @@ public class Bomber extends DynamicObject {
     TimeCounter.callAfter(() -> {
       Manager.INSTANCE.getGame().destroy();
       GameApplication.setRoot("MenuOver");
-    }, 3, TimeUnit.SECONDS);
+    }, 1, TimeUnit.SECONDS);
   }
 
   public double getSpeed() {
