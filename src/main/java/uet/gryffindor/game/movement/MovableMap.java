@@ -20,6 +20,8 @@ public class MovableMap {
             this.dimension = dimension;
             this.map = new HashMap<>();
 
+            adjustProperties();
+
             for (int i = (int) position.x; i <= position.x + dimension.x; i += Sprite.DEFAULT_SIZE) {
                 for (int j = (int) position.y; j <= position.y + dimension.y; j += Sprite.DEFAULT_SIZE) {
                     Vector2D p = new Vector2D(i, j);
@@ -47,6 +49,16 @@ public class MovableMap {
         boolean cond4 = dimension.y % Sprite.DEFAULT_SIZE == 0;
 
         return cond1 && cond2 && cond3 && cond4;
+    }
+
+    private void adjustProperties() {
+      if (position.x < 0) {
+        position.x = 0;
+      }
+
+      if (position.y < 0) {
+        position.y = 0;
+      }
     }
 
     private boolean isInside(Vector2D p) {

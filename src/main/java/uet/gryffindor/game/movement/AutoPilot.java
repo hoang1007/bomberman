@@ -75,7 +75,7 @@ public class AutoPilot {
             .build());
 
     vision = new GameObject() {
-      private double visionRadius = 105;
+      private double visionRadius = 140;
 
       private Texture texture = new StrokeTexture(this);
 
@@ -126,13 +126,9 @@ public class AutoPilot {
               Direction.LEFT.forward(obj.position, i * Sprite.DEFAULT_SIZE),
               Direction.RIGHT.forward(obj.position, i * Sprite.DEFAULT_SIZE));
         }
-      }
-
-      if (obj instanceof Explosion) {
+      } else if (obj instanceof Explosion) {
         map.addObstacle(obj.position);
-      }
-
-      if (obj instanceof Unmovable) {
+      } else if (obj instanceof Unmovable) {
         map.addObstacle(obj.position);
       }
     }
@@ -291,6 +287,10 @@ public class AutoPilot {
 
     for (Vector2D neighbor : neighbors) {
       if (map.at(neighbor) == true) {
+        if (neighbor.x < 0 || neighbor.y < 0) {
+          System.out.println("Stupid!");
+        }
+
         agent.move(neighbor);
         break;
       }
