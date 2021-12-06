@@ -4,7 +4,9 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import uet.gryffindor.GameApplication;
+import uet.gryffindor.game.Manager;
 import uet.gryffindor.game.engine.TimeCounter;
+import uet.gryffindor.game.object.statics.Portal;
 import uet.gryffindor.sound.SoundController;
 import javafx.scene.control.Label;
 
@@ -19,9 +21,7 @@ public class WinSceneController {
 
   @FXML
   public void initialize() {
-    if(MainSceneController.score > HighScoreSceneController.highestScore) {
-      HighScoreSceneController.highestScore = MainSceneController.score;
-    }
+
     MainSceneController.game.stopTime();
     setScore();
 

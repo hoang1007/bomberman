@@ -33,7 +33,6 @@ public class StartSceneController {
     Transporter.INSTANCE.put("config", config, false);
     // GameApplication.setRoot("main");
     GameApplication.setRoot("ingame");
-    MainSceneController.score = 0;
     SoundController.INSTANCE.stopAll();
     SoundController.INSTANCE.getSound(SoundController.CLICK).play();
     SoundController.INSTANCE.getSound(SoundController.PLAYGAME).loop();
