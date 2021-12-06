@@ -1,9 +1,9 @@
 package uet.gryffindor.game.movement;
 
+import java.util.HashMap;
+
 import uet.gryffindor.game.base.Vector2D;
 import uet.gryffindor.graphic.sprite.Sprite;
-
-import java.util.HashMap;
 
 /** Bản đồ mô tả vị trí có thể đến và không thể đến trong map. Cần để A* có thể tìm đường. */
 public class MovableMap {
@@ -11,6 +11,11 @@ public class MovableMap {
   private Vector2D position;
   private Vector2D dimension;
 
+  /**
+   * Khởi tạo bản đồ có thể đi tới mọi vị trí.
+   * @param position vị trí của bản đồ
+   * @param dimension kích thước của bản đồ
+   */
   public MovableMap(Vector2D position, Vector2D dimension) {
     if (validateMap(position, dimension)) {
       this.position = position;
@@ -29,10 +34,10 @@ public class MovableMap {
   }
 
   /**
-   * Kiểm tra xem map có thỏa mãn là một mesh grid hay không
+   * Kiểm tra xem map có thỏa mãn là một mesh grid hay không.
    *
-   * @param position
-   * @param dimension
+   * @param position vị trí của bản đồ
+   * @param dimension kích thước của bản đồ
    * @return
    */
   private boolean validateMap(Vector2D position, Vector2D dimension) {
@@ -53,15 +58,13 @@ public class MovableMap {
     return cond1 && cond2;
   }
 
+  /**
+   * Thêm vị trí không thể đến trong map.
+   * @param position vị trí muốn thêm
+   */
   public void addObstacle(Vector2D position) {
     if (isInside(position)) {
       map.put(position, false);
-    }
-  }
-
-  public void addObstacles(Vector2D... positions) {
-    for (Vector2D position : positions) {
-      addObstacle(position);
     }
   }
 

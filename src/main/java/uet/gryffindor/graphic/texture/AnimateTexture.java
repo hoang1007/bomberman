@@ -1,14 +1,14 @@
 package uet.gryffindor.graphic.texture;
 
+import java.util.HashMap;
+
 import javafx.beans.value.ObservableValue;
 import javafx.scene.canvas.GraphicsContext;
-import uet.gryffindor.game.Game;
+
 import uet.gryffindor.game.base.GameObject;
 import uet.gryffindor.game.base.Vector2D;
 import uet.gryffindor.game.engine.Camera;
 import uet.gryffindor.graphic.sprite.Sprite;
-
-import java.util.HashMap;
 
 public class AnimateTexture extends Texture {
   private HashMap<String, Sprite[]> sprites;
@@ -16,6 +16,12 @@ public class AnimateTexture extends Texture {
   private double rate; // Frame per global frame
   private String type;
 
+  /**
+   * Khởi tạo animate texture.
+   * @param object game object
+   * @param rate tần số của animate frame (global frame per frame)
+   * @param sprites các sprites
+   */
   public AnimateTexture(GameObject object, double rate, HashMap<String, Sprite[]> sprites) {
     super(object);
     this.sprites = sprites;
@@ -65,7 +71,7 @@ public class AnimateTexture extends Texture {
   /**
    * Thời gian chạy một animation theo đơn vị global frame.
    * 
-   * @param type
+   * @param type sprites có trong animation
    * @return
    */
   public long getDuration(String type) {
@@ -83,8 +89,8 @@ public class AnimateTexture extends Texture {
 
     if (posInCanvas != null) {
       context.drawImage(sprite.getSpriteSheet().getImage(), 
-        sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight(), 
-        posInCanvas.x, posInCanvas.y, gameObject.dimension.x, gameObject.dimension.y);
+          sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight(), 
+          posInCanvas.x, posInCanvas.y, gameObject.dimension.x, gameObject.dimension.y);
     }
   }
 

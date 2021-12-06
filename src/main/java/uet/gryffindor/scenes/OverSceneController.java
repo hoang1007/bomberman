@@ -12,6 +12,9 @@ public class OverSceneController {
     SoundController.INSTANCE.getSound(SoundController.MENU_OVER).loop();
   }
 
+  /** 
+   * Thoát game.
+  */
   @FXML
   public void quitGame() {
     SoundController.INSTANCE.getSound(SoundController.CLICK).play();
@@ -19,6 +22,9 @@ public class OverSceneController {
     System.exit(0);
   }
 
+  /** 
+   * Trở về menu chính.
+  */
   @FXML
   public void backToMenu() {
     MainSceneController.game.destroy();
@@ -28,6 +34,9 @@ public class OverSceneController {
     GameApplication.setRoot("menu");
   }
 
+  /** 
+   * Chơi lại game.
+  */
   @FXML
   public void playAgain() {
     MainSceneController.game.destroy();

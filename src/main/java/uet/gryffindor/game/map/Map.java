@@ -41,6 +41,9 @@ public abstract class Map {
     }
   }
 
+  /**
+   * Khởi tạo tất cả các game object có trong map.
+   */
   public void init() {
     // Gọi phương thức khởi tạo thuộc tính
     // Bao gồm cả trường hợp kích thước của list thay đổi
@@ -91,11 +94,11 @@ public abstract class Map {
   }
 
   /**
-   * Tìm object với loại mong muốn theo position.
+   * Tìm object.
    * 
-   * @param position
+   * @param position vị trí của object
    * @param type     class của object
-   * @return object
+   * @return object. Null nếu không có tại vị trí đã chỉ định
    */
   public <T> T getObject(Vector2D position, Class<T> type) {
     for (GameObject object : this.objects) {
@@ -107,6 +110,12 @@ public abstract class Map {
     return null;
   }
 
+  /**
+   * Tìm object loại type đầu tiên có trong map.
+   * @param <T> kiểu dữ liệu của object
+   * @param type class của object
+   * @return object nếu có trong map. Null nếu không có.
+   */
   public <T extends GameObject> T getObject(Class<T> type) {
     for (GameObject obj : this.objects) {
       if (type.isInstance(obj)) {

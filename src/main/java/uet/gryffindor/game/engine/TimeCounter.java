@@ -16,17 +16,17 @@ public class TimeCounter extends BaseService {
       frameCount--;
 
       switch (taskType) {
-      case AFTER:
-        if (frameCount == 0) {
-          function.invoke();
-        }
-        break;
+        case AFTER:
+          if (frameCount == 0) {
+            function.invoke();
+          }
+          break;
 
-      case DURING:
-        function.invoke();
-        break;
-      default:
-        break;
+        case DURING:
+          function.invoke();
+          break;
+        default:
+          break;
       }
     } else {
       if (callBack != null) {

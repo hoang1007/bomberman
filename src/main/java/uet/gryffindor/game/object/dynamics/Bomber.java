@@ -149,7 +149,7 @@ public class Bomber extends DynamicObject {
     }
   }
 
-  public void dead() {
+  private void dead() {
     heart.set(heart.get() - 1);
     SoundController.INSTANCE.stopAll();
     SoundController.INSTANCE.getSound(SoundController.BOMBER_DIE).play(); // âm thanh chết.

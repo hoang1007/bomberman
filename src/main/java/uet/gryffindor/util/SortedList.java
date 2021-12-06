@@ -10,7 +10,7 @@ public class SortedList<T extends Comparable<T>> extends ArrayList<T> {
   /**
    * Thêm phần tử vào danh sách sắp xếp.
    *
-   * @param value
+   * @param value giá trị
    * @return boolean
    */
   @Override
@@ -50,7 +50,7 @@ public class SortedList<T extends Comparable<T>> extends ArrayList<T> {
   /**
    * Thêm phần tử vào cuối danh sách. Sử dụng khi không muốn thêm phần tử theo thứ tự.
    *
-   * @param value
+   * @param value giá trị
    * @return boolean
    */
   public boolean push(T value) {

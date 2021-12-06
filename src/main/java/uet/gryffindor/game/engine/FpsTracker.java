@@ -5,6 +5,10 @@ public class FpsTracker {
   private static long nanoTimePerFrame = 1_000_000_000 / fps;
   private static long lastFrameStamp = 0;
 
+  /**
+   * Đặt fps cho game.
+   * @param fps fps
+   */
   public static void setFps(int fps) {
     FpsTracker.fps = fps;
 
@@ -18,7 +22,7 @@ public class FpsTracker {
   /**
    * Xét xem mốc thời gian này có vượt qua thời gian của frame hiện tại hay không.
    *
-   * @param now
+   * @param now mốc thời giam tính bằng nanoseconds
    * @return true nếu mốc thời gian ở một frame mới
    */
   public static boolean isNextFrame(long now) {

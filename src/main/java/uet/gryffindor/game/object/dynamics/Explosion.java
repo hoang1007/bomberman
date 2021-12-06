@@ -12,38 +12,38 @@ import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.graphic.texture.AnimateTexture;
 
 public class Explosion extends DynamicObject {
-    public static long time = 300;// thời gian xuất hiện vụ nổ
+  public static long time = 300;// thời gian xuất hiện vụ nổ
 
-    private Explosion nextExplosion;
+  private Explosion nextExplosion;
 
-    @Override
-    public void start() {
-        HashMap<String, Sprite[]> anim = new HashMap<>();
-        anim.put("anim", Sprite.explosion);
-        texture = new AnimateTexture(this, 1, anim);
+  @Override
+  public void start() {
+    HashMap<String, Sprite[]> anim = new HashMap<>();
+    anim.put("anim", Sprite.explosion);
+    texture = new AnimateTexture(this, 1, anim);
 
-        TimeCounter.callAfter(this::destroy, time, TimeUnit.MILLISECONDS);
+    TimeCounter.callAfter(this::destroy, time, TimeUnit.MILLISECONDS);
+  }
+
+  @Override
+  public void update() {
+
+  }
+
+  @Override
+  public void onCollisionEnter(Collider that) {
+    if (that.gameObject instanceof Unmovable) {
+      for (var obj = this.nextExplosion; obj != null; obj = obj.nextExplosion) {
+        obj.destroy();
+      }
+
+      if (that.gameObject instanceof Wall) {
+        this.destroy();
+      }
     }
+  }
 
-    @Override
-    public void update() {
-
-    }
-
-    @Override
-    public void onCollisionEnter(Collider that) {
-        if (that.gameObject instanceof Unmovable) {
-            for (var obj = this.nextExplosion; obj != null; obj = obj.nextExplosion) {
-                obj.destroy();
-            }
-
-            if (that.gameObject instanceof Wall) {
-                this.destroy();
-            }
-        }
-    }
-
-    public void setNextExplosion(Explosion nextExplosion) {
-        this.nextExplosion = nextExplosion;
-    }
+  public void setNextExplosion(Explosion nextExplosion) {
+    this.nextExplosion = nextExplosion;
+  }
 }

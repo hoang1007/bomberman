@@ -7,18 +7,18 @@ import uet.gryffindor.graphic.texture.AnimateTexture;
 
 public class Magma extends Enemy {
 
-    @Override
-    public void start() {
-        this.texture = new AnimateTexture(this, 1, Sprite.magma);
-        super.orderedLayer = OrderedLayer.BACKGROUND;
-    }
+  @Override
+  public void start() {
+    this.texture = new AnimateTexture(this, 1, Sprite.magma);
+    super.orderedLayer = OrderedLayer.BACKGROUND;
+  }
 
-    @Override
-    public void update() {
-    }
+  @Override
+  public void update() {
+  }
 
-    @Override
-    public void onCollisionEnter(Collider that) {
-    }
+  @Override
+  public void onCollisionEnter(Collider that) {
+  }
 
 }

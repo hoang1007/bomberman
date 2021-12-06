@@ -2,11 +2,10 @@ package uet.gryffindor.scenes;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import uet.gryffindor.GameApplication;
 import uet.gryffindor.game.Manager;
 import uet.gryffindor.sound.SoundController;
-import javafx.scene.control.Label;
-
 
 public class WinSceneController {
 
@@ -22,6 +21,7 @@ public class WinSceneController {
     outScore.setText(Integer.toString(Manager.INSTANCE.getGame().getScore()));
   }
 
+  /** Trở về menu chính. */
   public void backToMenu() {
     MainSceneController.game.destroy();
     SoundController.INSTANCE.stopAll();
@@ -30,6 +30,7 @@ public class WinSceneController {
     GameApplication.setRoot("menu");
   }
 
+  /** Thoát game. */
   public void quitGame() {
     SoundController.INSTANCE.getSound(SoundController.CLICK).play();
     Platform.exit();

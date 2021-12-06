@@ -12,12 +12,23 @@ public class Camera {
   private GameObject focusObject;
   private Vector2D mapDims;
 
+  /**
+   * Khởi tạo camera.
+   * @param canvas khung canvas
+   * @param map bản đồ game
+   */
   public Camera(Canvas canvas, Map map) {
     this.position = Vector2D.zero();
     this.canvasDims = new Vector2D(canvas.getWidth(), canvas.getHeight());
     this.mapDims = new Vector2D(map.getWidth(), map.getHeight()).multiply(Sprite.DEFAULT_SIZE);
   }
 
+  /**
+   * Khởi tạo camera.
+   * @param position vị trí của camera
+   * @param canvas khung canvas
+   * @param map bản đồ game
+   */
   public Camera(Vector2D position, Canvas canvas, Map map) {
     this.position = position;
     this.canvasDims = new Vector2D(canvas.getWidth(), canvas.getHeight());
@@ -79,9 +90,9 @@ public class Camera {
 
   /**
    * Vị trí của object trong canvas.
-   * @param obj
+   * @param obj game object
    * @return vị trí của object trong canvas. 
-   * null nếu object không nằm trong canvas.
+   *        null nếu object không nằm trong canvas.
    */
   public Vector2D getRelativeposition(GameObject obj) {
     Vector2D posInCanvas = obj.position.subtract(fitFocus().position);

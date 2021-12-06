@@ -1,18 +1,23 @@
 package uet.gryffindor.game.movement;
 
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Queue;
+import java.util.Stack;
+
 import uet.gryffindor.game.base.Vector2D;
 import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.util.Geometry;
-
-import java.util.*;
 
 public class AStar {
   static class MoveStep implements Comparable<MoveStep> {
     public Vector2D position;
     public Direction direction;
     public MoveStep preStep;
-    private double hCost;
-    private double gCost;
+    private double hcost;
+    private double gcost;
     private double cost;
 
     public MoveStep(MoveStep preStep, Direction direction, Vector2D dstPos) {
@@ -20,10 +25,10 @@ public class AStar {
 
       this.direction = direction;
       this.preStep = preStep;
-      this.hCost = preStep.hCost + Geometry.manhattanDistance(position, preStep.position);
-      this.gCost = Geometry.manhattanDistance(position, dstPos);
+      this.hcost = preStep.hcost + Geometry.manhattanDistance(position, preStep.position);
+      this.gcost = Geometry.manhattanDistance(position, dstPos);
 
-      this.cost = this.hCost + this.gCost;
+      this.cost = this.hcost + this.gcost;
     }
 
     public MoveStep(Vector2D position, Direction direction, MoveStep preStep, double cost) {
@@ -57,15 +62,9 @@ public class AStar {
 
   /**
    * Chuyển list direction trên grid thành list position step.
-   *
-   * @param path
-   * @param src
-   * @param dst
-   * @param step
-   * @return
    */
   private static Queue<Vector2D> adjustPath(
-    Stack<MoveStep> path, Vector2D src, Vector2D dst, double step) {
+        Stack<MoveStep> path, Vector2D src, Vector2D dst, double step) {
     Queue<Vector2D> result = new LinkedList<>();
 
     while (!path.isEmpty()) {
@@ -119,8 +118,18 @@ public class AStar {
     return result;
   }
 
+  /**
+   * Tìm đường từ vị trí xuất phát đến đích theo thuật toán A*.
+   * @param canMove bản đồ {@link MovableMap}
+   * @param srcPosition vị trí xuất phát
+   * @param dstPosition vị trí đích
+   * @param step khoảng các giữa hai lần di chuyển
+   * @return hàng đợi các vị trí có khoảng cách theo 
+   *          {@link Geometry#manhattanDistance(Vector2D, Vector2D)} lớn nhất là {@param step}
+   *          lần lượt từ vị trí xuất phát đến đích
+   */
   public static Queue<Vector2D> findPath(
-    MovableMap canMove, Vector2D srcPosition, Vector2D dstPosition, double step) {
+        MovableMap canMove, Vector2D srcPosition, Vector2D dstPosition, double step) {
     Stack<MoveStep> path = new Stack<>();
     Queue<MoveStep> queue = new PriorityQueue<>();
     Map<Vector2D, MoveStep> evaluated = new HashMap<>();

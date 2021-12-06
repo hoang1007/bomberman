@@ -2,7 +2,7 @@ package uet.gryffindor.graphic.sprite;
 
 import java.util.HashMap;
 
-/** Class này lưu trữ thông tin pixel của 1 sprite */
+/** Class này lưu trữ thông tin pixel của 1 sprite. */
 public class Sprite {
   // dynamics
   public static HashMap<String, Sprite[]> player = new HashMap<>();
@@ -32,20 +32,21 @@ public class Sprite {
   public static Sprite tilesFloor;
 
   public static int DEFAULT_SIZE = 35; // width = height của 1 sprite
-  private double x; // tọa độ x so với ảnh cha
-  private double y; // tọa độ y so với ảnh cha
-  private double sWidth; // chiều rộng ảnh con
-  private double sHeight; // chiều cao ảnh con
+  private double xp; // tọa độ x so với ảnh cha
+  private double yp; // tọa độ y so với ảnh cha
+  private double width; // chiều rộng ảnh con
+  private double height; // chiều cao ảnh con
   private SpriteSheet spriteSheet; // lớp chứa ảnh cha
 
-  public Sprite(double _x, double _y, double sWidth, double sHeight, SpriteSheet _spriteSheet) {
-    this.x = _x;
-    this.y = _y;
-    this.sWidth = sWidth;
-    this.sHeight = sHeight;
-    this.spriteSheet = _spriteSheet;
+  private Sprite(double x, double y, double width, double height, SpriteSheet spriteSheet) {
+    this.xp = x;
+    this.yp = y;
+    this.width = width;
+    this.height = height;
+    this.spriteSheet = spriteSheet;
   }
 
+  /** Load các sprites của game. */
   public static void loadSprite() {
     loadPlayer();
     loadBlackPlayer();
@@ -99,46 +100,46 @@ public class Sprite {
   }
 
   private static void loadPlayer() {
-    Sprite[] player_right = new Sprite[6];
-    player_right[0] = new Sprite(114, 35, 14, 27, SpriteSheet.player);
-    player_right[1] = new Sprite(88, 35, 14, 27, SpriteSheet.player);
-    player_right[2] = new Sprite(68, 35, 14, 27, SpriteSheet.player);
-    player_right[3] = new Sprite(47, 35, 14, 27, SpriteSheet.player);
-    player_right[4] = new Sprite(27, 35, 14, 27, SpriteSheet.player);
-    player_right[5] = new Sprite(6, 35, 14, 27, SpriteSheet.player);
+    Sprite[] playerRright = new Sprite[6];
+    playerRright[0] = new Sprite(114, 35, 14, 27, SpriteSheet.player);
+    playerRright[1] = new Sprite(88, 35, 14, 27, SpriteSheet.player);
+    playerRright[2] = new Sprite(68, 35, 14, 27, SpriteSheet.player);
+    playerRright[3] = new Sprite(47, 35, 14, 27, SpriteSheet.player);
+    playerRright[4] = new Sprite(27, 35, 14, 27, SpriteSheet.player);
+    playerRright[5] = new Sprite(6, 35, 14, 27, SpriteSheet.player);
 
-    Sprite[] player_left = new Sprite[6];
-    player_left[0] = new Sprite(135, 98, 15, 26, SpriteSheet.player);
-    player_left[1] = new Sprite(87, 98, 15, 26, SpriteSheet.player);
-    player_left[2] = new Sprite(65, 98, 15, 26, SpriteSheet.player);
-    player_left[3] = new Sprite(46, 98, 15, 26, SpriteSheet.player);
-    player_left[4] = new Sprite(26, 98, 15, 26, SpriteSheet.player);
-    player_left[5] = new Sprite(6, 98, 15, 26, SpriteSheet.player);
+    Sprite[] playerLeft = new Sprite[6];
+    playerLeft[0] = new Sprite(135, 98, 15, 26, SpriteSheet.player);
+    playerLeft[1] = new Sprite(87, 98, 15, 26, SpriteSheet.player);
+    playerLeft[2] = new Sprite(65, 98, 15, 26, SpriteSheet.player);
+    playerLeft[3] = new Sprite(46, 98, 15, 26, SpriteSheet.player);
+    playerLeft[4] = new Sprite(26, 98, 15, 26, SpriteSheet.player);
+    playerLeft[5] = new Sprite(6, 98, 15, 26, SpriteSheet.player);
 
-    Sprite[] player_up = new Sprite[6];
-    player_up[0] = new Sprite(113, 69, 18, 25, SpriteSheet.player);
-    player_up[1] = new Sprite(88, 69, 18, 25, SpriteSheet.player);
-    player_up[2] = new Sprite(66, 69, 18, 25, SpriteSheet.player);
-    player_up[3] = new Sprite(46, 69, 18, 25, SpriteSheet.player);
-    player_up[4] = new Sprite(26, 69, 18, 25, SpriteSheet.player);
-    player_up[5] = new Sprite(5, 69, 18, 25, SpriteSheet.player);
+    Sprite[] playerUp = new Sprite[6];
+    playerUp[0] = new Sprite(113, 69, 18, 25, SpriteSheet.player);
+    playerUp[1] = new Sprite(88, 69, 18, 25, SpriteSheet.player);
+    playerUp[2] = new Sprite(66, 69, 18, 25, SpriteSheet.player);
+    playerUp[3] = new Sprite(46, 69, 18, 25, SpriteSheet.player);
+    playerUp[4] = new Sprite(26, 69, 18, 25, SpriteSheet.player);
+    playerUp[5] = new Sprite(5, 69, 18, 25, SpriteSheet.player);
 
-    Sprite[] player_down = new Sprite[6];
-    player_down[0] = new Sprite(113, 4, 18, 28, SpriteSheet.player);
-    player_down[1] = new Sprite(88, 4, 18, 28, SpriteSheet.player);
-    player_down[2] = new Sprite(67, 4, 18, 28, SpriteSheet.player);
-    player_down[3] = new Sprite(46, 4, 18, 28, SpriteSheet.player);
-    player_down[4] = new Sprite(25, 4, 18, 28, SpriteSheet.player);
-    player_down[5] = new Sprite(4, 4, 18, 28, SpriteSheet.player);
+    Sprite[] playerDown = new Sprite[6];
+    playerDown[0] = new Sprite(113, 4, 18, 28, SpriteSheet.player);
+    playerDown[1] = new Sprite(88, 4, 18, 28, SpriteSheet.player);
+    playerDown[2] = new Sprite(67, 4, 18, 28, SpriteSheet.player);
+    playerDown[3] = new Sprite(46, 4, 18, 28, SpriteSheet.player);
+    playerDown[4] = new Sprite(25, 4, 18, 28, SpriteSheet.player);
+    playerDown[5] = new Sprite(4, 4, 18, 28, SpriteSheet.player);
 
-    Sprite[] player_dead = new Sprite[1];
-    player_dead[0] = new Sprite(2, 135, 18, 28, SpriteSheet.player);
+    Sprite[] playerDead = new Sprite[1];
+    playerDead[0] = new Sprite(2, 135, 18, 28, SpriteSheet.player);
 
-    player.put("up", player_up);
-    player.put("down", player_down);
-    player.put("left", player_left);
-    player.put("right", player_right);
-    player.put("dead", player_dead);
+    player.put("up", playerUp);
+    player.put("down", playerDown);
+    player.put("left", playerLeft);
+    player.put("right", playerRright);
+    player.put("dead", playerDead);
   }
 
   private static void loadBomb() {
@@ -203,7 +204,7 @@ public class Sprite {
 
   }
 
-  public static void loadExplosion() {
+  private static void loadExplosion() {
     explosion = new Sprite[12];
     for (int i = 0; i <= 5; i++) {
       explosion[i] = new Sprite(i * 330, 0, 320, 350, SpriteSheet.explosion);
@@ -211,7 +212,7 @@ public class Sprite {
     }
   }
 
-  public static void loadItems() {
+  private static void loadItems() {
     explosionPotion = new Sprite[8];
     for (int i = 0; i <= 7; i++) {
       explosionPotion[i] = new Sprite(i * 132, 0, 132, 174, SpriteSheet.explosionPotion);
@@ -233,7 +234,7 @@ public class Sprite {
     }
   }
 
-  public static void loadObstacle() {
+  private static void loadObstacle() {
     obstacle = new Sprite[4];
     obstacle[0] = new Sprite(17, 28, 112, 146, SpriteSheet.obstacle);
     obstacle[1] = new Sprite(145, 28, 112, 146, SpriteSheet.obstacle);
@@ -258,7 +259,7 @@ public class Sprite {
     tilesFloor = new Sprite(333, 196, 140, 141, SpriteSheet.tiles);
   }
 
-  public static void loadPortal() {
+  private static void loadPortal() {
     portal = new Sprite[6];
     // portal[0] = new Sprite(0, 0, 150, 320, SpriteSheet.portal);
     // portal[1] = new Sprite(137, 0, 150, 320, SpriteSheet.portal);
@@ -277,19 +278,19 @@ public class Sprite {
   }
 
   public double getX() {
-    return x;
+    return xp;
   }
 
   public double getY() {
-    return y;
+    return yp;
   }
 
   public double getWidth() {
-    return sWidth;
+    return width;
   }
 
   public double getHeight() {
-    return sHeight;
+    return height;
   }
 
   public SpriteSheet getSpriteSheet() {

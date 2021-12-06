@@ -30,7 +30,7 @@ public class Brick extends StaticObject implements Unmovable {
   public void update() {
   }
 
-  public Item getItem() {
+  private Item getItem() {
     Item item = null;
     int type = new Random().nextInt(10);
 

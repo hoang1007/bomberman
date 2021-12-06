@@ -54,13 +54,13 @@ public class Collider {
     Vector2D botRight2 = topLeft2.add(that.gameObject.dimension);
 
     // tìm tọa độ 4 đỉnh của hình chữ nhật giao
-    double xLeft = Math.max(topLeft1.x, topLeft2.x);
-    double xRight = Math.min(botRight1.x, botRight2.x);
-    double yTop = Math.max(topLeft1.y, topLeft2.y);
-    double yBottom = Math.min(botRight1.y, botRight2.y);
+    double xleft = Math.max(topLeft1.x, topLeft2.x);
+    double xright = Math.min(botRight1.x, botRight2.x);
+    double ytop = Math.max(topLeft1.y, topLeft2.y);
+    double ybottom = Math.min(botRight1.y, botRight2.y);
 
-    if (xLeft < xRight && yTop < yBottom) {
-      return (xRight - xLeft) * (yBottom - yTop);
+    if (xleft < xright && ytop < ybottom) {
+      return (xright - xleft) * (ybottom - ytop);
     }
 
     return 0;
@@ -101,9 +101,9 @@ public class Collider {
   }
 
   /**
-   * Tìm tất cả các vị trí lưới theo vị trí cho trước
+   * Tìm tất cả các ô mà game object nằm trên đó.
    * 
-   * @param object
+   * @param object game object
    * @return list grid position
    */
   private static List<Vector2D> getGridPositions(GameObject obj) {

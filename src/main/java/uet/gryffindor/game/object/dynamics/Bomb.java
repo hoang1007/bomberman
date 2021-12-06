@@ -15,50 +15,50 @@ import uet.gryffindor.graphic.texture.AnimateTexture;
 import uet.gryffindor.sound.SoundController;
 
 public class Bomb extends DynamicObject implements Unmovable {
-    public static long time = 2000; // giới hạn thời gian
-    public static int explosionRadius = 1; // bán kính vụ nổ
+  public static long time = 2000; // giới hạn thời gian
+  public static int explosionRadius = 1; // bán kính vụ nổ
 
-    @Override
-    public void start() {
-        HashMap<String, Sprite[]> anim = new HashMap<>();
-        anim.put("anim", Sprite.bomb);
-        texture = new AnimateTexture(this, 2, anim);
+  @Override
+  public void start() {
+    HashMap<String, Sprite[]> anim = new HashMap<>();
+    anim.put("anim", Sprite.bomb);
+    texture = new AnimateTexture(this, 2, anim);
 
-        orderedLayer = OrderedLayer.MIDGROUND;
+    orderedLayer = OrderedLayer.MIDGROUND;
 
-        TimeCounter.callAfter(this::explore, time, TimeUnit.MILLISECONDS);
+    TimeCounter.callAfter(this::explore, time, TimeUnit.MILLISECONDS);
+  }
+
+  @Override
+  public void update() {
+
+  }
+
+  /** hiệu ứng nổ. */
+  public void explore() {
+    // Âm thanh cho vụ nổ.
+    SoundController.INSTANCE.playBrokenSound();
+    // thêm vụ nổ ở trung tâm.
+    GameObject.instantiate(Explosion.class, this.position);
+    // thêm vụ nổ các hướng
+    for (int i = 0; i < 4; i++) {
+      Explosion next = null;
+      for (int j = explosionRadius; j > 0; j--) {
+        Vector2D neighbor = Direction.valueOf(i).forward(this.position, Sprite.DEFAULT_SIZE * j);
+        Explosion current = (Explosion) GameObject.instantiate(Explosion.class, neighbor);
+        current.setNextExplosion(next);
+        next = current;
+      }
     }
 
-    @Override
-    public void update() {
+    this.destroy();
+  }
 
-    }
+  public static void setExploredRadius(int radius) {
+    explosionRadius = radius;
+  }
 
-    /** hiệu ứng nổ. */
-    public void explore() {
-        // Âm thanh cho vụ nổ.
-        SoundController.INSTANCE.playBrokenSound();
-        // thêm vụ nổ ở trung tâm.
-        GameObject.instantiate(Explosion.class, this.position);
-        // thêm vụ nổ các hướng
-        for (int i = 0; i < 4; i++) {
-            Explosion next = null;
-            for (int j = explosionRadius; j > 0; j--) {
-                Vector2D neighbor = Direction.valueOf(i).forward(this.position, Sprite.DEFAULT_SIZE * j);
-                Explosion current = (Explosion) GameObject.instantiate(Explosion.class, neighbor);
-                current.setNextExplosion(next);
-                next = current;
-            }
-        }
-
-        this.destroy();
-    }
-
-    public static void setExploredRadius(int radius) {
-        explosionRadius = radius;
-    }
-
-    public static int getExplosionRadius() {
-        return explosionRadius;
-    }
+  public static int getExplosionRadius() {
+    return explosionRadius;
+  }
 }

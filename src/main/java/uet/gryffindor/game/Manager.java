@@ -16,7 +16,7 @@ public class Manager {
   private Manager() {
     try {
       String raw = Files.readString(Paths.get(
-        GameApplication.class.getResource("score.txt").toURI()
+          GameApplication.class.getResource("score.txt").toURI()
       ));
 
       highestScore = Integer.parseInt(raw);
@@ -40,8 +40,9 @@ public class Manager {
   }
 
   /**
-   * Cập nhật high score.
-   * @param score
+   * Cập nhật high score. Nếu score lớn hơn highest score,
+   * highest score sẽ được cập nhật.
+   * @param score điểm
    */
   public void scoreLogging(int score) {
     if (score > highestScore) {
@@ -49,7 +50,7 @@ public class Manager {
 
       try {
         Files.write(Paths.get(
-          GameApplication.class.getResource("score.txt").toURI()
+            GameApplication.class.getResource("score.txt").toURI()
         ), Integer.toString(highestScore).getBytes());
       } catch (IOException | URISyntaxException e) {
         e.printStackTrace();

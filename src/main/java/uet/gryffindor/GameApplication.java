@@ -1,13 +1,14 @@
 package uet.gryffindor;
 
+import java.io.IOException;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import uet.gryffindor.sound.SoundController;
 
-import java.io.IOException;
+import uet.gryffindor.sound.SoundController;
 
 /** JavaFX App. */
 public class GameApplication extends Application {
@@ -15,22 +16,23 @@ public class GameApplication extends Application {
 
   @Override
   public void start(Stage stage) throws IOException {
-    //scene = new Scene(loadFXML("WinScene"));
-    scene = new Scene(loadFXML("menu"));
+    // scene = new Scene(loadFXML("WinScene"));
+    scene = new Scene(loadFxml("menu"));
     SoundController.INSTANCE.getSound(SoundController.MENU).loop();
     stage.setScene(scene);
     stage.show();
   }
 
+  /** Chuyển scene. */
   public static void setRoot(String fxml) {
     try {
-      scene.setRoot(loadFXML(fxml));
+      scene.setRoot(loadFxml(fxml));
     } catch (IOException e) {
       System.out.println("Can not load resource from fxml: " + e.getMessage());
     }
   }
 
-  private static Parent loadFXML(String fxml) throws IOException {
+  private static Parent loadFxml(String fxml) throws IOException {
     return FXMLLoader.load(GameApplication.class.getResource(fxml + ".fxml"));
   }
 

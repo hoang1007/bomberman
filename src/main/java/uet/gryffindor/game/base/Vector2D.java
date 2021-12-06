@@ -1,6 +1,6 @@
 package uet.gryffindor.game.base;
 
-/** Lớp vector hỗ trợ các phép toán trên vector */
+/** Lớp vector hỗ trợ các phép toán trên vector. */
 public class Vector2D {
   public double x;
   public double y;
@@ -40,6 +40,21 @@ public class Vector2D {
     return new Vector2D(this.x * that.x, this.y * that.y);
   }
 
+  /**
+   * Phép nhân vector với một số.
+   * @param factor số hạng nhân
+   * @return vector mới là kết quả của phép nhân
+   */
+  public Vector2D multiply(double factor) {
+    return new Vector2D(this.x * factor, this.y * factor);
+  }
+
+  /**
+   * Phép chia hai vector.
+   * @param that vector bị chia
+   * @return vector mới là kết quả của phép chia.
+   * @throws ArithmeticException khi chia cho vector có thành phần 0
+   */
   public Vector2D divide(Vector2D that) {
     if (that.x == 0 || that.y == 0) {
       throw new ArithmeticException("Division by zero");
@@ -48,10 +63,10 @@ public class Vector2D {
     return new Vector2D(this.x / that.x, this.y / that.y);
   }
 
-  public Vector2D multiply(double factor) {
-    return new Vector2D(this.x * factor, this.y * factor);
-  }
-
+  /**
+   * So sánh hai vector.
+   * @return true nếu có các thành phần bằng nhau 
+   */
   public boolean equals(Object o) {
     if (o instanceof Vector2D) {
       Vector2D that = (Vector2D) o;

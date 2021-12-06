@@ -27,6 +27,10 @@ public class Animator {
     this.sprites = sprites;
   }
 
+  /**
+   * Sprite tiếp theo của animation.
+   * @return
+   */
   public Sprite getSprite() {
     int id = (int) (current++ / rate);
     if (id >= this.sprites.length) {

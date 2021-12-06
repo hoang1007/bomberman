@@ -19,6 +19,7 @@ public class StartSceneController {
   @FXML
   private HBox selectionBar;
 
+  /** This method is called by fxml. */
   public void initialize() {
     selectionBar.managedProperty().bind(selectionBar.visibleProperty());
 
@@ -37,6 +38,9 @@ public class StartSceneController {
     SoundController.INSTANCE.getSound(SoundController.PLAYGAME).loop();
   }
 
+  /** 
+   * Chuyển sang scene high score view.
+  */
   @FXML
   public void hightScore() {
     SoundController.INSTANCE.getSound(SoundController.CLICK).play();
@@ -47,21 +51,21 @@ public class StartSceneController {
   }
 
   @FXML
-  public void selectionBomber1() {
+  private void selectionBomber1() {
     SoundController.INSTANCE.getSound(SoundController.CLICK).play();
     config.setBomberId(1);
     selectionBar.setVisible(false);
   }
 
   @FXML
-  public void selectionBomber2 () {
+  private void selectionBomber2() {
     SoundController.INSTANCE.getSound(SoundController.CLICK).play();
     config.setBomberId(2);
     selectionBar.setVisible(false);
   }
 
   @FXML
-  public void zoomInOnHover(MouseEvent e) {
+  private void zoomInOnHover(MouseEvent e) {
     ImageView view = (ImageView) e.getSource();
 
     double width = view.getFitWidth();
@@ -72,7 +76,7 @@ public class StartSceneController {
   }
 
   @FXML
-  public void zoomOutOnHover(MouseEvent e) {
+  private void zoomOutOnHover(MouseEvent e) {
     ImageView view = (ImageView) e.getSource();
 
     double width = view.getFitWidth();
@@ -83,7 +87,7 @@ public class StartSceneController {
   }
 
   @FXML
-  public void quitGame() {
+  private void quitGame() {
     SoundController.INSTANCE.getSound(SoundController.CLICK).play();
     Platform.exit();
     System.exit(0);

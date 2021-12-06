@@ -26,7 +26,7 @@ public abstract class GameObject implements Comparable<GameObject> {
   }
 
   /**
-   * Khởi tạo game object thông qua class
+   * Khởi tạo game object.
    *
    * @param clazz class của game object
    */
@@ -51,7 +51,7 @@ public abstract class GameObject implements Comparable<GameObject> {
   }
 
   /**
-   * Khởi tạo game object thông qua class
+   * Khởi tạo game object.
    *
    * @param clazz    class của game object
    * @param position vị trí của game object

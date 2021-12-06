@@ -15,6 +15,11 @@ public enum Direction {
     this.name = name;
   }
 
+  /**
+   * Direction từ thứ tự của hằng số liệt kê.
+   * @param ordinal thứ tự của direction
+   * @return direction
+   */
   public static Direction valueOf(int ordinal) {
     switch (ordinal) {
       case 0:
@@ -30,6 +35,12 @@ public enum Direction {
     }
   }
 
+  /**
+   * Vị trí tiếp theo theo hướng.
+   * @param position vị trí ban đầu
+   * @param step bước di chuyển
+   * @return vị trí tiếp theo sau khi di chuyển theo hướng
+   */
   public Vector2D forward(Vector2D position, double step) {
     Vector2D result = position.clone();
 

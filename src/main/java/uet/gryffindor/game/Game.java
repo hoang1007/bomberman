@@ -1,24 +1,26 @@
 package uet.gryffindor.game;
 
+import java.util.List;
+
 import javafx.animation.AnimationTimer;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
+
 import uet.gryffindor.game.base.GameObject;
 import uet.gryffindor.game.engine.BaseService;
 import uet.gryffindor.game.engine.Camera;
 import uet.gryffindor.game.engine.Collider;
 import uet.gryffindor.game.engine.FpsTracker;
+import uet.gryffindor.game.map.Frozen;
 import uet.gryffindor.game.map.LargeDungeon;
+import uet.gryffindor.game.map.Map;
 import uet.gryffindor.game.map.TinyDungeon;
 import uet.gryffindor.game.object.dynamics.Bomber;
-import uet.gryffindor.game.map.Frozen;
-import uet.gryffindor.game.map.Map;
 import uet.gryffindor.graphic.texture.Texture;
-
-import java.util.List;
+import uet.gryffindor.util.VoidFunction;
 
 public class Game {
   private AnimationTimer timer;
@@ -29,10 +31,12 @@ public class Game {
   public static boolean pause = false;
 
   private IntegerProperty score;
-  private Label scoreLabel;
-  private Label levelLabel;
-  private Label heartLabel;
+  private VoidFunction displayInfo;
 
+  /**
+   * Khởi tạo game.
+   * @param canvas khung canvas
+   */
   public Game(Canvas canvas) {
     FpsTracker.setFps(30);
     context = canvas.getGraphicsContext2D();
@@ -53,6 +57,11 @@ public class Game {
     };
   }
 
+  /**
+   * Khởi tạo game.
+   * @param canvas khung canvas
+   * @param config config của game
+   */
   public Game(Canvas canvas, Config config) {
     FpsTracker.setFps(30);
     context = canvas.getGraphicsContext2D();
@@ -76,6 +85,7 @@ public class Game {
     };
   }
 
+  /** Bắt đầu game loop. */
   public void start() {
     if (playingMap == null) {
       this.setMap(new TinyDungeon());
@@ -87,7 +97,7 @@ public class Game {
     BaseService.clear();
     playingMap.init();
     timer.start();
-    refeshDisplayInfo();
+    displayInfo.invoke();
   }
 
   private void update() {
@@ -122,7 +132,7 @@ public class Game {
             });
   }
 
-  public void setMap(Map map) {
+  private void setMap(Map map) {
     playingMap = map;
     camera = new Camera(context.getCanvas(), map);
     GameObject.setMap(map);
@@ -142,7 +152,7 @@ public class Game {
     return this.timer;
   }
 
-  public Map nextLevel() {
+  private Map nextLevel() {
     int level = (playingMap != null ? playingMap.getLevel() : 1) + 1;
     Map nextMap = null;
     switch (level) {
@@ -155,6 +165,8 @@ public class Game {
       case 3:
         nextMap = new Frozen();
         break;
+      default:
+        nextMap = new TinyDungeon();
     }
 
     return nextMap;
@@ -181,20 +193,17 @@ public class Game {
     return score.get();
   }
 
-  public void bindDisplayInfo(Label score, Label level, Label heart) {
-    this.scoreLabel = score;
-    this.levelLabel = level;
-    this.heartLabel = heart;
-  }
-
-  public void refeshDisplayInfo() {
-    try {
-      scoreLabel.textProperty().bind(score.asString());
-      levelLabel.setText(Integer.toString(playingMap.getLevel()));
-      heartLabel.textProperty().bind(
-          playingMap.getObject(Bomber.class).getHeartProperty().asString());
-    } catch (NullPointerException e) {
-      System.out.println("Labels must not be null.");
-    }
+  /** Liên kết các thông tin muốn hiển thị. */
+  public void bindDisplayInfo(Label scoreLabel, Label levelLabel, Label heartLabel) {
+    this.displayInfo = () -> {
+      try {
+        scoreLabel.textProperty().bind(score.asString());
+        levelLabel.setText(Integer.toString(playingMap.getLevel()));
+        heartLabel.textProperty().bind(
+            playingMap.getObject(Bomber.class).getHeartProperty().asString());
+      } catch (NullPointerException e) {
+        System.out.println("Labels must not be null.");
+      }
+    };
   }
 }

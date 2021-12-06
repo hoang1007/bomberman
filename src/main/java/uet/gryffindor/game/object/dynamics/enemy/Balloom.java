@@ -12,40 +12,41 @@ import uet.gryffindor.graphic.texture.AnimateTexture;
 import uet.gryffindor.sound.SoundController;
 
 public class Balloom extends Enemy {
-    private Direction direction = Direction.UP;
-    private double speed = 2.0;
-    private Random random = new Random();
+  private Direction direction = Direction.UP;
+  private double speed = 2.0;
+  private Random random = new Random();
 
-    @Override
-    public void start() {
-        this.texture = new AnimateTexture(this, 6, Sprite.balloom);
+  @Override
+  public void start() {
+    this.texture = new AnimateTexture(this, 6, Sprite.balloom);
+  }
+
+  @Override
+  public void update() {
+    move();
+  }
+
+  @Override
+  public void onCollisionEnter(Collider that) {
+    if (that.gameObject instanceof Unmovable || that.gameObject instanceof Magma) {
+      this.position = this.position.smooth(Sprite.DEFAULT_SIZE, 1);
+
+      int dirCode = 0;
+      do {
+        dirCode = random.nextInt(4);
+      } while (dirCode == direction.ordinal());
+
+      direction = Direction.valueOf(dirCode);
+    } else if (that.gameObject instanceof Explosion) {
+      SoundController.INSTANCE.getSound(
+          SoundController.ENEMY_DIE).play(); // âm thanh khi enemy chết.
+      Manager.INSTANCE.getGame().addScore(5);
+      this.destroy();
     }
+  }
 
-    @Override
-    public void update() {
-        move();
-    }
-
-    @Override
-    public void onCollisionEnter(Collider that) {
-        if (that.gameObject instanceof Unmovable || that.gameObject instanceof Magma) {
-            this.position = this.position.smooth(Sprite.DEFAULT_SIZE, 1);
-
-            int dirCode = 0;
-            do {
-                dirCode = random.nextInt(4);
-            } while (dirCode == direction.ordinal());
-
-            direction = Direction.valueOf(dirCode);
-        } else if (that.gameObject instanceof Explosion) {
-            SoundController.INSTANCE.getSound(SoundController.ENEMY_DIE).play(); // âm thanh khi enemy chết.
-            Manager.INSTANCE.getGame().addScore(5);
-            this.destroy();
-        }
-    }
-
-    private void move() {
-        position = direction.forward(position, speed);
-        texture.changeTo(direction.toString());
-    }
+  private void move() {
+    position = direction.forward(position, speed);
+    texture.changeTo(direction.toString());
+  }
 }
