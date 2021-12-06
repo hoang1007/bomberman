@@ -40,7 +40,7 @@ public class Bomb extends DynamicObject {
     /** hiệu ứng nổ. */
     public void explore() {
         // Âm thanh cho vụ nổ.
-        SoundController.INSTANCE.getSound(SoundController.BOMB_BROKEN).play();
+        SoundController.INSTANCE.playBrokenSound();
         // thêm vụ nổ ở trung tâm.
         GameObject.instantiate(Explosion.class, this.position);
         // thêm vụ nổ các hướng

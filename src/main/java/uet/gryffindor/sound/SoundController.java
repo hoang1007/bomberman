@@ -26,6 +26,10 @@ public class SoundController {
       loadAll();
   }
 
+  public void playBrokenSound() {
+    new SoundInGame(BOMB_BROKEN).play();
+  }
+
   public void loadAll() {
     soundList.put(MENU, new SoundInGame(MENU));
     soundList.put(MENU_OVER, new SoundInGame(MENU_OVER));

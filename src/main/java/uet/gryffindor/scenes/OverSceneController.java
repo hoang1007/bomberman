@@ -8,7 +8,10 @@ import uet.gryffindor.sound.SoundController;
 public class OverSceneController {
   @FXML
   public void initialize() {
-    MainSceneController.game.destroy();
+    if(MainSceneController.score > HighScoreSceneController.highestScore) {
+      HighScoreSceneController.highestScore = MainSceneController.score;
+    }
+
     SoundController.INSTANCE.stopAll();
     SoundController.INSTANCE.getSound(SoundController.MENU_OVER).loop();
   }
@@ -22,6 +25,7 @@ public class OverSceneController {
 
   @FXML
   public void backToMenu() {
+    MainSceneController.game.destroy();
     SoundController.INSTANCE.stopAll();
     SoundController.INSTANCE.getSound(SoundController.CLICK).play();
     SoundController.INSTANCE.getSound(SoundController.MENU).loop();
@@ -30,6 +34,7 @@ public class OverSceneController {
 
   @FXML
   public void playAgain() {
+    MainSceneController.game.destroy();
     SoundController.INSTANCE.stopAll();
     SoundController.INSTANCE.getSound(SoundController.CLICK).play();
     SoundController.INSTANCE.getSound(SoundController.PLAYGAME).loop();
