@@ -163,4 +163,8 @@ public class Game {
     timer.stop();
     this.playingMap = null;
   }
+
+  public void stopTime() {
+    timer.stop();
+  }
 }

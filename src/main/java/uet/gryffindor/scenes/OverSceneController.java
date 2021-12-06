@@ -35,6 +35,7 @@ public class OverSceneController {
   @FXML
   public void playAgain() {
     MainSceneController.game.destroy();
+    MainSceneController.score = 0;
     SoundController.INSTANCE.stopAll();
     SoundController.INSTANCE.getSound(SoundController.CLICK).play();
     SoundController.INSTANCE.getSound(SoundController.PLAYGAME).loop();

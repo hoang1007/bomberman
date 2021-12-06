@@ -167,11 +167,12 @@ public class Bomber extends DynamicObject {
       }
       ((Item) that.gameObject).startedCounting();
       that.gameObject.destroy();
-    } else if (that.gameObject instanceof Enemy) {
-      dead();
-    } else if (that.gameObject instanceof Explosion) {
-      dead();
     }
+//    else if (that.gameObject instanceof Enemy) {
+//      dead();
+//    } else if (that.gameObject instanceof Explosion) {
+//      dead();
+//    }
   }
 
   public void dead() {
