@@ -88,7 +88,7 @@ public class Game {
   /** Bắt đầu game loop. */
   public void start() {
     if (playingMap == null) {
-      this.setMap(new TinyDungeon());
+      this.setMap(new LargeDungeon());
     } else {
       this.setMap(nextLevel());
     }
