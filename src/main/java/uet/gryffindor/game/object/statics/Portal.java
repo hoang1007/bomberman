@@ -28,11 +28,16 @@ public class Portal extends StaticObject {
   }
 
   @Override
-  public void onCollisionEnter(Collider that) {
+  public void onCollisionStay(Collider that) {
     if (that.gameObject instanceof Bomber) {
-      System.out.println("2s remaining...");
-      TimeCounter.callAfter(this::nextLevel, 2, TimeUnit.SECONDS);
-      Game.pause = true;
+      double overlapArea = that.getOverlapArea(this.collider);
+      double portalArea = this.dimension.x * this.dimension.y;
+
+      if (overlapArea > 0.8 * portalArea) {
+        System.out.println("2s remaining...");
+        TimeCounter.callAfter(this::nextLevel, 2, TimeUnit.SECONDS);
+        Game.pause = true;
+      }
     }
   }
 
