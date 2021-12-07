@@ -20,6 +20,7 @@ public class GameApplication extends Application {
     scene = new Scene(loadFxml("menu"));
     SoundController.INSTANCE.getSound(SoundController.MENU).loop();
     stage.setScene(scene);
+    stage.setResizable(false);
     stage.show();
   }
 
