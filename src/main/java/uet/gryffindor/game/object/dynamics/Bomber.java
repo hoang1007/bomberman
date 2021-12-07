@@ -9,7 +9,6 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import uet.gryffindor.GameApplication;
-import uet.gryffindor.game.Game;
 import uet.gryffindor.game.Manager;
 import uet.gryffindor.game.base.GameObject;
 import uet.gryffindor.game.base.OrderedLayer;
@@ -32,6 +31,7 @@ public class Bomber extends DynamicObject {
   private Vector2D firstPosition;
   private Vector2D oldPosition;
   private boolean shieldAvail = true;
+  private boolean isDead = false;
 
   private int numberOfBombs;
   private int bombDropped;
@@ -59,7 +59,9 @@ public class Bomber extends DynamicObject {
     blockedBy = new ArrayList<>();
 
     shieldAvail = true;
-    TimeCounter.callAfter(() -> shieldAvail = false, 2, TimeUnit.SECONDS);
+    TimeCounter.callAfter(() -> {
+      shieldAvail = false;
+    }, 2, TimeUnit.SECONDS);
   }
 
   @Override
@@ -75,7 +77,7 @@ public class Bomber extends DynamicObject {
       bombDropped = 0;
     }
 
-    if (blockedBy.isEmpty()) {
+    if (blockedBy.isEmpty() && !isDead) {
       oldPosition = position.clone();
       move();
     }
@@ -122,9 +124,12 @@ public class Bomber extends DynamicObject {
 
   @Override
   public void onCollisionEnter(Collider that) {
+    double bomberSize = this.dimension.x * this.dimension.y;
+    double overlapArea = this.collider.getOverlapArea(that);
+
     if (that.gameObject instanceof Unmovable) {
       // ngoại lệ đặt bomb
-      if (this.collider.getOverlapArea(that) < .2 * this.dimension.x * this.dimension.y) {
+      if (overlapArea < .2 * bomberSize) {
         // nếu bomber va chạm với vật thể tĩnh
         // khôi phục vị trí trước khi va chạm
         position = oldPosition.smooth(this.dimension.x, 0.3);
@@ -132,11 +137,11 @@ public class Bomber extends DynamicObject {
         blockedBy.add(that.gameObject);
       }
     } else if (that.gameObject instanceof Enemy) {
-      if (!shieldAvail) {
+      if (!shieldAvail && overlapArea > .1 * bomberSize) {
         dead();
       }
     } else if (that.gameObject instanceof Explosion) {
-      if (!shieldAvail) {
+      if (!shieldAvail && overlapArea > .1 * bomberSize) {
         dead();
       }
     }
@@ -153,7 +158,8 @@ public class Bomber extends DynamicObject {
     heart.set(heart.get() - 1);
     SoundController.INSTANCE.stopAll();
     SoundController.INSTANCE.getSound(SoundController.BOMBER_DIE).play(); // âm thanh chết.
-    Game.pause = true;
+    isDead = true;
+    this.collider.enabled(false);
     texture.changeTo("dead");
 
     if (heart.get() > 0) {
@@ -161,7 +167,8 @@ public class Bomber extends DynamicObject {
         SoundController.INSTANCE.stopAll();
         SoundController.INSTANCE.getSound(SoundController.PLAYGAME).play(); // âm thanh chết.
         this.position.setValue(firstPosition);
-        Game.pause = false;
+        isDead = false;
+        collider.enabled(true);
       }, 1, TimeUnit.SECONDS);
       return;
     }

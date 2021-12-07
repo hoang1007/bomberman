@@ -2,6 +2,8 @@ package uet.gryffindor.graphic.sprite;
 
 import java.util.HashMap;
 
+import uet.gryffindor.util.ArrayUtils;
+
 /** Class này lưu trữ thông tin pixel của 1 sprite. */
 public class Sprite {
   // dynamics
@@ -150,6 +152,13 @@ public class Sprite {
   }
 
   private static void loadEnemy() {
+    Sprite[] enemyDie = new Sprite[] {
+      new Sprite(53, 186, 14, 14, SpriteSheet.enemy),
+      new Sprite(67, 186, 10, 14, SpriteSheet.enemy),
+      new Sprite(79, 186, 8, 14, SpriteSheet.enemy),
+      new Sprite(87, 187, 10, 13, SpriteSheet.enemy)
+    };
+
     // Monster
     Sprite[] balloomSprites = new Sprite[7];
     balloomSprites[0] = new Sprite(16, 5, 16, 16, SpriteSheet.enemy);
@@ -164,6 +173,7 @@ public class Sprite {
     balloom.put("down", new Sprite[] { balloomSprites[2], balloomSprites[4] });
     balloom.put("left", new Sprite[] { balloomSprites[0], balloomSprites[1], balloomSprites[2] });
     balloom.put("right", new Sprite[] { balloomSprites[4], balloomSprites[5], balloomSprites[6] });
+    balloom.put("dead", ArrayUtils.concat(new Sprite[] { balloomSprites[3] }, enemyDie));
 
     Sprite[] onealSprites = new Sprite[8];
     onealSprites[0] = new Sprite(5, 88, 16, 16, SpriteSheet.enemy);
@@ -179,6 +189,8 @@ public class Sprite {
     oneal.put("down", new Sprite[] { onealSprites[2], onealSprites[5] });
     oneal.put("left", new Sprite[] { onealSprites[0], onealSprites[1], onealSprites[2] });
     oneal.put("right", new Sprite[] { onealSprites[5], onealSprites[6], onealSprites[7] });
+    oneal.put("attack", new Sprite[] { onealSprites[3], onealSprites[4] });
+    oneal.put("dead", ArrayUtils.concat(new Sprite[] { onealSprites[3] }, enemyDie));
 
     Sprite[] circleEnemySprite = new Sprite[7];
     circleEnemySprite[0] = new Sprite(16, 47, 16, 16, SpriteSheet.enemy);
@@ -193,6 +205,7 @@ public class Sprite {
     circleEnemy.put("down", circleEnemySprite);
     circleEnemy.put("left", circleEnemySprite);
     circleEnemy.put("right", circleEnemySprite);
+    circleEnemy.put("dead", ArrayUtils.concat(new Sprite[] { circleEnemySprite[3] }, enemyDie));
 
     Sprite[] magmaSprite = new Sprite[8];
     for (int i = 0; i <= 1; i++) {

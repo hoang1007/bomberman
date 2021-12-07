@@ -17,7 +17,6 @@ import uet.gryffindor.game.object.dynamics.Bomber;
 import uet.gryffindor.game.object.dynamics.Explosion;
 import uet.gryffindor.graphic.sprite.Sprite;
 import uet.gryffindor.graphic.texture.AnimateTexture;
-import uet.gryffindor.sound.SoundController;
 import uet.gryffindor.util.Geometry;
 
 public class Oneal extends Enemy {
@@ -28,6 +27,7 @@ public class Oneal extends Enemy {
   private Queue<Vector2D> chasePath = new LinkedList<>();
   private Vector2D oldPosition;
   private boolean isBlocked = false;
+  private State state = State.NORMAL;
 
   // Đếm mốc thời điểm gọi hai hàm để đồng bộ
   private int handleStamp = 0;
@@ -74,6 +74,7 @@ public class Oneal extends Enemy {
             }
 
             chasePath = AStar.findPath(map, Oneal.this.position, that.gameObject.position, speed);
+            switchMode(State.ATTACK);
           }
         }
       }
@@ -97,12 +98,17 @@ public class Oneal extends Enemy {
     }
 
     if (!isBlocked) {
-      oldPosition = position.clone();
+      oldPosition = position.smooth(Sprite.DEFAULT_SIZE, 1);
 
-      if (!chasePath.isEmpty()) {
-        chase();
-      } else {
-        move();
+      switch (state) {
+        case NORMAL:
+          move();
+          break;
+        case ATTACK:  
+          chase();
+          break;
+        default:
+          break;
       }
     }
   }
@@ -110,7 +116,8 @@ public class Oneal extends Enemy {
   @Override
   public void onCollisionEnter(Collider that) {
     if (that.gameObject instanceof Unmovable || that.gameObject instanceof Magma) {
-      position = oldPosition.smooth(Sprite.DEFAULT_SIZE, 1);
+      position = oldPosition;
+      switchMode(State.NORMAL);
 
       int dirCode = 0;
       do {
@@ -118,20 +125,10 @@ public class Oneal extends Enemy {
       } while (dirCode == direction.ordinal());
 
       direction = Direction.valueOf(dirCode);
-
-      chasePath.clear();
     } else if (that.gameObject instanceof Explosion) {
-      SoundController.INSTANCE.getSound(
-          SoundController.ENEMY_DIE).play(); // âm thanh khi enemy chết.
       Manager.INSTANCE.getGame().addScore(10);
-      this.destroy();
-    }
-  }
-
-  @Override
-  public void onCollisionExit(Collider that) {
-    if (that.gameObject instanceof Unmovable) {
-      isBlocked = false;
+      isBlocked = true;
+      this.dead();
     }
   }
 
@@ -141,6 +138,27 @@ public class Oneal extends Enemy {
   }
 
   private void chase() {
-    this.position = chasePath.remove();
+    if (chasePath.isEmpty()) {
+      switchMode(State.NORMAL);
+    } else {
+      this.position = chasePath.remove();
+    }
+  }
+
+  public void switchMode(State s) {
+    if (this.state != s) {
+      this.state = s;
+
+      if (s == State.NORMAL) {
+        this.texture.changeTo(direction.toString());
+        chasePath.clear();
+      } else {
+        this.texture.changeTo("attack");
+      }
+    }
+  }
+
+  enum State {
+    NORMAL, ATTACK;
   }
 }
