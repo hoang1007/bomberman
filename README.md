@@ -10,6 +10,7 @@ Thành viên nhóm Gryffindor:
 ## Tổng quan
 
 Trò chơi Bomberman kinh điển của NES viết bằng java.
+Demo: https://www.youtube.com/watch?v=Sqnj3KQgB74
 
 <div float="left">
   <img src="https://user-images.githubusercontent.com/79706035/144868609-048a591b-1527-4ae8-927e-c98994506ca3.png" width="49%" />
