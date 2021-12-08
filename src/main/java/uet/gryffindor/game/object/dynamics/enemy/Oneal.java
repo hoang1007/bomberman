@@ -117,18 +117,25 @@ public class Oneal extends Enemy {
   public void onCollisionEnter(Collider that) {
     if (that.gameObject instanceof Unmovable || that.gameObject instanceof Magma) {
       position = oldPosition;
+      isBlocked = true;
       switchMode(State.NORMAL);
+    } else if (that.gameObject instanceof Explosion) {
+      Manager.INSTANCE.getGame().addScore(10);
+      isBlocked = true;
+      this.dead();
+    }
+  }
 
+  @Override
+  public void onCollisionExit(Collider that) {
+    if (that.gameObject instanceof Unmovable || that.gameObject instanceof Magma) {
       int dirCode = 0;
       do {
         dirCode = random.nextInt(4);
       } while (dirCode == direction.ordinal());
 
       direction = Direction.valueOf(dirCode);
-    } else if (that.gameObject instanceof Explosion) {
-      Manager.INSTANCE.getGame().addScore(10);
-      isBlocked = true;
-      this.dead();
+      isBlocked = false;
     }
   }
 

@@ -97,10 +97,11 @@ public class SoundInGame implements Runnable {
 
         try {
             URL defaultSound = GameApplication.class.getResource(path);
-          //assert defaultSound != null;
-          AudioInputStream sound = AudioSystem.getAudioInputStream(defaultSound);
+            //assert defaultSound != null;
+            AudioInputStream sound = AudioSystem.getAudioInputStream(defaultSound);
             // load the sound into memory (a Clip)
             clip = AudioSystem.getClip();
+            clip.stop();
             clip.open(sound);
         } catch (MalformedURLException e) {
             e.printStackTrace();

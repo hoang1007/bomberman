@@ -15,6 +15,7 @@ public class AnimateTexture extends Texture {
   private int current = 0;
   private double rate; // Frame per global frame
   private String type;
+  private boolean loop = true;
 
   /**
    * Khởi tạo animate texture.
@@ -38,11 +39,23 @@ public class AnimateTexture extends Texture {
 
     int id = (int) (current++ / rate);
     if (id >= s.length) {
-      current = 0;
-      id = 0;
+      if (loop) {
+        current = 0;
+        id = 0;
+      } else {
+        id = s.length - 1;
+      }
     }
 
     return s[id];
+  }
+
+  /**
+   * Set loopable for this animation.
+   * @param loop enable or not
+   */
+  public void loopable(boolean loop) {
+    this.loop = loop;
   }
 
   public void changeTo(String type) {

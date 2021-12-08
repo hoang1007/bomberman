@@ -17,6 +17,7 @@ public abstract class Enemy extends DynamicObject {
 
     this.collider.enabled(false);
     this.texture.changeTo("dead");
+    this.texture.loopable(false);
     TimeCounter.callAfter(this::destroy, this.texture.getDuration("dead"));
   }
 }

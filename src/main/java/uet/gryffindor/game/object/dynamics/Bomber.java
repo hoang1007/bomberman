@@ -58,10 +58,7 @@ public class Bomber extends DynamicObject {
     sinceDropping = new ArrayList<>();
     blockedBy = new ArrayList<>();
 
-    shieldAvail = true;
-    TimeCounter.callAfter(() -> {
-      shieldAvail = false;
-    }, 2, TimeUnit.SECONDS);
+    onRevival();
   }
 
   @Override
@@ -136,12 +133,20 @@ public class Bomber extends DynamicObject {
         // gắn nhãn bị chặn
         blockedBy.add(that.gameObject);
       }
-    } else if (that.gameObject instanceof Enemy) {
-      if (!shieldAvail && overlapArea > .1 * bomberSize) {
+    } else if (that.gameObject instanceof Explosion) {
+      if (!shieldAvail) {
         dead();
       }
-    } else if (that.gameObject instanceof Explosion) {
-      if (!shieldAvail && overlapArea > .1 * bomberSize) {
+    }
+  }
+
+  @Override
+  public void onCollisionStay(Collider that) {
+    if (that.gameObject instanceof Enemy) {
+      double bomberSize = this.dimension.x * this.dimension.y;
+      double overlapArea = this.collider.getOverlapArea(that);
+
+      if (!shieldAvail && overlapArea > .3 * bomberSize) {
         dead();
       }
     }
@@ -160,6 +165,7 @@ public class Bomber extends DynamicObject {
     SoundController.INSTANCE.getSound(SoundController.BOMBER_DIE).play(); // âm thanh chết.
     isDead = true;
     this.collider.enabled(false);
+    texture.loopable(false);
     texture.changeTo("dead");
 
     if (heart.get() > 0) {
@@ -167,8 +173,7 @@ public class Bomber extends DynamicObject {
         SoundController.INSTANCE.stopAll();
         SoundController.INSTANCE.getSound(SoundController.PLAYGAME).play(); // âm thanh chết.
         this.position.setValue(firstPosition);
-        isDead = false;
-        collider.enabled(true);
+        onRevival();
       }, 1, TimeUnit.SECONDS);
       return;
     }
@@ -178,6 +183,16 @@ public class Bomber extends DynamicObject {
       Manager.INSTANCE.getGame().destroy();
       GameApplication.setRoot("MenuOver");
     }, 1, TimeUnit.SECONDS);
+  }
+
+  private void onRevival() {
+    isDead = false;
+    texture.loopable(true);
+    collider.enabled(true);
+    shieldAvail = true;
+    TimeCounter.callAfter(() -> {
+      shieldAvail = false;
+    }, 2, TimeUnit.SECONDS);
   }
 
   public double getSpeed() {

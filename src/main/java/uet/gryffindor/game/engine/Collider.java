@@ -13,6 +13,7 @@ import uet.gryffindor.util.Pair;
  * Lớp máy va chạm giúp phát hiện va chạm.
  */
 public class Collider {
+  private static final double EPSILON = 1e-4; // overlap area threshold
   public final GameObject gameObject;
   private boolean isEnabled = true;
 
@@ -133,6 +134,13 @@ public class Collider {
     }
 
     var pair = a.collidedList.get(b);
+    double overlapArea = a.computeOverlapArea(b);
+
+    // if overlap area is too small
+    // ignore checking progress
+    if (overlapArea < EPSILON) {
+      return;
+    }
 
     // nếu danh sách va chạm của a đã cập nhật b
     // bỏ qua kiểm tra lặp
@@ -144,7 +152,6 @@ public class Collider {
     // hoặc vùng giao nhau của a và b bằng không
     // thì gọi onCollsionEnter
     boolean isEnter = pair == null || pair.second == 0;
-    double overlapArea = a.computeOverlapArea(b);
 
     // cập nhật diện tích giao nhau
     a.collidedList.put(b, Pair.of(true, overlapArea));
