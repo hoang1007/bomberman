@@ -27,6 +27,7 @@ public class Oneal extends Enemy {
   private Queue<Vector2D> chasePath = new LinkedList<>();
   private Vector2D oldPosition;
   private boolean isBlocked = false;
+  private boolean isDead = false;
   private State state = State.NORMAL;
 
   // Đếm mốc thời điểm gọi hai hàm để đồng bộ
@@ -97,7 +98,7 @@ public class Oneal extends Enemy {
       return;
     }
 
-    if (!isBlocked) {
+    if (!isBlocked && !isDead) {
       oldPosition = position.smooth(Sprite.DEFAULT_SIZE, 1);
 
       switch (state) {
@@ -121,7 +122,7 @@ public class Oneal extends Enemy {
       switchMode(State.NORMAL);
     } else if (that.gameObject instanceof Explosion) {
       Manager.INSTANCE.getGame().addScore(10);
-      isBlocked = true;
+      isDead = true;
       this.dead();
     }
   }
