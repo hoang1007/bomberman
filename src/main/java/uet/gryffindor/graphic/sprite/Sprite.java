@@ -152,7 +152,7 @@ public class Sprite {
   }
 
   private static void loadEnemy() {
-    Sprite[] enemyDie = new Sprite[] {
+    final Sprite[] enemyDie = new Sprite[] {
       new Sprite(53, 186, 14, 14, SpriteSheet.enemy),
       new Sprite(67, 186, 10, 14, SpriteSheet.enemy),
       new Sprite(79, 186, 8, 14, SpriteSheet.enemy),

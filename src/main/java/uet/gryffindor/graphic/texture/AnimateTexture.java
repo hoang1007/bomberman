@@ -60,6 +60,7 @@ public class AnimateTexture extends Texture {
 
   public void changeTo(String type) {
     this.type = type;
+    this.current = 0;
   }
 
   public void pause() {

@@ -36,7 +36,7 @@ public class Oneal extends Enemy {
 
   @Override
   public void start() {
-    this.texture = new AnimateTexture(this, 5, Sprite.oneal);
+    this.texture = new AnimateTexture(this, 4, Sprite.oneal);
 
     // Object giúp phát hiện bomber có vào vùng tấn công hay không
     GameObject.addObject(new GameObject() {
@@ -153,7 +153,7 @@ public class Oneal extends Enemy {
     }
   }
 
-  public void switchMode(State s) {
+  private void switchMode(State s) {
     if (this.state != s) {
       this.state = s;
 

@@ -11,6 +11,7 @@ public abstract class Enemy extends DynamicObject {
     this.orderedLayer = OrderedLayer.MIDGROUND;
   }
 
+  /** Set required properties when enemy die. */
   public void dead() {
     SoundController.INSTANCE.getSound(
           SoundController.ENEMY_DIE).play(); // âm thanh khi enemy chết.

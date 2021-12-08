@@ -2,6 +2,7 @@ package uet.gryffindor.game.object.statics;
 
 import java.util.concurrent.TimeUnit;
 
+import uet.gryffindor.GameApplication;
 import uet.gryffindor.game.Game;
 import uet.gryffindor.game.Manager;
 import uet.gryffindor.game.base.OrderedLayer;
@@ -11,8 +12,10 @@ import uet.gryffindor.game.object.StaticObject;
 import uet.gryffindor.game.object.dynamics.Bomber;
 import uet.gryffindor.graphic.Animator;
 import uet.gryffindor.graphic.sprite.Sprite;
+import uet.gryffindor.sound.SoundController;
 
 public class Portal extends StaticObject {
+  public static Portal INSTANCE;
   private Animator animator;
 
   @Override
@@ -33,15 +36,21 @@ public class Portal extends StaticObject {
       double overlapArea = that.getOverlapArea(this.collider);
       double portalArea = this.dimension.x * this.dimension.y;
 
-      if (overlapArea > 0.8 * portalArea) {
+      // When bomber go into portal, active portal
+      if (overlapArea > .8 * portalArea) {
         System.out.println("2s remaining...");
-        TimeCounter.callAfter(this::nextLevel, 2, TimeUnit.SECONDS);
+        SoundController.INSTANCE.stopAll();
+        SoundController.INSTANCE.getSound(SoundController.WIN_EFFECT).play();
+        TimeCounter.callAfter(() -> {
+          GameApplication.setRoot("WinScene");
+        }, 2, TimeUnit.SECONDS);
+
         Game.pause = true;
       }
     }
   }
 
-  public void nextLevel() {
+  public static void nextLevel() {
     Game myGame = Manager.INSTANCE.getGame();
     myGame.start();
   }

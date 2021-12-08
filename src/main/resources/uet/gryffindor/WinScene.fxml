@@ -7,22 +7,22 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="630.0" prefWidth="800.0" style="-fx-background-color: white;" stylesheets="@style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uet.gryffindor.scenes.WinSceneController">
+<AnchorPane prefHeight="630.0" prefWidth="800.0" styleClass="hightScore" stylesheets="@style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uet.gryffindor.scenes.WinSceneController">
    <children>
-      <Button layoutX="523.0" layoutY="496.0" minHeight="6.0" mnemonicParsing="false" onAction="#quitGame" prefHeight="45.0" prefWidth="140.0" text="QUIT">
+      <Button layoutX="558.0" layoutY="489.0" minHeight="6.0" mnemonicParsing="false" onAction="#quitGame" prefHeight="45.0" prefWidth="140.0" text="QUIT">
          <font>
             <Font name="UTM Nokia" size="18.0" />
          </font></Button>
-      <Button layoutX="103.0" layoutY="497.0" minHeight="6.0" mnemonicParsing="false" onAction="#backToMenu" prefHeight="45.0" prefWidth="140.0" text="MENU">
+      <Button layoutX="78.0" layoutY="489.0" minHeight="6.0" mnemonicParsing="false" onAction="#backToMenu" prefHeight="45.0" prefWidth="140.0" text="MENU">
          <font>
             <Font name="UTM Nokia" size="18.0" />
          </font></Button>
-      <ImageView fitHeight="469.0" fitWidth="429.0" layoutX="350.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="406.0" fitWidth="417.0" layoutX="243.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@img/menu/Win.jpg" />
+            <Image url="@img/menu/YouWin.png" />
          </image>
       </ImageView>
-      <Label alignment="CENTER" layoutX="65.0" layoutY="252.0" prefHeight="30.0" prefWidth="214.0" text="Xin Chúc Mừng Bạn">
+      <Label alignment="CENTER" layoutX="24.0" layoutY="252.0" prefHeight="30.0" prefWidth="255.0" text="Chúc Mừng Bạn Qua Màn">
          <font>
             <Font size="17.0" />
          </font></Label>
@@ -36,5 +36,15 @@
             <Image url="@img/menu/cup.png" />
          </image>
       </ImageView>
+      <ImageView fitHeight="321.0" fitWidth="156.0" layoutX="629.0" layoutY="146.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@img/menu/bomber/2-nonbkg.png" />
+         </image>
+      </ImageView>
+      <Button layoutX="319.0" layoutY="489.0" mnemonicParsing="false" onAction="#nextMap" prefHeight="46.0" prefWidth="140.0" text="NEXT">
+         <font>
+            <Font name="UTM Nokia" size="18.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

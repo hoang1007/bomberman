@@ -18,6 +18,7 @@ import uet.gryffindor.game.engine.Collider;
 import uet.gryffindor.game.engine.FpsTracker;
 import uet.gryffindor.game.engine.Input;
 import uet.gryffindor.game.engine.TimeCounter;
+import uet.gryffindor.game.movement.Direction;
 import uet.gryffindor.game.object.DynamicObject;
 import uet.gryffindor.game.object.dynamics.enemy.Enemy;
 import uet.gryffindor.graphic.sprite.Sprite;
@@ -30,6 +31,7 @@ public class Bomber extends DynamicObject {
 
   private Vector2D firstPosition;
   private Vector2D oldPosition;
+  private Direction direction = Direction.NONE;
   private boolean shieldAvail = true;
   private boolean isDead = false;
 
@@ -57,8 +59,6 @@ public class Bomber extends DynamicObject {
     bombDropped = 0;
     sinceDropping = new ArrayList<>();
     blockedBy = new ArrayList<>();
-
-    onRevival();
   }
 
   @Override
@@ -81,58 +81,61 @@ public class Bomber extends DynamicObject {
   }
 
   private void move() {
+    Direction newDir = Direction.NONE;
     switch (Input.INSTANCE.getCode()) {
       case UP:
-        SoundController.INSTANCE.getSound(SoundController.FOOT).play();
-        this.position.y -= speed.get() * FpsTracker.fixedDeltaTime();
-        texture.changeTo("up");
+        newDir = Direction.UP;
         break;
       case DOWN:
-        SoundController.INSTANCE.getSound(SoundController.FOOT).play();
-        this.position.y += speed.get() * FpsTracker.fixedDeltaTime();
-        texture.changeTo("down");
+        newDir = Direction.DOWN;
         break;
       case RIGHT:
-        SoundController.INSTANCE.getSound(SoundController.FOOT).play();
-        this.position.x += speed.get() * FpsTracker.fixedDeltaTime();
-        texture.changeTo("right");
+        newDir = Direction.RIGHT;
         break;
       case LEFT:
-        SoundController.INSTANCE.getSound(SoundController.FOOT).play();
-        this.position.x -= speed.get() * FpsTracker.fixedDeltaTime();
-        texture.changeTo("left");
+        newDir = Direction.LEFT;
         break;
       case SPACE:
         if (bombDropped < numberOfBombs && System.currentTimeMillis() - delay >= 100) {
           SoundController.INSTANCE.getSound(SoundController.BOMB_NEW).play(); // âm thanh đặt bom.
           bombDropped++;
           Bomb bomb = new Bomb();
-          bomb.position.setValue(this.position.clone().smooth(Sprite.DEFAULT_SIZE, 1));
+          bomb.position.setValue(this.position.smooth(Sprite.DEFAULT_SIZE, 1));
           GameObject.addObject(bomb);
           sinceDropping.add(System.currentTimeMillis());
           delay = System.currentTimeMillis();
         }
         break;
       default:
-        texture.pause();
         break;
+    }
+
+    if (newDir != Direction.NONE) {
+      SoundController.INSTANCE.getSound(SoundController.FOOT).play();
+      this.position = newDir.forward(this.position, speed.get() * FpsTracker.fixedDeltaTime());
+
+      if (newDir != direction) {
+        direction = newDir;
+        texture.changeTo(direction.toString());
+      }
+    } else {
+      texture.pause();
     }
   }
 
   @Override
   public void onCollisionEnter(Collider that) {
-    double bomberSize = this.dimension.x * this.dimension.y;
-    double overlapArea = this.collider.getOverlapArea(that);
+    if (that.gameObject instanceof Bomb) {
+      double bomberSize = this.dimension.x * this.dimension.y;
+      double overlapArea = this.collider.getOverlapArea(that);
 
-    if (that.gameObject instanceof Unmovable) {
-      // ngoại lệ đặt bomb
       if (overlapArea < .2 * bomberSize) {
-        // nếu bomber va chạm với vật thể tĩnh
-        // khôi phục vị trí trước khi va chạm
         position = oldPosition.smooth(this.dimension.x, 0.3);
-        // gắn nhãn bị chặn
         blockedBy.add(that.gameObject);
       }
+    } else if (that.gameObject instanceof Unmovable) {
+      position = oldPosition.smooth(this.dimension.x, 0.3);
+      blockedBy.add(that.gameObject);
     } else if (that.gameObject instanceof Explosion) {
       if (!shieldAvail) {
         dead();
@@ -170,9 +173,6 @@ public class Bomber extends DynamicObject {
 
     if (heart.get() > 0) {
       TimeCounter.callAfter(() -> {
-        SoundController.INSTANCE.stopAll();
-        SoundController.INSTANCE.getSound(SoundController.PLAYGAME).play(); // âm thanh chết.
-        this.position.setValue(firstPosition);
         onRevival();
       }, 1, TimeUnit.SECONDS);
       return;
@@ -186,6 +186,9 @@ public class Bomber extends DynamicObject {
   }
 
   private void onRevival() {
+    SoundController.INSTANCE.stopAll();
+    SoundController.INSTANCE.getSound(SoundController.PLAYGAME).play();
+    this.position.setValue(firstPosition);
     isDead = false;
     texture.loopable(true);
     collider.enabled(true);
